@@ -1,8 +1,10 @@
 // Importación de dependencias necesarias de React y React Router
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 // Importación de estilos
 import './productos.css';
+// Importación del componente CarritoCompras
+import CarritoCompras from './CarritoCompras';
 
 /**
  * Componente Productos
@@ -15,6 +17,24 @@ function Productos() {
     const [loading, setLoading] = useState(true);   // Controla el estado de carga de datos con la API dandole estado inicial true para que al iniciar el componente muestre el mensaje de cargando 
     const [error, setError] = useState(null);       // Maneja los errores de la API dandole estado inicial null para que no muestre ningun mensaje de error al iniciar el componente
                                                     // Si ocurre un error, se actualizará con un mensaje de error con setError
+    
+    // Ref para acceder al componente del carrito
+    const carritoRef = useRef(null);
+
+    // Función para agregar producto al carrito
+    const manejarAgregarAlCarrito = (producto) => {
+        // Verificar que el producto tenga stock disponible
+        if (producto.stock <= 0) {
+            alert('Este producto no tiene stock disponible');
+            return;
+        }
+
+        // Aquí puedes agregar lógica adicional antes de agregar al carrito
+        alert(`¡${producto.nombre} agregado al carrito!`);
+        
+        // Si usas el ref del carrito, puedes llamar directamente a su función
+        // carritoRef.current?.agregarAlCarrito(producto);
+    };
     // useEffect para cargar los productos cuando el componente se monta
     useEffect(() => {
         // Función asíncrona para obtener los productos de la API
@@ -89,6 +109,13 @@ function Productos() {
     return (
         <div className="productos-container">
             <h2>Nuestros Productos</h2>
+            
+            {/* Componente del carrito como elemento separado */}
+            <CarritoCompras 
+                ref={carritoRef}
+                className="carrito-posicion"
+            />
+            
             <div className="productos-grid">
                 {/* Mapear cada producto a una tarjeta */}
                 {productos.map((prod) => (
@@ -128,7 +155,13 @@ function Productos() {
                         {/* El botón "Ver detalles" utiliza Link de react-router-dom para navegar a la página de detalles del producto
                             El estado se pasa a través de la prop state para evitar una nueva llamada a la API en la página de detalles
                         */}
-                        <button className="btn-agregar">Agregar al carrito</button>
+                        <button 
+                            className={`btn-agregar ${prod.stock <= 0 ? 'btn-deshabilitado' : ''}`}
+                            onClick={() => manejarAgregarAlCarrito(prod)}
+                            disabled={prod.stock <= 0}
+                        >
+                            {prod.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
+                        </button>
                     </div>
                 ))}
             </div>
