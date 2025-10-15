@@ -3,7 +3,14 @@ import React, { createContext, useContext, useState } from 'react';
 // Crear el contexto del carrito
 const CarritoContext = createContext();
 
-// Hook personalizado para usar el contexto del carrito
+// Hook del carrito
+// hook es una función que permite usar características de React como el estado y el ciclo de vida en componentes funcionales
+// useContext es un hook que permite acceder al valor del contexto en componentes funcionales
+// este hook facilita el acceso al contexto del carrito en cualquier componente funcional
+// el contexto proporciona el estado del carrito y las funciones para manipularlo
+// de esta forma, cualquier componente que use este hook puede interactuar con el carrito de compras
+
+// Lanza un error si se usa fuera del 
 export const useCarrito = () => {
   const context = useContext(CarritoContext);
   if (!context) {
@@ -26,15 +33,18 @@ export const CarritoProvider = ({ children }) => {
       const productoExistente = carritoActual.find(item => item.id === producto.id);
       
       if (productoExistente) {
+        // spread es una forma de copiar un objeto o array en uno nuevo para manipularlo sin afectar el original y aplicar los cambios deseados
+        // spread es la sintaxis de 3 puntos (...) para copiar las propiedades del objeto y despues de la coma se indica la propiedad que se quiere modificar
         // Si el producto ya existe, aumentar la cantidad
+        // Si no tiene cantidad, asumir 1
         return carritoActual.map(item =>
           item.id === producto.id
-            ? { ...item, cantidad: (item.cantidad || 1) + 1 }
+            ? { ...item, cantidad: (item.cantidad || 1) + 1 } // usamos el operador OR para manejar la cantidad indefinida en caso de que sea un producto recién agregado
             : item
         );
       } else {
         // Si es un producto nuevo, agregarlo al carrito
-        return [...carritoActual, { ...producto, cantidad: 1 }];
+        return [...carritoActual, { ...producto, cantidad: 1 }]; // inicializamos la cantidad en 1 al agregar un nuevo producto tomando de referencia el producto completo, y el atributo cantidad
       }
     });
   };
@@ -62,7 +72,7 @@ export const CarritoProvider = ({ children }) => {
         if (producto.id === idProducto) {
           return {
             ...producto,
-            cantidad: (producto.cantidad || 1) + 1
+            cantidad: (producto.cantidad || 1) + 1 
           };
         }
         return producto;
@@ -83,8 +93,12 @@ export const CarritoProvider = ({ children }) => {
   };
 
   // Función para obtener la cantidad total de productos
+  // .reduce es un método de array que acumula un valor basado en una función que se aplica a cada elemento del array
+  // en este caso usamos reduce con total como acumulador y item como el elemento actual del array
+  // me permite calcular la cantidad total de productos en el carrito sumando las cantidades de cada producto
+
   const obtenerCantidadTotal = () => {
-    return carrito.reduce((total, item) => total + (item.cantidad || 1), 0);
+    return carrito.reduce((total, item) => total + (item.cantidad || 1), 0); 
   };
 
   // Función para obtener el total del precio
