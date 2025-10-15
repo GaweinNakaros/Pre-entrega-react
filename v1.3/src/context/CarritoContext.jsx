@@ -10,7 +10,8 @@ const CarritoContext = createContext();
 // el contexto proporciona el estado del carrito y las funciones para manipularlo
 // de esta forma, cualquier componente que use este hook puede interactuar con el carrito de compras
 
-// Lanza un error si se usa fuera del 
+// la funcionalidad crea un contexto global para el carrito de compras
+// y permite que cualquier componente dentro de la aplicación pueda acceder y modificar el estado del carrito sin necesidad de pasar props manualmente a través de múltiples niveles de componentes
 export const useCarrito = () => {
   const context = useContext(CarritoContext);
   if (!context) {
@@ -21,7 +22,7 @@ export const useCarrito = () => {
 
 /**
  * Proveedor del contexto del carrito
- * Contiene toda la lógica de negocio relacionada con el carrito de compras
+ * Contiene toda la lógica del carrito de compras
  */
 export const CarritoProvider = ({ children }) => {
   // Estado del carrito
