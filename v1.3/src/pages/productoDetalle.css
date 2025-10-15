@@ -1,0 +1,160 @@
+/* Contenedor principal de la página de detalle */
+.detalle-container {
+    max-width: 800px;
+    margin: 20px auto; /* Centra el contenedor */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra suave */
+    border-radius: 8px;
+}
+
+/* Contenedor del contenido principal */
+.detalle-content {
+    display: flex;
+    gap: 20px;
+    align-items: start; /* Alinea los elementos al inicio */
+}
+
+/* Estilos para la imagen principal */
+.detalle-imagen {
+    width: 400px;
+    height: 300px;
+    object-fit: cover; /* Mantiene la proporción de la imagen */
+    border-radius: 8px;
+    background-color: #f5f5f5; /* Color de fondo para imágenes no cargadas */
+}
+
+/* Título del producto */
+.detalle-info h2 {
+    margin-top: 0;
+}
+
+/* Descripción del producto */
+.detalle-descripcion {
+    font-size: 1.1em;
+    color: #666;
+}
+
+/* Precio del producto */
+.detalle-precio {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c5282; /* Azul oscuro para resaltar */
+}
+
+/* Contenedor para mensajes de error */
+.mensaje-error {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Contenedor de botones mejorado */
+.detalle-botones {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+/* Enlaces de botones secundarios */
+.btn-link-secondary {
+    text-decoration: none;
+}
+
+.btn-link-secondary:hover {
+    text-decoration: none;
+}
+
+/* Botón volver simplificado */
+.btn-volver {
+    padding: 12px 24px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #5a6268;
+}
+
+.btn-volver:active {
+    background-color: #545b62;
+}
+
+/* Botón comprar simplificado */
+.btn-comprar {
+    padding: 14px 28px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    min-width: 200px;
+}
+
+.btn-comprar:hover:not(.btn-disabled) {
+    background-color: #45a049;
+}
+
+.btn-comprar:active:not(.btn-disabled) {
+    background-color: #3d8b40;
+}
+
+/* Botón deshabilitado en detalle */
+.btn-comprar.btn-disabled {
+    background-color: #9e9e9e !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+.btn-comprar.btn-disabled:hover {
+    background-color: #9e9e9e !important;
+}
+
+/* Información de stock mejorada */
+.detalle-stock {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 15px 0;
+}
+
+.detalle-stock.disponible {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.detalle-stock.agotado {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive para botones */
+@media (max-width: 768px) {
+    .detalle-botones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-volver,
+    .btn-comprar {
+        width: 100%;
+        text-align: center;
+        padding: 16px 20px;
+    }
+    
+    .btn-comprar {
+        min-width: auto;
+    }
+}
