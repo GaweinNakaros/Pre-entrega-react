@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useCarrito } from "../context/CarritoContext";
+import { useCarrito } from "../context/CarritoContext"; // importamos el hook del carrito
 import "./carrito_simple.css";
 
-export default function CarritoCompras() {
+export default function CarritoCompras() { // Componente del carrito de compras
+  // Usamos el hook del carrito para acceder al estado y las funciones del carrito
   const { 
     carrito, 
     quitarCantidad, 
@@ -14,6 +15,8 @@ export default function CarritoCompras() {
     totalPrecio 
   } = useCarrito();
 
+
+  // Manejamos los eventos del carrito con las funciones del contexto
   const manejarVaciarCarrito = () => {
     if (window.confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
       vaciarCarritoContext();
@@ -32,7 +35,8 @@ export default function CarritoCompras() {
     alert(
       `Procediendo a la compra de ${cantidadTotal} productos por un total de $${totalPrecio.toFixed(2)}`
     );
-    // Aquí se deberia implementar la lógica de pago real.
+    // Falta implementar la logica de pago real, aca podemos agregar la funcion de ruta protegida
+    // con el inicio de session del usuario y la integracion con un sistema de pago
   };
 
   return (

@@ -110,21 +110,32 @@ export const CarritoProvider = ({ children }) => {
   };
 
   // Función para verificar si un producto está en el carrito
+  // some es un método de array que verifica si al menos un elemento cumple con una condición
+  // en este caso usamos some para verificar si algún item del carrito tiene el mismo id que el idProducto proporcionado
+  // me permite saber si un producto específico ya está en el carrito de compras
   const estaEnCarrito = (idProducto) => {
     return carrito.some(item => item.id === idProducto);
   };
 
   // Función para obtener la cantidad de un producto específico
+  // find es un método de array que busca un elemento que cumpla con una condición y devuelve el primer elemento que la cumple o undefined si no lo encuentra
+  // en este caso usamos find para buscar un item del carrito que tenga el mismo id que el idProducto proporcionado
+  // me permite obtener la cantidad de un producto específico en el carrito, devolviendo 0 si no está presente
   const obtenerCantidadProducto = (idProducto) => {
     const producto = carrito.find(item => item.id === idProducto);
+    // usamos el operador ? para verificar si producto no es undefined (es decir, si se encontró el producto en el carrito)
+    // si producto es undefined, retornamos 0
+    // si producto existe, retornamos su cantidad o 1 si no tiene cantidad definida
     return producto ? producto.cantidad || 1 : 0;
   };
 
   // Valores que se proporcionan a través del contexto
+  // Exponemos tanto el estado del carrito como las funciones para manipularlo y consultarlo
+  // Esto permite que cualquier componente que consuma este contexto pueda interactuar con el carrito de compras de manera completa y sencilla
   const contextValue = {
     // Estado
     carrito,
-    setCarrito,
+    setCarrito, // esta función viene de useState y permite actualizar el estado del carrito directamente si es necesario
     
     // Funciones principales
     agregarAlCarrito,
@@ -139,13 +150,15 @@ export const CarritoProvider = ({ children }) => {
     estaEnCarrito,
     obtenerCantidadProducto,
     
-    // Propiedades computadas para fácil acceso
+    // Propiedades que se pueden llamar directamente para facilitar su uso
     cantidadTotal: obtenerCantidadTotal(),
     totalPrecio: obtenerTotalPrecio(),
     estaVacio: carrito.length === 0
   };
 
   return (
+    // la sintaxis Provider es un componente especial que viene con createContext y permite compartir el valor del contexto con todos los componentes hijos que lo consumen
+    // el atributo value es donde se pasa el valor que se quiere compartir, en este caso contextValue que contiene el estado del carrito y las funciones para manipularlo
     <CarritoContext.Provider value={contextValue}>
       {children}
     </CarritoContext.Provider>
