@@ -61,10 +61,10 @@
   /* Flexbox para organizar elementos verticalmente */
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   
   /* Altura fija para mantener uniformidad en todas las tarjetas */
-  height: 450px;
+  height: 500px;
 }
 
 /* ====================================================
@@ -116,13 +116,13 @@
    DETALLES DEL PRODUCTO (PRECIO Y STOCK)
    ==================================================== */
 .producto-detalles {
-  /* Grid de 3 columnas para organizar información */
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 0.5rem;
+  /* Flexbox para alinear precio y stock en línea */
+  display: flex;
   
-  /* Justifica el contenido espaciadamente */
+  /* Justifica el contenido con espacio entre elementos */
   justify-content: space-between;
+  
+  /* Alinea verticalmente al centro */
   align-items: center;
   
   /* Empuja los detalles hacia abajo de la tarjeta */
@@ -161,6 +161,8 @@
   
   /* Tamaño de fuente ligeramente menor */
   font-size: 0.9em;
+
+  text-align: center;
 }
 
 /* ====================================================

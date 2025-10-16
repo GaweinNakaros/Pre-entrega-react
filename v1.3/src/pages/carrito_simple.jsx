@@ -196,6 +196,14 @@ export default function CarritoCompras() {
                     Subtotal: $
                     {(Number(item.precio) * (item.cantidad || 1)).toFixed(2)}
                   </p>
+                  
+                  {/* 
+                    Mostrar stock disponible del producto
+                    Ayuda al usuario a saber cuántas unidades puede agregar
+                  */}
+                  <p className="item-precio">
+                    Stock disponible: {item.stock || 0}
+                  </p>
                 </div>
 
                 {/* ================================================
@@ -223,9 +231,18 @@ export default function CarritoCompras() {
                     </span>
                     
                     {/* Botón MAS (+) */}
+                    {/* 
+                      Deshabilitar el botón si la cantidad en el carrito 
+                      alcanzó el stock disponible del producto
+                    */}
                     <button
                       onClick={() => aumentarCantidad(item.id)}
                       className="btn-cantidad btn-mas"
+                      disabled={(item.cantidad || 1) >= (item.stock || 0)}
+                      style={{
+                        opacity: (item.cantidad || 1) >= (item.stock || 0) ? 0.5 : 1,
+                        cursor: (item.cantidad || 1) >= (item.stock || 0) ? 'not-allowed' : 'pointer'
+                      }}
                     >
                       +
                     </button>

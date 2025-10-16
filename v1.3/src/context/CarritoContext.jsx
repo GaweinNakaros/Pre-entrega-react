@@ -34,17 +34,34 @@ export const CarritoProvider = ({ children }) => {
       const productoExistente = carritoActual.find(item => item.id === producto.id);
       
       if (productoExistente) {
+        // Si el producto ya existe, verificar si hay stock disponible antes de aumentar cantidad
+        const cantidadActual = productoExistente.cantidad || 1;
+        const stockDisponible = producto.stock || 0;
+        
+        // Si la cantidad en el carrito ya alcanzó el stock disponible, no permitir agregar más
+        if (cantidadActual >= stockDisponible) {
+          alert(`No puedes agregar más unidades. Stock disponible: ${stockDisponible}`);
+          return carritoActual; // Retornar el carrito sin cambios
+        }
+        
         // spread es una forma de copiar un objeto o array en uno nuevo para manipularlo sin afectar el original y aplicar los cambios deseados
         // spread es la sintaxis de 3 puntos (...) para copiar las propiedades del objeto y despues de la coma se indica la propiedad que se quiere modificar
-        // Si el producto ya existe, aumentar la cantidad
-        // Si no tiene cantidad, asumir 1
+        // Si hay stock disponible, aumentar la cantidad
         return carritoActual.map(item =>
           item.id === producto.id
-            ? { ...item, cantidad: (item.cantidad || 1) + 1 } // usamos el operador OR para manejar la cantidad indefinida en caso de que sea un producto recién agregado
+            ? { ...item, cantidad: cantidadActual + 1 } // Aumentamos cantidad respetando el stock
             : item
         );
       } else {
-        // Si es un producto nuevo, agregarlo al carrito
+        // Si es un producto nuevo, verificar que tenga stock antes de agregarlo
+        const stockDisponible = producto.stock || 0;
+        
+        if (stockDisponible <= 0) {
+          alert('Este producto no tiene stock disponible');
+          return carritoActual; // No agregar el producto
+        }
+        
+        // Si es un producto nuevo con stock, agregarlo al carrito
         return [...carritoActual, { ...producto, cantidad: 1 }]; // inicializamos la cantidad en 1 al agregar un nuevo producto tomando de referencia el producto completo, y el atributo cantidad
       }
     });
@@ -71,9 +88,19 @@ export const CarritoProvider = ({ children }) => {
     setCarrito(carritoActual => {
       return carritoActual.map(producto => {
         if (producto.id === idProducto) {
+          const cantidadActual = producto.cantidad || 1;
+          const stockDisponible = producto.stock || 0;
+          
+          // Verificar si ya se alcanzó el límite de stock
+          if (cantidadActual >= stockDisponible) {
+            alert(`No puedes agregar más unidades. Stock disponible: ${stockDisponible}`);
+            return producto; // Retornar sin cambios
+          }
+          
+          // Si hay stock disponible, aumentar cantidad
           return {
             ...producto,
-            cantidad: (producto.cantidad || 1) + 1 
+            cantidad: cantidadActual + 1 
           };
         }
         return producto;

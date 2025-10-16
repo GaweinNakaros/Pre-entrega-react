@@ -144,7 +144,7 @@
    ==================================================== */
 .btn-volver {
   /* Espaciado interno del botón */
-  padding: 12px 24px;
+  padding: 14px 28px;
   
   /* Color gris para botón secundario */
   background-color: #6c757d;
@@ -164,7 +164,7 @@
   /* Tamaño de fuente */
   font-size: 1rem;
   
-  /* Peso medio de fuente */
+  /* Texto en negrita*/
   font-weight: 500;
   
   /* Transición suave del color */
@@ -206,7 +206,7 @@
   cursor: pointer;
   
   /* Tamaño de fuente mayor */
-  font-size: 1.1rem;
+  font-size: 1rem;
   
   /* Texto en negrita */
   font-weight: 600;
@@ -325,6 +325,3 @@
   }
 }
 
-/* ====================================================
-   FIN DE LOS ESTILOS DE DETALLE DE PRODUCTO
-   ==================================================== */
