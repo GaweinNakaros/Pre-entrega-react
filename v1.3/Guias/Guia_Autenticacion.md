@@ -63,8 +63,6 @@ Implementamos un sistema de autenticación simple pero efectivo que protege la r
 - Indicador de usuario en el navbar
 - Estilos modernos y responsivos
 
-## 📁 Archivos Creados/Modificados
-
 ### Archivos
 ```
 src/context/AuthContext.jsx       - Contexto de autenticación

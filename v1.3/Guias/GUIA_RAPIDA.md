@@ -94,7 +94,7 @@ function MiComponente() {
 - ✅ Teléfono: 10 dígitos
 - ✅ Método de pago: selección
 
-## 🎨 Estados Visuales
+##  Estados Visuales
 
 ### Usuario NO autenticado
 ```
@@ -106,14 +106,14 @@ Navbar: [Inicio] [Productos] [Servicios] [Carrito] [Iniciar Sesión]
 Navbar: [Inicio] [Productos] [Servicios] [Carrito] [👤 usuario@email.com] [Cerrar Sesión]
 ```
 
-## 💾 Persistencia
+## Persistencia
 
 - La sesión se guarda en `localStorage`
 - Persiste entre recargas de página
 - Se limpia al cerrar sesión
 - Key: `"usuario"`
 
-## 🔄 Redirecciones
+##  Redirecciones
 
 ### Escenario 1: Usuario intenta acceder a /pago sin autenticación
 ```
@@ -142,7 +142,7 @@ v1.3/
 │   │   └── carrito_simple.jsx    ← Redirige a pago
 │   └── ...
 └── AUTENTICACION.md              ← Documentación completa
-```
+
 src/
 ├── context/
 │   ├── CarritoContext.jsx ← 🎯 TODA la lógica del carrito
@@ -157,3 +157,4 @@ src/
 │   ├── Pago.jsx ← 🔒 Página protegida de pago (requiere autenticación)
 │   └── RutaProtegida.jsx ← 🔒 Componente HOC para proteger rutas
 
+```
