@@ -1,9 +1,0 @@
-src/
-├── context/
-│   └── CarritoContext.jsx ← 🎯 TODA la lógica del carrito
-├── pages/
-│   ├── App.jsx ← 🎯 Solo gestión y enrutamiento
-│   ├── productos.jsx ← Usa el contexto
-│   ├── productoDetalle.jsx ← Usa el contexto
-│   ├── carrito_simple.jsx ← Usa el contexto
-│   └── navbar.jsx ← Usa el contexto
