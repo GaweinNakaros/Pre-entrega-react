@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import { useCarrito } from "../context/CarritoContext";
 import { useAuth } from "../context/AuthContext";
 
+// Importación de la hoja de estilos del navbar
+import './navbar.css';
+
 // ====================================================
 // COMPONENTE: NAVBAR (BARRA DE NAVEGACIÓN)
 // ====================================================
@@ -68,19 +71,22 @@ function Navbar() {
         {/* ================================================
             ENLACE AL CARRITO CON CANTIDAD
             ================================================
-            Muestra "Carrito" y opcionalmente la cantidad entre paréntesis
+            Muestra "Carrito" y opcionalmente la cantidad con un badge
             
-            {cantidadTotal > 0 && `(${cantidadTotal})`}
-            - Si cantidadTotal es mayor a 0, muestra (cantidad)
+            {cantidadTotal > 0 && ...}
+            - Si cantidadTotal es mayor a 0, muestra el badge
             - Si es 0, no muestra nada
             
-            Template literals (backticks `):
-            - Permite insertar variables con ${variable}
-            - Ejemplo: si cantidadTotal = 3, muestra "(3)"
+            className="carrito-badge":
+            - Clase CSS que da estilo al badge circular
+            - Ubicada en navbar.css con animación de pulso
         */}
         <li>
           <Link to="/carrito">
-            Carrito {cantidadTotal > 0 && `(${cantidadTotal})`}
+            Carrito 
+            {cantidadTotal > 0 && (
+              <span className="carrito-badge">{cantidadTotal}</span>
+            )}
           </Link>
         </li>
         
@@ -93,61 +99,66 @@ function Navbar() {
               Muestra su email y botón de cerrar sesión
             Si NO está autenticado:
               Muestra enlace "Iniciar Sesión"
-        */}
-        {estaAutenticado() ? (
-          // ================================================
-          // USUARIO AUTENTICADO
-          // ================================================
-          /**
-           * Fragment (<>...</>): Agrupa múltiples elementos sin agregar nodos DOM
-           * Es como un contenedor invisible
-           * 
-           * Sin Fragment:
-           *   <div><li>...</li><li>...</li></div>  ← Agrega un div innecesario
-           * 
-           * Con Fragment:
-           *   <><li>...</li><li>...</li></>  ← No agrega nada al DOM
-           */
-          <>
-            {/* Muestra el email del usuario */}
-            <li style={{ color: '#667eea', fontWeight: 'bold' }}>
-              {/* 
-                usuario?.email
-                Optional chaining (?.) - Acceso seguro a propiedades
-                Si usuario es null/undefined, retorna undefined sin error
-              */}
-              👤 {usuario?.email}
-            </li>
             
-            {/* Botón de cerrar sesión */}
-            <li>
-              {/* 
-                Botón estilizado con estilos inline
-                style={{propiedad: 'valor'}} - Objeto de estilos en React
-                Nota: Las propiedades CSS en camelCase (backgroundColor, no background-color)
-              */}
-              <button 
-                onClick={manejarCerrarSesion}
-                style={{
-                  background: 'transparent',    // Fondo transparente
-                  border: 'none',               // Sin borde
-                  color: 'inherit',             // Hereda el color del padre
-                  cursor: 'pointer',            // Cursor de mano al pasar
-                  fontSize: 'inherit',          // Hereda el tamaño de fuente
-                  textDecoration: 'underline'   // Texto subrayado
-                }}
-              >
-                Cerrar Sesión
-              </button>
-            </li>
-          </>
-        ) : (
-          // ================================================
-          // USUARIO NO AUTENTICADO
-          // ================================================
-          // Muestra un enlace simple para ir a la página de login
-          <li><Link to="/login">Iniciar Sesión</Link></li>
-        )}
+            className="navbar-auth":
+            - Clase que empuja estos elementos a la derecha del navbar
+            - Usa margin-left: auto en navbar.css
+        */}
+        <div className="navbar-auth">
+          {estaAutenticado() ? (
+            // ================================================
+            // USUARIO AUTENTICADO
+            // ================================================
+            /**
+             * Fragment (<>...</>): Agrupa múltiples elementos sin agregar nodos DOM
+             * Es como un contenedor invisible
+             * 
+             * Sin Fragment:
+             *   <div><li>...</li><li>...</li></div>  ← Agrega un div innecesario
+             * 
+             * Con Fragment:
+             *   <><li>...</li><li>...</li></>  ← No agrega nada al DOM
+             */
+            <>
+              {/* Muestra el email del usuario con estilo */}
+              <li className="navbar-usuario">
+                {/* 
+                  usuario?.email
+                  Optional chaining (?.) - Acceso seguro a propiedades
+                  Si usuario es null/undefined, retorna undefined sin error
+                  
+                  className="navbar-usuario-icono" y "navbar-usuario-email":
+                  - Clases CSS que dan estilo al icono y al email
+                  - navbar-usuario-email limita el ancho y agrega ellipsis (...)
+                */}
+                <span className="navbar-usuario-icono">👤</span>
+                <span className="navbar-usuario-email">{usuario?.email}</span>
+              </li>
+              
+              {/* Botón de cerrar sesión */}
+              <li>
+                {/* 
+                  className="btn-cerrar-sesion":
+                  - Clase CSS que da estilo al botón
+                  - Incluye efectos hover, active y estados de focus
+                  - Ya no necesitamos estilos inline
+                */}
+                <button 
+                  onClick={manejarCerrarSesion}
+                  className="btn-cerrar-sesion"
+                >
+                  Cerrar Sesión
+                </button>
+              </li>
+            </>
+          ) : (
+            // ================================================
+            // USUARIO NO AUTENTICADO
+            // ================================================
+            // Muestra un enlace simple para ir a la página de login
+            <li><Link to="/login">Iniciar Sesión</Link></li>
+          )}
+        </div>
       </ul>
     </nav>
   );

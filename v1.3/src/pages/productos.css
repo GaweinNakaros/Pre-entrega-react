@@ -1,161 +1,354 @@
+/* ============================================
+   ESTILOS DE PRODUCTOS - PÁGINA DE CATÁLOGO
+   ============================================ */
+
+/* ====================================================
+   RESET Y CONFIGURACIÓN BASE
+   ==================================================== */
+* {
+  /* Asegura que todos los elementos incluyan padding y border en su ancho */
+  box-sizing: border-box;
+}
+
+/* ====================================================
+   CONTENEDOR PRINCIPAL DE PRODUCTOS
+   ==================================================== */
 .productos-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+  /* Espaciado interno del contenedor */
+  padding: 20px;
+  
+  /* Ancho máximo para mantener diseño centrado */
+  max-width: 1200px;
+  
+  /* Centra el contenedor horizontalmente */
+  margin: 0 auto;
 }
 
+/* ====================================================
+   GRID DE PRODUCTOS
+   ==================================================== */
 .productos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+  /* Display grid para layout de tarjetas */
+  display: grid;
+  
+  /* Columnas responsivas: mínimo 250px, máximo 1fr (fracción del espacio disponible) */
+  /* auto-fill crea tantas columnas como quepan */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  
+  /* Espacio entre las tarjetas */
+  gap: 20px;
+  
+  /* Espaciado interno del grid */
+  padding: 20px;
 }
 
+/* ====================================================
+   TARJETA DE PRODUCTO INDIVIDUAL
+   ==================================================== */
 .producto-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    height: 450px; /* Altura fija para todas las tarjetas */
+  /* Borde sutil alrededor de la tarjeta */
+  border: 1px solid #ddd;
+  
+  /* Bordes redondeados para diseño moderno */
+  border-radius: 8px;
+  
+  /* Espaciado interno */
+  padding: 16px;
+  
+  /* Fondo blanco para contraste */
+  background-color: white;
+  
+  /* Flexbox para organizar elementos verticalmente */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  /* Altura fija para mantener uniformidad en todas las tarjetas */
+  height: 450px;
 }
 
+/* ====================================================
+   IMAGEN DEL PRODUCTO
+   ==================================================== */
 .producto-imagen {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
-    flex-shrink: 0; /* Evita que la imagen se encoja */
+  /* Ancho completo del contenedor */
+  width: 100%;
+  
+  /* Altura fija para todas las imágenes */
+  height: 150px;
+  
+  /* Mantiene la proporción de la imagen sin distorsión */
+  object-fit: cover;
+  
+  /* Bordes redondeados */
+  border-radius: 4px;
+  
+  /* Evita que la imagen se encoja en flexbox */
+  flex-shrink: 0;
 }
 
+/* ====================================================
+   TÍTULO DEL PRODUCTO
+   ==================================================== */
 .producto-card h3 {
-    margin: 0;
-    flex-shrink: 0; /* El título no se encoge */
+  /* Sin márgenes por defecto */
+  margin: 0;
+  
+  /* El título no se encoge en flexbox */
+  flex-shrink: 0;
 }
 
+/* ====================================================
+   DESCRIPCIÓN DEL PRODUCTO
+   ==================================================== */
 .producto-card p {
-    flex-grow: 1; /* El párrafo ocupa el espacio restante */
-    overflow-y: auto; /* Permite scroll si el texto es muy largo */
-    margin: 0;
+  /* El párrafo ocupa todo el espacio restante disponible */
+  flex-grow: 1;
+  
+  /* Permite scroll vertical si el texto es muy largo */
+  overflow-y: auto;
+  
+  /* Sin márgenes */
+  margin: 0;
 }
 
+/* ====================================================
+   DETALLES DEL PRODUCTO (PRECIO Y STOCK)
+   ==================================================== */
 .producto-detalles {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto; /* Empuja los detalles hacia abajo */
-    flex-shrink: 0; /* Evita que los detalles se encojan */
-    padding-top: 10px;
-    border-top: 1px solid #eee;
+  /* Grid de 3 columnas para organizar información */
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem;
+  
+  /* Justifica el contenido espaciadamente */
+  justify-content: space-between;
+  align-items: center;
+  
+  /* Empuja los detalles hacia abajo de la tarjeta */
+  margin-top: auto;
+  
+  /* Evita que se encojan */
+  flex-shrink: 0;
+  
+  /* Espaciado superior */
+  padding-top: 10px;
+  
+  /* Línea divisora superior */
+  border-top: 1px solid #eee;
 }
 
+/* ====================================================
+   PRECIO DEL PRODUCTO
+   ==================================================== */
 .precio {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: #2c5282; /* Azul oscuro para resaltar */
+  /* Texto en negrita para destacar */
+  font-weight: bold;
+  
+  /* Tamaño de fuente mayor */
+  font-size: 1.2em;
+  
+  /* Color azul oscuro para resaltar el precio */
+  color: #2c5282;
 }
 
+/* ====================================================
+   STOCK DISPONIBLE
+   ==================================================== */
 .stock {
-    color: #666;
-    font-size: 0.9em;
+  /* Color gris para información secundaria */
+  color: #666;
+  
+  /* Tamaño de fuente ligeramente menor */
+  font-size: 0.9em;
 }
 
-/* Contenedor de botones */
+/* ====================================================
+   CONTENEDOR DE BOTONES
+   ==================================================== */
 .producto-botones {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: auto;
-    flex-shrink: 0;
+  /* Flexbox en columna para apilar botones */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  /* Empuja los botones hacia abajo */
+  margin-top: auto;
+  
+  /* No permite que se encojan */
+  flex-shrink: 0;
 }
 
-/* Enlaces de botones */
+/* ====================================================
+   ENLACES DE BOTONES
+   ==================================================== */
 .btn-link {
-    text-decoration: none;
-    width: 100%;
+  /* Quita el subrayado de los enlaces */
+  text-decoration: none;
+  
+  /* Ancho completo */
+  width: 100%;
 }
 
+/* Hover en enlaces de botones */
 .btn-link:hover {
-    text-decoration: none;
+  /* Mantiene sin subrayado al pasar el mouse */
+  text-decoration: none;
 }
 
-/* Botón Ver detalles */
+/* ====================================================
+   BOTÓN VER DETALLES
+   ==================================================== */
 .btn-detalle {
-    width: 100%;
-    padding: 12px 16px;
-    background-color: #667eea;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+  /* Ancho completo del contenedor */
+  width: 100%;
+  
+  /* Espaciado interno */
+  padding: 12px 16px;
+  
+  /* Color de fondo morado/azul */
+  background-color: #667eea;
+  
+  /* Texto blanco */
+  color: white;
+  
+  /* Sin borde */
+  border: none;
+  
+  /* Bordes redondeados */
+  border-radius: 8px;
+  
+  /* Cursor de mano */
+  cursor: pointer;
+  
+  /* Tamaño de fuente */
+  font-size: 0.95rem;
+  
+  /* Peso medio de la fuente */
+  font-weight: 500;
+  
+  /* Transición suave del color de fondo */
+  transition: background-color 0.3s ease;
 }
 
+/* Hover del botón de detalles */
 .btn-detalle:hover {
-    background-color: #5a67d8;
+  /* Color más oscuro al pasar el mouse */
+  background-color: #5a67d8;
 }
 
+/* Active (al hacer clic) del botón de detalles */
 .btn-detalle:active {
-    background-color: #4c51bf;
+  /* Color aún más oscuro al hacer clic */
+  background-color: #4c51bf;
 }
 
-/* Botón Agregar al carrito */
+/* ====================================================
+   BOTÓN AGREGAR AL CARRITO
+   ==================================================== */
 .btn-agregar {
-    width: 100%;
-    padding: 12px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+  /* Ancho completo */
+  width: 100%;
+  
+  /* Espaciado interno */
+  padding: 12px 16px;
+  
+  /* Color verde para acción positiva */
+  background-color: #4CAF50;
+  
+  /* Texto blanco */
+  color: white;
+  
+  /* Sin borde */
+  border: none;
+  
+  /* Bordes redondeados */
+  border-radius: 8px;
+  
+  /* Cursor de mano */
+  cursor: pointer;
+  
+  /* Tamaño de fuente */
+  font-size: 0.95rem;
+  
+  /* Texto en negrita */
+  font-weight: 600;
+  
+  /* Transición suave */
+  transition: background-color 0.3s ease;
 }
 
+/* Hover del botón agregar (solo si NO está deshabilitado) */
 .btn-agregar:hover:not(.btn-disabled) {
-    background-color: #45a049;
+  /* Verde más oscuro */
+  background-color: #45a049;
 }
 
+/* Active del botón agregar (solo si NO está deshabilitado) */
 .btn-agregar:active:not(.btn-disabled) {
-    background-color: #3d8b40;
+  /* Verde aún más oscuro */
+  background-color: #3d8b40;
 }
 
-/* Botón deshabilitado */
+/* ====================================================
+   BOTÓN DESHABILITADO
+   ==================================================== */
 .btn-disabled {
-    background-color: #9e9e9e !important;
-    cursor: not-allowed !important;
-    opacity: 0.7;
+  /* Color gris para indicar deshabilitado */
+  background-color: #9e9e9e !important;
+  
+  /* Cursor de "no permitido" */
+  cursor: not-allowed !important;
+  
+  /* Reduce la opacidad */
+  opacity: 0.7;
 }
 
+/* Hover del botón deshabilitado (sin cambios) */
 .btn-disabled:hover {
-    background-color: #9e9e9e !important;
+  /* Mantiene el color gris */
+  background-color: #9e9e9e !important;
 }
 
-/* Estados de stock */
+/* ====================================================
+   ESTADOS DE STOCK
+   ==================================================== */
+
+/* Stock disponible */
 .stock-disponible {
-    color: #4CAF50;
-    font-weight: 600;
+  /* Color verde para stock disponible */
+  color: #4CAF50;
+  
+  /* Texto en negrita */
+  font-weight: 600;
 }
 
+/* Stock agotado */
 .stock-agotado {
-    color: #f44336;
-    font-weight: 600;
+  /* Color rojo para stock agotado */
+  color: #f44336;
+  
+  /* Texto en negrita */
+  font-weight: 600;
 }
 
-/* Responsive */
+/* ====================================================
+   RESPONSIVE - MOBILE
+   ==================================================== */
 @media (max-width: 768px) {
-    .btn-detalle,
-    .btn-agregar {
-        padding: 14px 16px;
-        font-size: 1rem;
-    }
-    
-    .btn-icon {
-        font-size: 1.2rem;
-    }
+  /* Aumenta el espaciado en botones para móvil */
+  .btn-detalle,
+  .btn-agregar {
+    padding: 14px 16px;
+    font-size: 1rem;
+  }
+  
+  /* Aumenta tamaño de iconos en móvil */
+  .btn-icon {
+    font-size: 1.2rem;
+  }
 }
+
+/* ====================================================
+   FIN DE LOS ESTILOS DE PRODUCTOS
+   ==================================================== */

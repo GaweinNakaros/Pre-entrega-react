@@ -1,131 +1,303 @@
+/* ============================================
+   ESTILOS DE INICIAR SESIÓN - LOGIN
+   ============================================ */
+
+/* ====================================================
+   RESET Y CONFIGURACIÓN BASE
+   ==================================================== */
+* {
+  /* Asegura que todos los elementos incluyan padding y border en su ancho */
+  box-sizing: border-box;
+}
+
+/* ====================================================
+   CONTENEDOR PRINCIPAL DE LOGIN
+   ==================================================== */
 .login-container {
+  /* Altura mínima: 100vh menos altura del navbar (80px) */
   min-height: calc(100vh - 80px);
+  
+  /* Flexbox para centrar la tarjeta */
   display: flex;
   justify-content: center;
   align-items: center;
+  
+  /* Espaciado interno */
   padding: 2rem;
+  
+  /* Fondo con gradiente morado/azul */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
+/* ====================================================
+   TARJETA DE LOGIN
+   ==================================================== */
 .login-card {
+  /* Fondo blanco */
   background: white;
+  
+  /* Bordes muy redondeados */
   border-radius: 16px;
+  
+  /* Espaciado interno generoso */
   padding: 3rem;
+  
+  /* Ancho máximo de la tarjeta */
   max-width: 450px;
+  
+  /* Ancho completo hasta el máximo */
   width: 100%;
+  
+  /* Sombra profunda para dar sensación de elevación */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  
+  /* Animación de entrada */
   animation: slideIn 0.4s ease-out;
 }
 
+/* ====================================================
+   ANIMACIÓN DE ENTRADA
+   ==================================================== */
 @keyframes slideIn {
   from {
+    /* Comienza invisible */
     opacity: 0;
+    
+    /* Desplazado hacia arriba */
     transform: translateY(-20px);
   }
   to {
+    /* Termina visible */
     opacity: 1;
+    
+    /* En posición original */
     transform: translateY(0);
   }
 }
 
+/* ====================================================
+   TÍTULO DEL LOGIN
+   ==================================================== */
 .login-titulo {
+  /* Tamaño de fuente grande */
   font-size: 2rem;
+  
+  /* Color oscuro */
   color: #333;
+  
+  /* Espacio inferior */
   margin-bottom: 1rem;
+  
+  /* Centrado */
   text-align: center;
 }
 
+/* ====================================================
+   DESCRIPCIÓN DEL LOGIN
+   ==================================================== */
 .login-descripcion {
+  /* Color gris */
   color: #666;
+  
+  /* Centrado */
   text-align: center;
+  
+  /* Espacio inferior */
   margin-bottom: 2rem;
+  
+  /* Altura de línea para mejor lectura */
   line-height: 1.5;
 }
 
+/* ====================================================
+   FORMULARIO DE LOGIN
+   ==================================================== */
 .login-form {
+  /* Flexbox en columna */
   display: flex;
   flex-direction: column;
+  
+  /* Espacio entre elementos */
   gap: 1.5rem;
 }
 
+/* ====================================================
+   GRUPO DE CAMPO DEL FORMULARIO
+   ==================================================== */
 .form-group {
+  /* Flexbox en columna */
   display: flex;
   flex-direction: column;
+  
+  /* Espacio entre label e input */
   gap: 0.5rem;
 }
 
+/* ====================================================
+   ETIQUETA DEL CAMPO
+   ==================================================== */
 .form-label {
+  /* Texto en negrita */
   font-weight: 600;
+  
+  /* Color oscuro */
   color: #333;
+  
+  /* Tamaño de fuente */
   font-size: 0.95rem;
 }
 
+/* ====================================================
+   INPUT DEL FORMULARIO
+   ==================================================== */
 .form-input {
+  /* Espaciado interno */
   padding: 0.875rem;
+  
+  /* Borde gris claro */
   border: 2px solid #e0e0e0;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
+  
+  /* Transición suave */
   transition: all 0.3s ease;
+  
+  /* Sin outline por defecto */
   outline: none;
 }
 
+/* Focus en el input */
 .form-input:focus {
+  /* Borde morado */
   border-color: #667eea;
+  
+  /* Sombra morada sutil */
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* ====================================================
+   MENSAJE DE ERROR
+   ==================================================== */
 .error-mensaje {
+  /* Color rojo */
   color: #e53e3e;
+  
+  /* Tamaño de fuente pequeño */
   font-size: 0.875rem;
+  
+  /* Margen negativo para acercar al input */
   margin: -0.5rem 0 0 0;
+  
+  /* Espaciado interno */
   padding: 0.5rem;
+  
+  /* Fondo rojo muy claro */
   background-color: #fff5f5;
+  
+  /* Borde izquierdo rojo grueso */
   border-left: 3px solid #e53e3e;
+  
+  /* Bordes redondeados */
   border-radius: 4px;
 }
 
+/* ====================================================
+   BOTÓN DE LOGIN
+   ==================================================== */
 .btn-login {
+  /* Fondo con gradiente morado/azul */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Texto blanco */
   color: white;
+  
+  /* Espaciado interno */
   padding: 1rem;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
+  
+  /* Texto en negrita */
   font-weight: 600;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Transición suave */
   transition: all 0.3s ease;
+  
+  /* Texto en mayúsculas */
   text-transform: uppercase;
+  
+  /* Espaciado entre letras */
   letter-spacing: 0.5px;
 }
 
+/* Hover del botón de login */
 .btn-login:hover {
+  /* Eleva el botón */
   transform: translateY(-2px);
+  
+  /* Sombra morada grande */
   box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
 }
 
+/* Active (al hacer clic) del botón de login */
 .btn-login:active {
+  /* Vuelve a posición original */
   transform: translateY(0);
 }
 
+/* ====================================================
+   NOTA INFORMATIVA
+   ==================================================== */
 .login-nota {
+  /* Margen superior */
   margin-top: 1.5rem;
+  
+  /* Centrado */
   text-align: center;
+  
+  /* Color gris claro */
   color: #888;
+  
+  /* Tamaño de fuente pequeño */
   font-size: 0.875rem;
+  
+  /* Altura de línea */
   line-height: 1.5;
 }
 
-/* Responsive */
+/* ====================================================
+   RESPONSIVE - MOBILE
+   ==================================================== */
 @media (max-width: 768px) {
+  /* Reduce espaciado del contenedor */
   .login-container {
     padding: 1rem;
   }
 
+  /* Reduce espaciado de la tarjeta */
   .login-card {
     padding: 2rem 1.5rem;
   }
 
+  /* Reduce tamaño del título */
   .login-titulo {
     font-size: 1.5rem;
   }
 }
+
+/* ====================================================
+   FIN DE LOS ESTILOS DE INICIAR SESIÓN
+   ==================================================== */

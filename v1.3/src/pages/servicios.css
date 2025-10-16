@@ -1,44 +1,108 @@
-/* Contenedor principal de la página de servicios */
+/* ============================================
+   ESTILOS DE SERVICIOS - PÁGINA DE SERVICIOS
+   ============================================ */
+
+/* ====================================================
+   RESET Y CONFIGURACIÓN BASE
+   ==================================================== */
+* {
+  /* Asegura que todos los elementos incluyan padding y border en su ancho */
+  box-sizing: border-box;
+}
+
+/* ====================================================
+   CONTENEDOR PRINCIPAL DE SERVICIOS
+   ==================================================== */
 .servicios-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  /* Limita el ancho máximo para mejor legibilidad */
+  max-width: 1200px;
+  
+  /* Centra el contenedor horizontalmente */
+  margin: 0 auto;
+  
+  /* Espaciado interno uniforme */
+  padding: 20px;
 }
 
-/* Estilo para el título principal */
+/* ====================================================
+   TÍTULO PRINCIPAL DE SERVICIOS
+   ==================================================== */
 .servicios-container h1 {
-    color: #333;
-    margin-bottom: 20px;
+  /* Color del texto del título */
+  color: #333;
+  
+  /* Espacio inferior para separación */
+  margin-bottom: 20px;
 }
 
-/* Línea divisora */
+/* ====================================================
+   LÍNEA DIVISORA
+   ==================================================== */
 .servicios-container hr {
-    border: 0;
-    height: 1px;
-    background-color: #ddd;
-    margin: 20px 0;
+  /* Quita el borde por defecto del navegador */
+  border: 0;
+  
+  /* Define altura de la línea */
+  height: 1px;
+  
+  /* Color de la línea divisora */
+  background-color: #ddd;
+  
+  /* Espaciado vertical alrededor de la línea */
+  margin: 20px 0;
 }
 
-/* Estilo para el texto descriptivo */
+/* ====================================================
+   TEXTO DESCRIPTIVO
+   ==================================================== */
 .servicios-container p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #666;
+  /* Tamaño de fuente ligeramente mayor para legibilidad */
+  font-size: 1.1em;
+  
+  /* Altura de línea para mejor lectura */
+  line-height: 1.6;
+  
+  /* Color gris para el texto descriptivo */
+  color: #666;
 }
 
-/* Botón para volver al inicio */
+/* ====================================================
+   BOTÓN PARA VOLVER AL INICIO
+   ==================================================== */
 .btn-volver {
-    padding: 10px 20px;
-    background-color: #3867d6; /* Azul primario */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 20px;
+  /* Espaciado interno del botón */
+  padding: 10px 20px;
+  
+  /* Color de fondo azul primario */
+  background-color: #3867d6;
+  
+  /* Texto blanco para contraste */
+  color: white;
+  
+  /* Sin borde */
+  border: none;
+  
+  /* Bordes redondeados */
+  border-radius: 4px;
+  
+  /* Cursor de mano al pasar el mouse */
+  cursor: pointer;
+  
+  /* Transición suave del color de fondo */
+  transition: background-color 0.2s;
+  
+  /* Espacio superior para separación */
+  margin-top: 20px;
 }
 
-/* Efecto hover del botón */
+/* ====================================================
+   EFECTO HOVER DEL BOTÓN VOLVER
+   ==================================================== */
 .btn-volver:hover {
-    background-color: #3867d6cc;
+  /* Color de fondo más oscuro al pasar el mouse */
+  background-color: #3867d6cc;
 }
+
+/* ====================================================
+   FIN DE LOS ESTILOS DE SERVICIOS
+   ==================================================== */

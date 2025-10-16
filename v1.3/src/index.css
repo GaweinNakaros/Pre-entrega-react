@@ -1,99 +1,224 @@
-/**
- * Estilos globales para la aplicación
- * Define los estilos base y variables comunes utilizadas en toda la aplicación
- */
+/* ============================================
+   ESTILOS GLOBALES DE LA APLICACIÓN
+   ============================================
+   Define los estilos base y variables comunes
+   utilizadas en toda la aplicación
+   ============================================ */
 
-/* Estilos base del cuerpo de la página */
+/* ====================================================
+   RESET Y CONFIGURACIÓN BASE
+   ==================================================== */
+* {
+  /* Asegura que todos los elementos incluyan padding y border en su ancho */
+  box-sizing: border-box;
+}
+
+/* ====================================================
+   ESTILOS DEL BODY (CUERPO DE LA PÁGINA)
+   ==================================================== */
 body {
+  /* Sin margen por defecto del navegador */
   margin: 10px;
+  
+  /* Sin padding */
   padding: 0;
+  
+  /* Fuente principal de la aplicación */
   font-family: 'Segoe UI', Arial, sans-serif;
+  
+  /* Color de fondo gris muy claro */
   background-color: #f5f6fa;
+  
+  /* Color de texto oscuro */
   color: #222;
 }
 
-/* Estilos del encabezado principal */
+/* ====================================================
+   HEADER (ENCABEZADO PRINCIPAL)
+   ==================================================== */
 header {
+  /* Fondo azul */
   background: #2d98da;
+  
+  /* Texto blanco */
   color: #fff;
+  
+  /* Espaciado interno vertical */
   padding: 1.5rem 0;
+  
+  /* Centrado */
   text-align: center;
+  
+  /* Tamaño de fuente grande */
   font-size: 2rem;
+  
+  /* Espaciado entre letras */
   letter-spacing: 1px;
+  
+  /* Margen izquierdo */
   margin-left: 10px;
 }
 
-/* Estilos de la barra de navegación */
+/* ====================================================
+   NAV (BARRA DE NAVEGACIÓN)
+   ==================================================== 
+   NOTA: Los estilos detallados del nav están en navbar.css
+   Estos son estilos base que pueden ser sobrescritos
+   ==================================================== */
 nav {
+  /* Bordes muy redondeados */
   border-radius: 20px;
+  
+  /* Fondo azul */
   background: #3867d6;
+  
+  /* Espaciado interno vertical */
   padding: 0.5rem 0;
+  
+  /* Centrado */
   text-align: center;
 }
 
-/* Lista de navegación */
+/* ====================================================
+   LISTA DE NAVEGACIÓN
+   ==================================================== */
 ul {
+  /* Flexbox para organizar horizontalmente */
   display: flex;
+  
+  /* Sin viñetas de lista */
   list-style: none;
+  
+  /* Sin padding */
   padding: 0;
+  
+  /* Sin margen */
   margin: 0;
 }
 
-/* Elementos de la lista de navegación */
+/* ====================================================
+   ELEMENTOS DE LA LISTA
+   ==================================================== */
 li {
+  /* Margen alrededor */
   margin: 16px;
 }
 
-/* Contenedor principal del contenido */
+/* ====================================================
+   MAIN (CONTENEDOR PRINCIPAL DEL CONTENIDO)
+   ==================================================== */
 main {
+  /* Ancho máximo del contenido */
   max-width: 900px;
+  
+  /* Centra horizontalmente con margen vertical */
   margin: 2rem auto;
+  
+  /* Espaciado interno */
   padding: 2rem;
+  
+  /* Fondo blanco para contraste */
   background: #fff;
+  
+  /* Bordes redondeados */
   border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(44, 62, 80, 0.08); /* Sombra suave para elevación */
+  
+  /* Sombra suave para elevación */
+  box-shadow: 0 2px 16px rgba(44, 62, 80, 0.08);
 }
 
-/* Estilos para títulos */
+/* ====================================================
+   TÍTULOS (H1, H2, H3)
+   ==================================================== */
 h1, h2, h3 {
+  /* Color azul para títulos */
   color: #3867d6;
+  
+  /* Margen uniforme */
   margin: 10px;
 }
 
-/* Estilos base para enlaces */
+/* ====================================================
+   ENLACES (LINKS)
+   ==================================================== */
 a {
+  /* Color blanco por defecto */
   color: white;
+  
+  /* Sin subrayado */
   text-decoration: none;
+  
+  /* Transición suave del color */
   transition: color 0.2s;
 }
 
+/* Hover de enlaces */
 a:hover {
+  /* Color negro al pasar el mouse */
   color: black;
+  
+  /* Agrega subrayado al pasar el mouse */
   text-decoration: underline;
 }
 
-/* Estilos base para botones */
+/* ====================================================
+   BOTONES BASE
+   ==================================================== */
 button {
+  /* Fondo azul */
   background: #3867d6;
+  
+  /* Texto blanco */
   color: #fff;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Espaciado interno */
   padding: 0.7rem 1.5rem;
+  
+  /* Bordes redondeados */
   border-radius: 6px;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
-  transition: background 0.2s; /* Transición suave al hover */
+  
+  /* Transición suave del fondo */
+  transition: background 0.2s;
 }
 
+/* Hover de botones */
 button:hover {
+  /* Color azul más claro al pasar el mouse */
   background: #2d98da;
 }
 
-/* Estilos del pie de página */
+/* ====================================================
+   FOOTER (PIE DE PÁGINA)
+   ==================================================== */
 footer {
+  /* Centrado */
   text-align: center;
+  
+  /* Espaciado interno vertical */
   padding: 1rem 0;
+  
+  /* Fondo gris muy claro */
   background: #f1f2f6;
+  
+  /* Color de texto gris */
   color: #636e72;
+  
+  /* Tamaño de fuente pequeño */
   font-size: 0.95rem;
+  
+  /* Margen superior */
   margin-top: 2rem;
 }
+
+/* ====================================================
+   FIN DE LOS ESTILOS GLOBALES
+   ==================================================== */

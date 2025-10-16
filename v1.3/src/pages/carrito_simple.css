@@ -1,336 +1,706 @@
-/* Estilos para el carrito de compras */
+/* ============================================
+   ESTILOS DEL CARRITO DE COMPRAS
+   ============================================ */
+
+/* ====================================================
+   RESET Y CONFIGURACIÓN BASE
+   ==================================================== */
+* {
+  /* Asegura que todos los elementos incluyan padding y border en su ancho */
+  box-sizing: border-box;
+}
+
+/* ====================================================
+   CONTENEDOR PRINCIPAL DEL CARRITO
+   ==================================================== */
 .carrito-container {
+  /* Espaciado interno */
   padding: 20px;
+  
+  /* Ancho máximo del contenedor */
   max-width: 900px;
+  
+  /* Centra horizontalmente */
   margin: 0 auto;
+  
+  /* Fuente del contenedor */
   font-family: 'Arial', sans-serif;
+  
+  /* Fondo gris muy claro */
   background-color: #f8f9fa;
+  
+  /* Altura mínima */
   min-height: 80vh;
 }
 
+/* ====================================================
+   TÍTULO DEL CARRITO
+   ==================================================== */
 .carrito-titulo {
+  /* Centrado */
   text-align: center;
+  
+  /* Color oscuro */
   color: #2c3e50;
+  
+  /* Espacio inferior */
   margin-bottom: 30px;
+  
+  /* Tamaño de fuente grande */
   font-size: 2.2rem;
+  
+  /* Texto en negrita */
   font-weight: 600;
+  
+  /* Sombra de texto sutil */
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Estilos para carrito vacío */
+/* ====================================================
+   CARRITO VACÍO
+   ==================================================== */
 .carrito-vacio {
+  /* Centrado */
   text-align: center;
+  
+  /* Espaciado interno generoso */
   padding: 60px 20px;
+  
+  /* Fondo blanco */
   background: white;
+  
+  /* Bordes redondeados */
   border-radius: 12px;
+  
+  /* Sombra para profundidad */
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  
+  /* Margen vertical */
   margin: 40px 0;
 }
 
+/* Párrafo del carrito vacío */
 .carrito-vacio p {
+  /* Tamaño de fuente grande */
   font-size: 1.3rem;
+  
+  /* Color gris */
   color: #6c757d;
+  
+  /* Espacio inferior */
   margin-bottom: 30px;
 }
 
-/* Contenedor de items */
+/* ====================================================
+   CONTENEDOR DE ITEMS
+   ==================================================== */
 .carrito-items {
+  /* Espacio inferior */
   margin-bottom: 30px;
 }
 
-/* Item individual del carrito */
+/* ====================================================
+   ITEM INDIVIDUAL DEL CARRITO
+   ==================================================== */
 .carrito-item {
+  /* Fondo blanco */
   background: white;
+  
+  /* Borde gris claro */
   border: 1px solid #e9ecef;
+  
+  /* Bordes redondeados */
   border-radius: 12px;
+  
+  /* Espaciado interno */
   padding: 20px;
+  
+  /* Espacio inferior */
   margin-bottom: 15px;
+  
+  /* Flexbox para organizar contenido */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  /* Sombra sutil */
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  
+  /* Transición suave para animaciones */
   transition: all 0.3s ease;
+  
+  /* Posición relativa para ::before */
   position: relative;
+  
+  /* Evita que el borde superior se vea */
   overflow: hidden;
 }
 
+/* Hover del item */
 .carrito-item:hover {
+  /* Eleva el item */
   transform: translateY(-2px);
+  
+  /* Sombra más pronunciada */
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
-/* before me permite agregar un estilo antes del contenido del item */
+/* ====================================================
+   BARRA SUPERIOR DECORATIVA DEL ITEM
+   ==================================================== */
+/**
+ * ::before crea un pseudo-elemento ANTES del contenido del item
+ * Permite agregar elementos decorativos sin modificar el HTML
+ */
 .carrito-item::before {
+  /* Contenido vacío requerido para mostrar el pseudo-elemento */
   content: '';
+  
+  /* Posición absoluta para ubicarlo en la parte superior */
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  
+  /* Altura de la barra */
   height: 4px;
+  
+  /* Gradiente morado/azul */
   background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
-/* Información del producto */
+/* ====================================================
+   INFORMACIÓN DEL PRODUCTO EN EL CARRITO
+   ==================================================== */
 .item-info {
+  /* Ocupa el espacio disponible */
   flex: 1;
+  
+  /* Espaciado a la derecha */
   padding-right: 20px;
 }
 
+/* Nombre del producto */
 .item-nombre {
+  /* Color oscuro */
   color: #2c3e50;
+  
+  /* Espaciado inferior */
   margin: 0 0 10px 0;
+  
+  /* Tamaño de fuente */
   font-size: 1.3rem;
+  
+  /* Texto en negrita */
   font-weight: 600;
 }
 
+/* Precio unitario */
 .item-precio {
+  /* Color gris */
   color: #6c757d;
+  
+  /* Margen vertical */
   margin: 5px 0;
+  
+  /* Tamaño de fuente */
   font-size: 0.95rem;
 }
 
+/* Subtotal del item */
 .item-subtotal {
+  /* Color verde para precio */
   color: #28a745;
+  
+  /* Margen vertical */
   margin: 5px 0;
+  
+  /* Texto en negrita */
   font-weight: 600;
+  
+  /* Tamaño de fuente mayor */
   font-size: 1.1rem;
 }
 
-/* Controles del item */
+/* ====================================================
+   CONTROLES DEL ITEM (CANTIDAD Y ELIMINAR)
+   ==================================================== */
 .item-controles {
+  /* Flexbox para organizar controles */
   display: flex;
   align-items: center;
+  
+  /* Espacio entre elementos */
   gap: 15px;
 }
 
-/* Controles de cantidad */
+/* ====================================================
+   CONTROLES DE CANTIDAD
+   ==================================================== */
 .cantidad-controles {
+  /* Flexbox para alinear botones y número */
   display: flex;
   align-items: center;
+  
+  /* Fondo gris claro */
   background: #f8f9fa;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Espaciado interno */
   padding: 5px;
+  
+  /* Borde gris */
   border: 1px solid #dee2e6;
 }
 
+/* ====================================================
+   BOTONES DE CANTIDAD (+ y -)
+   ==================================================== */
 .btn-cantidad {
+  /* Fondo azul */
   background: #007bff;
+  
+  /* Texto blanco */
   color: white;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Bordes redondeados */
   border-radius: 6px;
+  
+  /* Tamaño del botón */
   width: 35px;
   height: 35px;
+  
+  /* Tamaño de fuente */
   font-size: 1.2rem;
+  
+  /* Texto en negrita */
   font-weight: bold;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Transición suave */
   transition: all 0.2s ease;
+  
+  /* Flexbox para centrar el símbolo */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Hover del botón de cantidad */
 .btn-cantidad:hover {
+  /* Azul más oscuro */
   background: #0056b3;
+  
+  /* Agranda ligeramente */
   transform: scale(1.05);
 }
 
+/* Hover específico del botón menos (rojo) */
 .btn-menos:hover {
+  /* Rojo para eliminar */
   background: #dc3545;
 }
 
+/* Hover específico del botón más (verde) */
 .btn-mas:hover {
+  /* Verde para agregar */
   background: #28a745;
 }
 
+/* ====================================================
+   DISPLAY DE LA CANTIDAD
+   ==================================================== */
 .cantidad-display {
+  /* Margen horizontal */
   margin: 0 15px;
+  
+  /* Tamaño de fuente */
   font-size: 1.2rem;
+  
+  /* Texto en negrita */
   font-weight: bold;
+  
+  /* Color oscuro */
   color: #2c3e50;
+  
+  /* Ancho mínimo para números de 2 dígitos */
   min-width: 30px;
+  
+  /* Centrado */
   text-align: center;
 }
 
-/* Botón eliminar */
+/* ====================================================
+   BOTÓN ELIMINAR PRODUCTO
+   ==================================================== */
 .btn-eliminar {
+  /* Fondo rojo */
   background: #dc3545;
+  
+  /* Texto blanco */
   color: white;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Espaciado interno */
   padding: 8px 16px;
+  
+  /* Tamaño de fuente */
   font-size: 0.9rem;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Transición suave */
   transition: all 0.3s ease;
+  
+  /* Peso medio de fuente */
   font-weight: 500;
 }
 
+/* Hover del botón eliminar */
 .btn-eliminar:hover {
+  /* Rojo más oscuro */
   background: #c82333;
+  
+  /* Eleva el botón */
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); /* Sombra roja suave */
+  
+  /* Sombra roja suave */
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
 }
 
-/* Resumen del carrito */
+/* ====================================================
+   RESUMEN DEL CARRITO
+   ==================================================== */
 .carrito-resumen {
+  /* Fondo blanco */
   background: white;
+  
+  /* Bordes redondeados */
   border-radius: 12px;
+  
+  /* Espaciado interno */
   padding: 25px;
+  
+  /* Margen vertical */
   margin: 30px 0;
+  
+  /* Alineado a la derecha */
   text-align: right;
+  
+  /* Sombra para profundidad */
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  
+  /* Borde superior verde */
   border-top: 4px solid #28a745;
 }
 
+/* Títulos del resumen */
 .carrito-resumen h3 {
+  /* Margen vertical */
   margin: 10px 0;
+  
+  /* Color oscuro */
   color: #2c3e50;
+  
+  /* Tamaño de fuente */
   font-size: 1.2rem;
 }
 
+/* Total a pagar (destacado) */
 .total-pagar {
+  /* Color verde con !important para sobrescribir */
   color: #28a745 !important;
+  
+  /* Tamaño de fuente grande con !important */
   font-size: 1.5rem !important;
+  
+  /* Texto en negrita con !important */
   font-weight: bold !important;
+  
+  /* Sombra de texto sutil */
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Acciones del carrito */
+/* ====================================================
+   ACCIONES DEL CARRITO
+   ==================================================== */
 .carrito-acciones {
+  /* Flexbox para organizar botones */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  /* Margen superior */
   margin-top: 30px;
+  
+  /* Espacio entre elementos */
   gap: 20px;
 }
 
+/* Sección de acciones a la derecha */
 .acciones-derecha {
+  /* Flexbox */
   display: flex;
+  
+  /* Espacio entre botones */
   gap: 15px;
 }
 
-/* Botones principales */
+/* ====================================================
+   BOTÓN CONTINUAR COMPRANDO
+   ==================================================== */
 .btn-continuar-comprando {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Degradado azul a morado */
+  /* Degradado azul a morado */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Texto blanco */
   color: white;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Espaciado interno */
   padding: 12px 24px;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
+  
+  /* Peso medio de fuente */
   font-weight: 500;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Transición suave */
   transition: all 0.3s ease;
+  
+  /* Sin decoración de texto (para enlaces) */
   text-decoration: none;
+  
+  /* Display inline-block para enlaces */
   display: inline-block;
 }
 
+/* Hover del botón continuar comprando */
 .btn-continuar-comprando:hover {
+  /* Eleva el botón */
   transform: translateY(-2px);
+  
+  /* Sombra azul/morada */
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  
+  /* Mantiene texto blanco */
   color: white;
+  
+  /* Sin decoración */
   text-decoration: none;
 }
 
+/* ====================================================
+   BOTÓN VACIAR CARRITO
+   ==================================================== */
 .btn-vaciar {
+  /* Degradado rojo */
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  
+  /* Texto blanco */
   color: white;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Espaciado interno */
   padding: 12px 24px;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
+  
+  /* Peso medio de fuente */
   font-weight: 500;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Transición suave */
   transition: all 0.3s ease;
 }
 
+/* Hover del botón vaciar */
 .btn-vaciar:hover {
+  /* Eleva el botón */
   transform: translateY(-2px);
+  
+  /* Sombra roja */
   box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
+/* ====================================================
+   BOTÓN COMPRAR / FINALIZAR COMPRA
+   ==================================================== */
 .btn-comprar {
+  /* Degradado verde */
   background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  
+  /* Texto blanco */
   color: white;
+  
+  /* Sin borde */
   border: none;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
+  
+  /* Espaciado interno */
   padding: 12px 24px;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
+  
+  /* Peso medio de fuente */
   font-weight: 500;
+  
+  /* Cursor de mano */
   cursor: pointer;
+  
+  /* Transición suave */
   transition: all 0.3s ease;
+  
+  /* Posición relativa para el efecto ::before */
   position: relative;
+  
+  /* Oculta el overflow del efecto de brillo */
   overflow: hidden;
 }
 
+/* Hover del botón comprar */
 .btn-comprar:hover {
+  /* Eleva el botón */
   transform: translateY(-2px);
+  
+  /* Sombra verde */
   box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
+/* ====================================================
+   EFECTO DE BRILLO EN EL BOTÓN COMPRAR
+   ==================================================== */
+/**
+ * ::before crea un pseudo-elemento que actúa como un brillo
+ * que se desplaza de izquierda a derecha al hacer hover
+ */
 .btn-comprar::before {
+  /* Contenido vacío requerido */
   content: '';
+  
+  /* Posición absoluta para superponerlo */
   position: absolute;
   top: 0;
+  
+  /* Comienza fuera del botón a la izquierda */
   left: -100%;
+  
+  /* Ancho completo */
   width: 100%;
   height: 100%;
+  
+  /* Gradiente de brillo transparente */
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  
+  /* Transición del movimiento */
   transition: left 0.5s;
 }
 
+/* Al hacer hover, el brillo se mueve de izquierda a derecha */
 .btn-comprar:hover::before {
+  /* Termina fuera del botón a la derecha */
   left: 100%;
 }
 
-/* Responsive */
+/* ====================================================
+   RESPONSIVE - TABLET
+   ==================================================== */
 @media (max-width: 768px) {
+  /* Reduce espaciado del contenedor */
   .carrito-container {
     padding: 15px;
   }
   
+  /* Items en columna en tablet */
   .carrito-item {
     flex-direction: column;
     gap: 15px;
     align-items: stretch;
   }
   
+  /* Info del producto centrada */
   .item-info {
     padding-right: 0;
     text-align: center;
   }
   
+  /* Controles centrados y con wrap */
   .item-controles {
     justify-content: center;
     flex-wrap: wrap;
   }
   
+  /* Acciones en columna */
   .carrito-acciones {
     flex-direction: column;
     gap: 15px;
   }
   
+  /* Acciones derecha centradas */
   .acciones-derecha {
     justify-content: center;
     width: 100%;
   }
   
+  /* Reduce tamaño del título */
   .carrito-titulo {
     font-size: 1.8rem;
   }
 }
 
+/* ====================================================
+   RESPONSIVE - MOBILE
+   ==================================================== */
 @media (max-width: 480px) {
+  /* Reduce aún más el espaciado */
   .carrito-container {
     padding: 10px;
   }
   
+  /* Reduce espaciado del item */
   .carrito-item {
     padding: 15px;
   }
   
+  /* Reduce tamaño del nombre */
   .item-nombre {
     font-size: 1.1rem;
   }
   
+  /* Reduce espaciado de botones */
   .btn-continuar-comprando,
   .btn-vaciar,
   .btn-comprar {
@@ -338,3 +708,7 @@
     font-size: 0.9rem;
   }
 }
+
+/* ====================================================
+   FIN DE LOS ESTILOS DEL CARRITO
+   ==================================================== */

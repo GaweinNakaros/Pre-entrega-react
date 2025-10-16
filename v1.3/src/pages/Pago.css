@@ -1,237 +1,501 @@
-.pago-container {
-  min-height: calc(100vh - 80px);
-  padding: 2rem;
-  background-color: #f5f5f5;
-}
+/* ============================================
+   ESTILOS DE PAGO - CHECKOUT
+   ============================================ */
 
-.pago-content {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.pago-titulo {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.pago-info-usuario {
-  background: white;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.pago-info-usuario p {
-  margin: 0;
-  color: #666;
-  font-size: 1rem;
-}
-
-.pago-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-.pago-formulario,
-.pago-resumen {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.pago-formulario h3,
-.pago-resumen h3 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e0e0e0;
-}
-
-/* Estilos del formulario */
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+/* ====================================================
+   RESET Y CONFIGURACIÓN BASE
+   ==================================================== */
+* {
+  /* Asegura que todos los elementos incluyan padding y border en su ancho */
   box-sizing: border-box;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+/* ====================================================
+   CONTENEDOR PRINCIPAL DE PAGO
+   ==================================================== */
+.pago-container {
+  /* Altura mínima: 100vh menos altura del navbar (80px) */
+  min-height: calc(100vh - 80px);
+  
+  /* Espaciado interno */
+  padding: 2rem;
+  
+  /* Fondo gris claro */
+  background-color: #f5f5f5;
 }
 
-.form-group input.error {
-  border-color: #e53e3e;
+/* ====================================================
+   CONTENEDOR DEL CONTENIDO DE PAGO
+   ==================================================== */
+.pago-content {
+  /* Ancho máximo para contenido centrado */
+  max-width: 1200px;
+  
+  /* Centra horizontalmente */
+  margin: 0 auto;
 }
 
-.error-text {
-  display: block;
-  color: #e53e3e;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+/* ====================================================
+   TÍTULO DE LA PÁGINA DE PAGO
+   ==================================================== */
+.pago-titulo {
+  /* Tamaño de fuente grande */
+  font-size: 2rem;
+  
+  /* Color oscuro */
+  color: #333;
+  
+  /* Espacio inferior */
+  margin-bottom: 1.5rem;
+  
+  /* Centrado */
+  text-align: center;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.btn-pagar {
-  width: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+/* ====================================================
+   INFORMACIÓN DEL USUARIO
+   ==================================================== */
+.pago-info-usuario {
+  /* Fondo blanco */
+  background: white;
+  
+  /* Espaciado interno */
   padding: 1rem;
-  border: none;
+  
+  /* Bordes redondeados */
   border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 1rem;
+  
+  /* Espacio inferior */
+  margin-bottom: 2rem;
+  
+  /* Centrado */
+  text-align: center;
+  
+  /* Sombra sutil */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btn-pagar:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+/* Párrafo dentro de info de usuario */
+.pago-info-usuario p {
+  /* Sin margen */
+  margin: 0;
+  
+  /* Color gris */
+  color: #666;
+  
+  /* Tamaño de fuente */
+  font-size: 1rem;
 }
 
-.btn-pagar:active:not(:disabled) {
-  transform: translateY(0);
+/* ====================================================
+   GRID DE PAGO (FORMULARIO Y RESUMEN)
+   ==================================================== */
+.pago-grid {
+  /* Grid de 2 columnas: formulario (2fr) y resumen (1fr) */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  
+  /* Espacio entre columnas */
+  gap: 2rem;
+  
+  /* Alinea al inicio verticalmente */
+  align-items: start;
 }
 
-.btn-pagar:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  opacity: 0.6;
+/* ====================================================
+   TARJETAS (FORMULARIO Y RESUMEN)
+   ==================================================== */
+.pago-formulario,
+.pago-resumen {
+  /* Fondo blanco */
+  background: white;
+  
+  /* Espaciado interno */
+  padding: 2rem;
+  
+  /* Bordes muy redondeados */
+  border-radius: 12px;
+  
+  /* Sombra para profundidad */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos del resumen */
-.resumen-productos {
+/* ====================================================
+   TÍTULOS DE SECCIONES
+   ==================================================== */
+.pago-formulario h3,
+.pago-resumen h3 {
+  /* Tamaño de fuente */
+  font-size: 1.5rem;
+  
+  /* Color oscuro */
+  color: #333;
+  
+  /* Espacio inferior */
+  margin-bottom: 1.5rem;
+  
+  /* Espaciado inferior interno */
+  padding-bottom: 0.75rem;
+  
+  /* Borde inferior */
+  border-bottom: 2px solid #e0e0e0;
+}
+
+/* ====================================================
+   ESTILOS DEL FORMULARIO
+   ==================================================== */
+
+/* Grupo de formulario (campo individual) */
+.form-group {
+  /* Espacio inferior entre campos */
   margin-bottom: 1.5rem;
 }
 
+/* Etiquetas de los campos */
+.form-group label {
+  /* Display block para ocupar línea completa */
+  display: block;
+  
+  /* Texto en negrita */
+  font-weight: 600;
+  
+  /* Color oscuro */
+  color: #333;
+  
+  /* Espacio inferior */
+  margin-bottom: 0.5rem;
+  
+  /* Tamaño de fuente */
+  font-size: 0.95rem;
+}
+
+/* Inputs y selects del formulario */
+.form-group input,
+.form-group select {
+  /* Ancho completo */
+  width: 100%;
+  
+  /* Espaciado interno */
+  padding: 0.75rem;
+  
+  /* Borde gris claro */
+  border: 2px solid #e0e0e0;
+  
+  /* Bordes redondeados */
+  border-radius: 6px;
+  
+  /* Tamaño de fuente */
+  font-size: 1rem;
+  
+  /* Transición suave */
+  transition: all 0.3s ease;
+  
+  /* Box-sizing para incluir padding en el ancho */
+  box-sizing: border-box;
+}
+
+/* Focus en inputs y selects */
+.form-group input:focus,
+.form-group select:focus {
+  /* Quita outline por defecto */
+  outline: none;
+  
+  /* Borde morado al hacer focus */
+  border-color: #667eea;
+  
+  /* Sombra morada sutil */
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Input con error */
+.form-group input.error {
+  /* Borde rojo para indicar error */
+  border-color: #e53e3e;
+}
+
+/* Texto de error */
+.error-text {
+  /* Display block para ocupar línea completa */
+  display: block;
+  
+  /* Color rojo */
+  color: #e53e3e;
+  
+  /* Tamaño de fuente pequeño */
+  font-size: 0.875rem;
+  
+  /* Margen superior */
+  margin-top: 0.25rem;
+}
+
+/* Fila de formulario (2 columnas) */
+.form-row {
+  /* Grid de 2 columnas iguales */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  
+  /* Espacio entre columnas */
+  gap: 1rem;
+}
+
+/* ====================================================
+   BOTÓN DE PAGAR
+   ==================================================== */
+.btn-pagar {
+  /* Ancho completo */
+  width: 100%;
+  
+  /* Fondo con gradiente morado/azul */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Texto blanco */
+  color: white;
+  
+  /* Espaciado interno */
+  padding: 1rem;
+  
+  /* Sin borde */
+  border: none;
+  
+  /* Bordes redondeados */
+  border-radius: 8px;
+  
+  /* Tamaño de fuente grande */
+  font-size: 1.1rem;
+  
+  /* Texto en negrita */
+  font-weight: 600;
+  
+  /* Cursor de mano */
+  cursor: pointer;
+  
+  /* Transición suave */
+  transition: all 0.3s ease;
+  
+  /* Texto en mayúsculas */
+  text-transform: uppercase;
+  
+  /* Espaciado entre letras */
+  letter-spacing: 0.5px;
+  
+  /* Margen superior */
+  margin-top: 1rem;
+}
+
+/* Hover del botón pagar (solo si NO está deshabilitado) */
+.btn-pagar:hover:not(:disabled) {
+  /* Eleva el botón */
+  transform: translateY(-2px);
+  
+  /* Sombra morada grande */
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Active (al hacer clic) del botón pagar (solo si NO está deshabilitado) */
+.btn-pagar:active:not(:disabled) {
+  /* Vuelve a posición original */
+  transform: translateY(0);
+}
+
+/* Botón pagar deshabilitado */
+.btn-pagar:disabled {
+  /* Color gris */
+  background: #ccc;
+  
+  /* Cursor de "no permitido" */
+  cursor: not-allowed;
+  
+  /* Opacidad reducida */
+  opacity: 0.6;
+}
+
+/* ====================================================
+   RESUMEN DE PRODUCTOS
+   ==================================================== */
+.resumen-productos {
+  /* Espacio inferior */
+  margin-bottom: 1.5rem;
+}
+
+/* Item individual del resumen */
 .resumen-item {
+  /* Grid de 3 columnas: nombre (2fr), cantidad (1fr), precio (1fr) */
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
+  
+  /* Espacio entre columnas */
   gap: 0.5rem;
+  
+  /* Espaciado interno vertical */
   padding: 0.75rem 0;
+  
+  /* Borde inferior */
   border-bottom: 1px solid #f0f0f0;
+  
+  /* Alinea verticalmente al centro */
   align-items: center;
 }
 
+/* Último item sin borde inferior */
 .resumen-item:last-child {
   border-bottom: none;
 }
 
+/* Nombre del producto en el resumen */
 .item-nombre {
+  /* Tamaño de fuente */
   font-size: 0.95rem;
+  
+  /* Color oscuro */
   color: #333;
 }
 
+/* Cantidad en el resumen */
 .item-cantidad {
+  /* Centrado */
   text-align: center;
+  
+  /* Color gris */
   color: #666;
+  
+  /* Tamaño de fuente pequeño */
   font-size: 0.9rem;
 }
 
+/* Precio del item en el resumen */
 .item-precio {
+  /* Alineado a la derecha */
   text-align: right;
+  
+  /* Texto en negrita */
   font-weight: 600;
+  
+  /* Color oscuro */
   color: #333;
 }
 
+/* ====================================================
+   TOTALES DEL RESUMEN
+   ==================================================== */
 .resumen-totales {
+  /* Borde superior */
   border-top: 2px solid #e0e0e0;
+  
+  /* Espaciado superior interno */
   padding-top: 1rem;
+  
+  /* Margen superior */
   margin-top: 1rem;
 }
 
+/* Línea de total (subtotal, envío, etc.) */
 .total-linea {
+  /* Flexbox para justificar a los extremos */
   display: flex;
   justify-content: space-between;
+  
+  /* Espaciado vertical */
   padding: 0.5rem 0;
+  
+  /* Tamaño de fuente */
   font-size: 1rem;
+  
+  /* Color gris */
   color: #666;
 }
 
+/* Total final (destacado) */
 .total-final {
+  /* Tamaño de fuente grande */
   font-size: 1.3rem;
+  
+  /* Texto en negrita */
   font-weight: 700;
+  
+  /* Color oscuro */
   color: #333;
+  
+  /* Borde superior */
   border-top: 2px solid #e0e0e0;
+  
+  /* Margen superior */
   margin-top: 0.5rem;
+  
+  /* Espaciado superior interno */
   padding-top: 1rem;
 }
 
+/* ====================================================
+   INFORMACIÓN ADICIONAL DEL RESUMEN
+   ==================================================== */
 .resumen-info {
+  /* Margen superior */
   margin-top: 1.5rem;
+  
+  /* Espaciado superior interno */
   padding-top: 1.5rem;
+  
+  /* Borde superior */
   border-top: 1px solid #e0e0e0;
 }
 
+/* Párrafos de información */
 .resumen-info p {
+  /* Tamaño de fuente pequeño */
   font-size: 0.875rem;
+  
+  /* Color verde para mensajes positivos */
   color: #4caf50;
+  
+  /* Margen vertical */
   margin: 0.5rem 0;
+  
+  /* Flexbox para alinear iconos */
   display: flex;
   align-items: center;
 }
 
-/* Responsive */
+/* ====================================================
+   RESPONSIVE - TABLET
+   ==================================================== */
 @media (max-width: 968px) {
+  /* Grid en una columna en tablet */
   .pago-grid {
     grid-template-columns: 1fr;
   }
 
+  /* Resumen aparece primero */
   .pago-resumen {
     order: -1;
   }
 }
 
+/* ====================================================
+   RESPONSIVE - MOBILE
+   ==================================================== */
 @media (max-width: 768px) {
+  /* Reduce espaciado del contenedor */
   .pago-container {
     padding: 1rem;
   }
 
+  /* Reduce espaciado de tarjetas */
   .pago-formulario,
   .pago-resumen {
     padding: 1.5rem;
   }
 
+  /* Fila de formulario en una columna */
   .form-row {
     grid-template-columns: 1fr;
   }
 
+  /* Reduce tamaño del título */
   .pago-titulo {
     font-size: 1.5rem;
   }
 }
+
+/* ====================================================
+   FIN DE LOS ESTILOS DE PAGO
+   ==================================================== */
