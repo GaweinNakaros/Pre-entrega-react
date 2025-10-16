@@ -2,6 +2,14 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## 🚀 GitHub Pages Deployment
+
+Este proyecto está configurado para desplegarse automáticamente en GitHub Pages. 
+
+**Ver el sitio desplegado:** https://gaweinnakaros.github.io/Pre-entrega-react/
+
+Para más información sobre la configuración de GitHub Pages, consulta el archivo [GITHUB_PAGES.md](../GITHUB_PAGES.md) en la raíz del repositorio.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
