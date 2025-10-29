@@ -15,6 +15,7 @@ import RutaProtegida from './pages/RutaProtegida'
 // Importación de los proveedores de contexto
 import { CarritoProvider } from './context/CarritoContext'
 import { AuthProvider } from './context/AuthContext'
+import { CategoriasProvider } from './context/CategoriasContext'
 
 /**
  * Componente principal de la aplicación
@@ -31,9 +32,10 @@ import { AuthProvider } from './context/AuthContext'
 function App() {
   return (
     <AuthProvider>
-      <CarritoProvider>
-        {/* Barra de navegación presente en todas las páginas */}
-        <Navbar />
+      <CategoriasProvider>
+        <CarritoProvider>
+          {/* Barra de navegación presente en todas las páginas */}
+          <Navbar />
         
         {/* Configuración de rutas de la aplicación */}
         <Routes>
@@ -59,7 +61,8 @@ function App() {
             } 
           />
         </Routes>
-      </CarritoProvider>
+        </CarritoProvider>
+      </CategoriasProvider>
     </AuthProvider>
   )
 }

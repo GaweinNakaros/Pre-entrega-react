@@ -1,10 +1,11 @@
 // Importación de dependencias necesarias de React y React Router
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 // Importación de estilos
 import './productos.css';
-// Importar el contexto del carrito
+// Importar el contexto del carrito y categorías
 import { useCarrito } from '../context/CarritoContext';
+import { useCategorias } from '../context/CategoriasContext';
 
 /**
  * Componente Productos
@@ -14,6 +15,13 @@ import { useCarrito } from '../context/CarritoContext';
 function Productos() {
     // Obtener funciones del contexto del carrito
     const { agregarAlCarrito } = useCarrito();
+    
+    // Obtener diccionario de traducción del contexto de categorías
+    const { traduccionCategorias } = useCategorias();
+    
+    // Hook para leer parámetros de la URL (query params)
+    const [searchParams] = useSearchParams();
+    const categoriaFiltro = searchParams.get('categoria'); // Obtener ?categoria=xxx de la URL
     
     // Estados para manejar los productos y el estado de la aplicación
     const [productos, setProductos] = useState([]); // Almacena la lista de productos
@@ -46,27 +54,18 @@ function Productos() {
                 // Convertir la respuesta a JSON y actualizar el estado
                 const data = await response.json();
                 
-                // Agregar stock a cada producto con distribución 50/50 para pruebas
-                // Este enfoque permite probar tanto productos disponibles como agotados
-                // 50% de productos tendrán stock 0 (sin stock - para probar botón deshabilitado)
-                // 50% de productos tendrán stock entre 1 y 10 (con stock - para probar agregar al carrito)
-                const productosConStock = data.map(producto => ({
-                    ...producto, // Spread operator (...) - copia todas las propiedades originales del producto
-                    // Lógica de asignación de stock con operador ternario
-                    // Math.random() genera un número aleatorio entre 0 (incluido) y 1 (excluido)
-                    // Si Math.random() < 0.5 (50% de probabilidad) → asigna 0 (sin stock)
-                    // Si Math.random() >= 0.5 (50% de probabilidad) → asigna stock entre 1 y 10
-                    stock: Math.random() < 0.5 
-                        ? 0  // Sin stock - permitirá probar el botón deshabilitado y mensaje "Sin stock"
-                        : Math.floor(Math.random() * 10) + 1
-                        // Con stock entre 1-10:
-                        // Math.random() * 10 genera número entre 0 y 9.999
-                        // Math.floor() redondea hacia abajo, dando números entre 0 y 9
-                        // +1 convierte el rango de 0-9 a 1-10 (evitando 0 en este caso)
-                        // Resultado final: números enteros del 1 al 10
+                // Normalizar datos de MockAPI:
+                // - MockAPI puede generar 'Stock' (mayúscula) o 'stock' (minúscula)
+                // - Categorías vienen en inglés desde commerce.department(), se traducen al español
+                const productosNormalizados = data.map(producto => ({
+                    ...producto,
+                    // Normalizar stock: usar minúscula y asegurar que sea número
+                    stock: Number(producto.stock || 0),
+                    // Traducir categoría al español, si no existe traducción usar el original
+                    categoria: traduccionCategorias[producto.categoria] || producto.categoria || 'Sin categoría'
                 }));
                 
-                setProductos(productosConStock);
+                setProductos(productosNormalizados);
                 setError(null); // Limpiar cualquier error previo
                 
             } catch (error) {
@@ -82,6 +81,11 @@ function Productos() {
         // Ejecutar la función de fetch
         fetchProductos();
     }, []); 
+    
+    // Filtrar productos por categoría si existe el parámetro en la URL
+    const productosFiltrados = categoriaFiltro 
+        ? productos.filter(prod => prod.categoria === categoriaFiltro)
+        : productos;
 
     // Renderizado condicional para el estado de carga
     if (loading) {
@@ -106,10 +110,23 @@ function Productos() {
     // Renderizado principal de la lista de productos
     return (
         <div className="productos-container">
-            <h2>Nuestros Productos</h2>
-            <div className="productos-grid">
-                {/* Mapear cada producto a una tarjeta */}
-                {productos.map((prod) => (
+            <h2>
+                {categoriaFiltro 
+                    ? `Productos - ${categoriaFiltro}` 
+                    : 'Nuestros Productos'}
+            </h2>
+            {/* Mostrar mensaje si no hay productos en la categoría */}
+            {productosFiltrados.length === 0 && !loading && !error ? (
+                <div className="sin-productos">
+                    <p>No hay productos disponibles en esta categoría.</p>
+                    <Link to="/productos">
+                        <button className="btn-detalle">Ver todos los productos</button>
+                    </Link>
+                </div>
+            ) : (
+                <div className="productos-grid">
+                    {/* Mapear cada producto a una tarjeta */}
+                    {productosFiltrados.map((prod) => (
                     // map requiere una key única para cada elemento renderizado
                     <div key={prod.id} className="producto-card">
                         {/* Imagen del producto con manejo de errores */}
@@ -123,6 +140,7 @@ function Productos() {
                         />
                         {/* Información del producto */}
                         <h3>{prod.nombre}</h3>
+                        <p className="producto-categoria">{prod.categoria}</p>
                         <p>{prod.descripcion}</p>
                         {/* Sección de precio y stock */}
                         <div className="producto-detalles">
@@ -153,7 +171,8 @@ function Productos() {
                         </div>
                     </div>
                 ))}
-            </div>
+                </div>
+            )}
         </div>
     );
 }

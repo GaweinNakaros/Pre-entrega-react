@@ -24,6 +24,26 @@
   margin: 0 auto;
 }
 
+/* Título de la página de productos */
+.productos-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+/* Mensaje cuando no hay productos en la categoría */
+.sin-productos {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.sin-productos p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
 /* ====================================================
    GRID DE PRODUCTOS
    ==================================================== */
@@ -96,6 +116,33 @@
   
   /* El título no se encoge en flexbox */
   flex-shrink: 0;
+}
+
+/* ====================================================
+   CATEGORÍA DEL PRODUCTO
+   ==================================================== */
+.producto-categoria {
+  /* Color distintivo para la categoría */
+  color: #667eea;
+  
+  /* Tamaño de fuente pequeño */
+  font-size: 0.85rem;
+  
+  /* Peso de fuente medio */
+  font-weight: 500;
+  
+  /* Sin márgenes */
+  margin: 0 !important;
+  
+  /* No crece ni se encoge */
+  flex-grow: 0 !important;
+  flex-shrink: 0;
+  
+  /* Texto en mayúsculas */
+  text-transform: uppercase;
+  
+  /* Espaciado entre letras */
+  letter-spacing: 0.5px;
 }
 
 /* ====================================================

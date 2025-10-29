@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./inicio.css";
+import { useCategorias } from "../context/CategoriasContext";
 
 function Inicio() {
   const navigate = useNavigate();
+  
+  // Obtener categorías del contexto global
+  const { categorias, loading: loadingCategorias } = useCategorias();
   
   // Estado para el slider automático
   const [slideActual, setSlideActual] = useState(0);
@@ -16,17 +20,6 @@ function Inicio() {
     { id: 3, titulo: "Slide 3", descripcion: "Descripción del slide 3", imagen: null }
   ];
   
-  // Array de categorías con iconos placeholder
-  // Para agregar imágenes: { id: 1, nombre: "Electrónica", icono: "/ruta/icono.png", ruta: "..." }
-  const categorias = [
-    { id: 1, nombre: "Electrónica", icono: null, ruta: "/productos?categoria=electronica" },
-    { id: 2, nombre: "Ropa", icono: null, ruta: "/productos?categoria=ropa" },
-    { id: 3, nombre: "Hogar", icono: null, ruta: "/productos?categoria=hogar" },
-    { id: 4, nombre: "Deportes", icono: null, ruta: "/productos?categoria=deportes" },
-    { id: 5, nombre: "Juguetes", icono: null, ruta: "/productos?categoria=juguetes" },
-    { id: 6, nombre: "Libros", icono: null, ruta: "/productos?categoria=libros" }
-  ];
-  
   // Efecto para cambiar slides automáticamente cada 5 segundos
   useEffect(() => {
     const intervalo = setInterval(() => {
@@ -37,8 +30,8 @@ function Inicio() {
   }, [slides.length]);
   
   // Función para navegar a una categoría
-  const manejarClickCategoria = (ruta) => {
-    navigate(ruta);
+  const manejarClickCategoria = (nombreCategoria) => {
+    navigate(`/productos?categoria=${encodeURIComponent(nombreCategoria)}`);
   };
   
   // Función para cambiar slide manualmente
@@ -93,30 +86,34 @@ function Inicio() {
       {/* Iconos de Categorías */}
       <section className="categorias-section">
         <h2 className="categorias-titulo">Categorías</h2>
-        <div className="categorias-grid">
-          {categorias.map((categoria) => (
-            <div
-              key={categoria.id}
-              className="categoria-icono"
-              onClick={() => manejarClickCategoria(categoria.ruta)}
-              role="button"
-              tabIndex={0}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") manejarClickCategoria(categoria.ruta);
-              }}
-            >
-              <div className="icono-placeholder">
-                {/* Si tiene imagen, mostrar la imagen; si no, mostrar la inicial */}
-                {categoria.icono ? (
-                  <img src={categoria.icono} alt={categoria.nombre} />
-                ) : (
-                  <span className="icono-texto">{categoria.nombre[0]}</span>
-                )}
+        {loadingCategorias ? (
+          <p style={{ textAlign: 'center' }}>Cargando categorías...</p>
+        ) : (
+          <div className="categorias-grid">
+            {categorias.map((categoria) => (
+              <div
+                key={categoria.id}
+                className="categoria-icono"
+                onClick={() => manejarClickCategoria(categoria.nombre)}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") manejarClickCategoria(categoria.nombre);
+                }}
+              >
+                <div className="icono-placeholder">
+                  {/* Si tiene imagen, mostrar la imagen; si no, mostrar la inicial */}
+                  {categoria.icono ? (
+                    <img src={categoria.icono} alt={categoria.nombre} />
+                  ) : (
+                    <span className="icono-texto">{categoria.nombre[0]}</span>
+                  )}
+                </div>
+                <p className="categoria-nombre">{categoria.nombre}</p>
               </div>
-              <p className="categoria-nombre">{categoria.nombre}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
