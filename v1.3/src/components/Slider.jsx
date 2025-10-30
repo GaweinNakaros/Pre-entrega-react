@@ -85,9 +85,29 @@ const Slider = ({
 
           return (
             <div key={slide.id || index} className={claseSlide}>
-              {slide.imagen ? (
-                <img src={slide.imagen} alt={slide.titulo || `Slide ${index + 1}`} />
+              {/* Determinar tipo de contenido */}
+              {slide.tipoContenido === 'solo-imagen' && slide.imagen ? (
+                // Solo imagen sin texto
+                <img src={slide.imagen} alt={slide.titulo || `Slide ${index + 1}`} className="slide-imagen-completa" />
+              ) : slide.tipoContenido === 'solo-texto' ? (
+                // Solo texto sin imagen
+                <div className="slide-placeholder">
+                  <h2>{slide.titulo || `Slide ${index + 1}`}</h2>
+                  {slide.descripcion && <p>{slide.descripcion}</p>}
+                </div>
+              ) : slide.imagen ? (
+                // Imagen con texto superpuesto
+                <>
+                  <img src={slide.imagen} alt={slide.titulo || `Slide ${index + 1}`} />
+                  {(slide.titulo || slide.descripcion) && (
+                    <div className="slide-contenido-texto">
+                      {slide.titulo && <h2>{slide.titulo}</h2>}
+                      {slide.descripcion && <p>{slide.descripcion}</p>}
+                    </div>
+                  )}
+                </>
               ) : (
+                // Placeholder por defecto (sin imagen)
                 <div className="slide-placeholder">
                   <h2>{slide.titulo || `Slide ${index + 1}`}</h2>
                   {slide.descripcion && <p>{slide.descripcion}</p>}

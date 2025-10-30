@@ -3,14 +3,13 @@ import "./inicio.css";
 import Slider from "../components/Slider";
 import CategoriasSlider from "../components/CategoriasSlider";
 import PromocionesDestacadas from "../components/PromocionesDestacadas";
+import { useBanners } from "../context/BannersContext";
 
 function Inicio() {
-  // Array de slides para el banner principal
-  const slides = [
-    { id: 1, titulo: "Bienvenido a Nuestra Tienda", descripcion: "Encuentra los mejores productos", imagen: null },
-    { id: 2, titulo: "Ofertas Especiales", descripcion: "Descuentos increíbles esta semana", imagen: null },
-    { id: 3, titulo: "Envío Gratis", descripcion: "En compras mayores a $50", imagen: null }
-  ];
+  const { obtenerBannersActivos } = useBanners();
+  
+  // Obtener banners activos desde el contexto
+  const slides = obtenerBannersActivos();
 
   return (
     <div className="inicio-container">
