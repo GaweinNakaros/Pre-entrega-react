@@ -181,7 +181,7 @@
 .banner-slider {
   position: relative;
   width: 100%;
-  height: 400px; /* Altura base del banner - se ajusta en responsive */
+  height: 200px; /* Altura base del banner - se ajusta en responsive */
   overflow: hidden;
   clip-path: inset(0);
   background: #f0f0f0;
@@ -329,32 +329,107 @@
   font-weight: 600;
 }
 
+/* Contenedor del slider de categorías con flechas */
+.categorias-slider-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 50px; /* Espacio para las flechas */
+}
+
+/* Cuando no hay desbordamiento, reducir padding lateral */
+.categorias-slider-container.sin-flechas {
+  padding: 0 20px;
+}
+
+/* Wrapper para el grid con overflow hidden */
+.categorias-grid-wrapper {
+  overflow: hidden;
+  padding: 10px 0;
+  width: 100%;
+  position: relative;
+}
+
+/* Solo centrar cuando NO hay desbordamiento */
+.categorias-slider-container.sin-flechas .categorias-grid-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 /* Grid de categorías - centradas en una línea horizontal */
 .categorias-grid {
   display: flex;
   flex-wrap: nowrap; /* No permite salto de línea */
-  justify-content: center; /* Centra horizontalmente */
+  gap: 10px;
+  transition: transform 0.5s ease-in-out;
+  padding: 0;
+  width: fit-content; /* Solo ocupa el ancho necesario */
+}
+
+/* Cuando NO hay desbordamiento, centrar las categorías */
+.categorias-slider-container.sin-flechas .categorias-grid {
+  justify-content: center;
+  width: 100%;
+}
+
+/* Flechas de navegación */
+.categoria-flecha {
+  position: absolute; 
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+  min-height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
   align-items: center;
-  gap: 30px;
-  max-width: 100%;
-  margin: 0 auto;
-  overflow-x: auto; /* Scroll horizontal si no caben todas */
-  padding: 10px 20px;
+  justify-content: center;
+  padding: 0;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+.categoria-flecha:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 15px rgba(102, 126, 234, 0.6);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.categoria-flecha:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.categoria-flecha-izq {
+  left: 0;
+}
+
+.categoria-flecha-der {
+  right: 0;
 }
 
 /* Cada icono de categoría */
 .categoria-icono {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  padding: 10px;
-  border-radius: 10px;
+  transition: transform 0.3s ease;
+  padding: 0;
   flex-shrink: 0; /* Evita que se compriman */
-  min-width: 120px; /* Ancho mínimo para mantener tamaño */
+  width: 100px; /* Ancho fijo de 100px */
+  max-width: 100px;
 }
 
 /* Efecto hover en categoría */
@@ -368,11 +443,11 @@
   outline-offset: 4px;
 }
 
-/* Placeholder para el icono de 100x100 */
+/* Placeholder para el icono - ahora ocupa todo el ancho */
 .icono-placeholder {
-  width: 100px;
-  height: 100px;
-  border-radius: 15px;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Mantiene proporción cuadrada */
+  border-radius: 12px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
@@ -380,6 +455,15 @@
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
   transition: all 0.3s ease;
   overflow: hidden;
+  position: relative;
+}
+
+/* Imagen de categoría */
+.icono-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Hover en el placeholder del icono */
@@ -394,13 +478,6 @@
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Cuando se agregue la imagen real */
-.icono-placeholder img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 /* Nombre de la categoría */
@@ -437,21 +514,27 @@
     padding: 20px;
   }
   
-  /* Mantener categorías en línea horizontal con scroll */
-  .categorias-grid {
-    gap: 20px;
-    justify-content: flex-start; /* En tablets, scroll desde la izquierda */
-    padding: 10px 15px;
+  /* Ajustar slider de categorías en tablet */
+  .categorias-slider-container {
+    padding: 0 30px;
   }
   
-  /* Iconos más pequeños en móvil */
-  .icono-placeholder {
-    width: 80px;
-    height: 80px;
+  .categoria-flecha {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    font-size: 1.6rem;
   }
   
   .categoria-icono {
-    min-width: 100px;
+    width: 85px; /* Ancho fijo de 85px en tablet */
+    max-width: 85px;
+    gap: 6px;
+  }
+  
+  .categorias-grid {
+    gap: 8px;
   }
   
   .icono-texto {
@@ -485,19 +568,30 @@
     width: 95%;
   }
   
-  /* Mantener categorías en línea con scroll horizontal */
-  .categorias-grid {
-    gap: 15px;
-    justify-content: flex-start;
-    padding: 10px;
+  /* Ajustar slider de categorías en mobile */
+  .categorias-slider-container {
+    padding: 0 20px;
   }
   
-  .icono-placeholder {
-    width: 90px;
-    height: 90px;
+  .categoria-flecha {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 1.4rem;
   }
   
   .categoria-icono {
-    min-width: 90px;
+    width: 75px; /* Ancho fijo de 75px en mobile */
+    max-width: 75px;
+    gap: 5px;
+  }
+  
+  .categorias-grid {
+    gap: 7px;
+  }
+  
+  .icono-texto {
+    font-size: 1.8rem;
   }
 }
