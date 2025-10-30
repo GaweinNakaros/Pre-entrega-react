@@ -11,6 +11,7 @@ function Inicio() {
   
   // Estado para el slider automático
   const [slideActual, setSlideActual] = useState(0);
+  const [slideAnterior, setSlideAnterior] = useState(null);
   
   // Array de slides (por ahora con placeholders)
   // Para agregar imágenes: { id: 1, titulo: "Título", descripcion: "Texto", imagen: "/ruta/imagen.jpg" }
@@ -23,7 +24,10 @@ function Inicio() {
   // Efecto para cambiar slides automáticamente cada 5 segundos
   useEffect(() => {
     const intervalo = setInterval(() => {
-      setSlideActual((prev) => (prev + 1) % slides.length);
+      setSlideActual((prev) => {
+        setSlideAnterior(prev);
+        return (prev + 1) % slides.length;
+      });
     }, 5000);
     
     return () => clearInterval(intervalo);
@@ -36,6 +40,7 @@ function Inicio() {
   
   // Función para cambiar slide manualmente
   const cambiarSlide = (indice) => {
+    setSlideAnterior(slideActual);
     setSlideActual(indice);
   };
 
@@ -44,30 +49,41 @@ function Inicio() {
       {/* Banner con Slider Automático */}
       <section className="banner-slider">
         <div className="slider-contenido">
-          {slides.map((slide, index) => (
-            <div
-              key={slide.id}
-              className={`slide ${index === slideActual ? "activo" : ""}`}
-            >
-              {/* Si el slide tiene imagen, mostrar la imagen; si no, mostrar placeholder */}
-              {slide.imagen ? (
-                <>
-                  <img src={slide.imagen} alt={slide.titulo} />
-                  {/* Contenido de texto superpuesto sobre la imagen */}
-                  <div className="slide-contenido-texto">
+          {slides.map((slide, index) => {
+            // Determinar la clase del slide basado en su posición
+            let claseSlide = "slide";
+            
+            if (index === slideActual) {
+              // Slide activo (centro)
+              claseSlide += " activo";
+            } else if (index === slideAnterior) {
+              // Slide que acaba de salir (sale por la izquierda)
+              claseSlide += " anterior";
+            }
+            // Los demás slides permanecen a la derecha (fuera de vista)
+            
+            return (
+              <div key={slide.id} className={claseSlide}>
+                {/* Si el slide tiene imagen, mostrar la imagen; si no, mostrar placeholder */}
+                {slide.imagen ? (
+                  <>
+                    <img src={slide.imagen} alt={slide.titulo} />
+                    {/* Contenido de texto superpuesto sobre la imagen */}
+                    <div className="slide-contenido-texto">
+                      <h2>{slide.titulo}</h2>
+                      <p>{slide.descripcion}</p>
+                    </div>
+                  </>
+                ) : (
+                  // Placeholder sin imagen
+                  <div className="slide-placeholder">
                     <h2>{slide.titulo}</h2>
                     <p>{slide.descripcion}</p>
                   </div>
-                </>
-              ) : (
-                // Placeholder sin imagen
-                <div className="slide-placeholder">
-                  <h2>{slide.titulo}</h2>
-                  <p>{slide.descripcion}</p>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            );
+          })}
         </div>
         
         {/* Indicadores de slides */}
