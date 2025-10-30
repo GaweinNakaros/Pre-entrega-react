@@ -17,6 +17,7 @@ import { CarritoProvider } from './context/CarritoContext'
 import { AuthProvider } from './context/AuthContext'
 import { CategoriasProvider } from './context/CategoriasContext'
 import { SliderProvider } from './context/SliderContext'
+import { PromocionesProvider } from './context/PromocionesContext'
 
 /**
  * Componente principal de la aplicación
@@ -35,9 +36,10 @@ function App() {
     <AuthProvider>
       <CategoriasProvider>
         <SliderProvider>
-          <CarritoProvider>
-            {/* Barra de navegación presente en todas las páginas */}
-            <Navbar />
+          <PromocionesProvider>
+            <CarritoProvider>
+              {/* Barra de navegación presente en todas las páginas */}
+              <Navbar />
         
             {/* Configuración de rutas de la aplicación */}
             <Routes>
@@ -63,7 +65,8 @@ function App() {
             } 
           />
         </Routes>
-          </CarritoProvider>
+            </CarritoProvider>
+          </PromocionesProvider>
         </SliderProvider>
       </CategoriasProvider>
     </AuthProvider>
