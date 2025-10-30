@@ -13,6 +13,36 @@ function Inicio() {
   const [slideActual, setSlideActual] = useState(0);
   const [slideAnterior, setSlideAnterior] = useState(null);
   
+  // Estado para el slider de categorías
+  const [desplazamientoCategoria, setDesplazamientoCategoria] = useState(0);
+  const [categoriasVisibles, setCategoriasVisibles] = useState(6);
+  const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
+
+  // Ajustar categorías visibles según tamaño de pantalla
+  useEffect(() => {
+    const ajustarCategoriasVisibles = () => {
+      const ancho = window.innerWidth; // Obtener ancho actual de la ventana
+      setAnchoPantalla(ancho);
+      
+      const anchoCategoria = ancho <= 480 ? 75 : ancho <= 768 ? 85 : 100;
+      const gapCategoria = ancho <= 480 ? 7 : ancho <= 768 ? 8 : 10;
+      const paddingLateral = ancho <= 480 ? 40 : ancho <= 768 ? 60 : 100; // 2x padding (flechas)
+      
+      const anchoDisponible = ancho - paddingLateral;
+      const anchoConGap = anchoCategoria + gapCategoria;
+      const categoriasQueCaben = Math.floor((anchoDisponible + gapCategoria) / anchoConGap);
+      
+      setCategoriasVisibles(Math.max(3, categoriasQueCaben));
+      // Reset desplazamiento al cambiar tamaño
+      setDesplazamientoCategoria(0);
+    };
+
+    ajustarCategoriasVisibles();
+    window.addEventListener('resize', ajustarCategoriasVisibles);
+    
+    return () => window.removeEventListener('resize', ajustarCategoriasVisibles);
+  }, []);
+  
   // Array de slides (por ahora con placeholders)
   // Para agregar imágenes: { id: 1, titulo: "Título", descripcion: "Texto", imagen: "/ruta/imagen.jpg" }
   const slides = [
@@ -43,6 +73,26 @@ function Inicio() {
     setSlideAnterior(slideActual);
     setSlideActual(indice);
   };
+
+  // Funciones para navegar en el slider de categorías
+  const avanzarCategorias = () => {
+    const maxDesplazamiento = Math.max(0, categorias.length - categoriasVisibles);
+    setDesplazamientoCategoria(prev => Math.min(prev + 1, maxDesplazamiento));
+  };
+
+  const retrocederCategorias = () => {
+    setDesplazamientoCategoria(prev => Math.max(prev - 1, 0));
+  };
+
+  // Calcular desplazamiento en píxeles según tamaño de pantalla
+  const anchoCategoria = anchoPantalla <= 480 ? 75 : anchoPantalla <= 768 ? 85 : 100;
+  const gapCategoria = anchoPantalla <= 480 ? 7 : anchoPantalla <= 768 ? 8 : 10;
+  const desplazamientoPixeles = desplazamientoCategoria * (anchoCategoria + gapCategoria);
+
+  // Verificar si hay desbordamiento y se necesitan flechas
+  const hayDesbordamiento = categorias.length > categoriasVisibles;
+  const mostrarFlechaIzquierda = hayDesbordamiento && desplazamientoCategoria > 0;
+  const mostrarFlechaDerecha = hayDesbordamiento && desplazamientoCategoria < categorias.length - categoriasVisibles;
 
   return (
     <div className="inicio-container">
@@ -123,29 +173,61 @@ function Inicio() {
         {loadingCategorias ? (
           <p style={{ textAlign: 'center' }}>Cargando categorías...</p>
         ) : (
-          <div className="categorias-grid">
-            {categorias.map((categoria) => (
-              <div
-                key={categoria.id}
-                className="categoria-icono"
-                onClick={() => manejarClickCategoria(categoria.nombre)}
-                role="button"
-                tabIndex={0}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") manejarClickCategoria(categoria.nombre);
+          <div className={`categorias-slider-container ${!hayDesbordamiento ? 'sin-flechas' : ''}`}>
+            {/* Flecha izquierda */}
+            {mostrarFlechaIzquierda && (
+              <button 
+                className="categoria-flecha categoria-flecha-izq"
+                onClick={retrocederCategorias}
+                aria-label="Ver categorías anteriores"
+              >
+                ‹
+              </button>
+            )}
+            
+            {/* Grid de categorías con desplazamiento */}
+            <div className="categorias-grid-wrapper">
+              <div 
+                className="categorias-grid"
+                style={{
+                  transform: hayDesbordamiento ? `translateX(-${desplazamientoPixeles}px)` : 'none'
                 }}
               >
-                <div className="icono-placeholder">
-                  {/* Si tiene imagen, mostrar la imagen; si no, mostrar la inicial */}
-                  {categoria.icono ? (
-                    <img src={categoria.icono} alt={categoria.nombre} />
-                  ) : (
-                    <span className="icono-texto">{categoria.nombre[0]}</span>
-                  )}
-                </div>
-                <p className="categoria-nombre">{categoria.nombre}</p>
+                {categorias.map((categoria) => (
+                  <div
+                    key={categoria.id}
+                    className="categoria-icono"
+                    onClick={() => manejarClickCategoria(categoria.nombre)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") manejarClickCategoria(categoria.nombre);
+                    }}
+                  >
+                    <div className="icono-placeholder">
+                      {/* Si tiene imagen, mostrar la imagen; si no, mostrar la inicial */}
+                      {categoria.icono ? (
+                        <img src={categoria.icono} alt={categoria.nombre} />
+                      ) : (
+                        <span className="icono-texto">{categoria.nombre[0]}</span>
+                      )}
+                    </div>
+                    <p className="categoria-nombre">{categoria.nombre}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            
+            {/* Flecha derecha */}
+            {mostrarFlechaDerecha && (
+              <button 
+                className="categoria-flecha categoria-flecha-der"
+                onClick={avanzarCategorias}
+                aria-label="Ver más categorías"
+              >
+                ›
+              </button>
+            )}
           </div>
         )}
       </section>
