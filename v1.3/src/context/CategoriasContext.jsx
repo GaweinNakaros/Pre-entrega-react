@@ -17,7 +17,7 @@ export const useCategorias = () => {
 
 /**
  * Proveedor del contexto de categorías
- * Obtiene las categorías únicas desde MockAPI y las comparte globalmente
+ * Gestiona categorías de forma dinámica y administrable
  */
 export const CategoriasProvider = ({ children }) => {
   const [categorias, setCategorias] = useState([]);
@@ -76,55 +76,135 @@ export const CategoriasProvider = ({ children }) => {
     'Computación': 'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&h=300&fit=crop'
   };
 
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        // Obtener todos los productos de MockAPI
-        const response = await fetch("https://68d482fa214be68f8c696bbd.mockapi.io/api/productos");
-        
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
-        const productos = await response.json();
-        
-        // Extraer categorías únicas y traducirlas
-        const categoriasUnicas = [...new Set(productos.map(prod => {
-          const categoriaOriginal = prod.categoria;
-          // Traducir si existe en el diccionario, si no usar original
-          return traduccionCategorias[categoriaOriginal] || categoriaOriginal || 'Sin categoría';
-        }))];
-        
-        // Ordenar alfabéticamente
-        categoriasUnicas.sort();
-        
-        // Crear objetos de categoría con id, nombre e icono
-        const categoriasConDatos = categoriasUnicas.map((cat, index) => ({
-          id: index + 1,
-          nombre: cat,
-          icono: imagenesCategorias[cat] || null // Asignar imagen según el mapeo
-        }));
-        
-        setCategorias(categoriasConDatos);
-        setError(null);
-        
-      } catch (error) {
-        console.error('Error al cargar categorías:', error);
-        setError(error.message);
-        setCategorias([]);
-      } finally {
-        setLoading(false);
+  /**
+   * Cargar categorías desde la API
+   */
+  const cargarCategorias = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("https://68d482fa214be68f8c696bbd.mockapi.io/api/productos");
+      
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
       }
-    };
+      
+      const productos = await response.json();
+      
+      // Extraer categorías únicas y traducirlas
+      const categoriasUnicas = [...new Set(productos.map(prod => {
+        const categoriaOriginal = prod.categoria;
+        return traduccionCategorias[categoriaOriginal] || categoriaOriginal || 'Sin categoría';
+      }))];
+      
+      // Ordenar alfabéticamente
+      categoriasUnicas.sort();
+      
+      // Crear objetos de categoría con id, nombre e icono
+      const categoriasConDatos = categoriasUnicas.map((cat, index) => ({
+        id: index + 1,
+        nombre: cat,
+        icono: imagenesCategorias[cat] || null,
+        activa: true,
+        orden: index
+      }));
+      
+      setCategorias(categoriasConDatos);
+      setError(null);
+      
+    } catch (error) {
+      console.error('Error al cargar categorías:', error);
+      setError(error.message);
+      setCategorias([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchCategorias();
+  /**
+   * Agregar una nueva categoría
+   */
+  const agregarCategoria = (nombre, icono = null) => {
+    const nuevaCategoria = {
+      id: categorias.length + 1,
+      nombre,
+      icono,
+      activa: true,
+      orden: categorias.length
+    };
+    setCategorias([...categorias, nuevaCategoria]);
+  };
+
+  /**
+   * Actualizar una categoría existente
+   */
+  const actualizarCategoria = (id, datosActualizados) => {
+    setCategorias(categorias.map(cat => 
+      cat.id === id ? { ...cat, ...datosActualizados } : cat
+    ));
+  };
+
+  /**
+   * Eliminar una categoría
+   */
+  const eliminarCategoria = (id) => {
+    setCategorias(categorias.filter(cat => cat.id !== id));
+  };
+
+  /**
+   * Activar/Desactivar una categoría
+   */
+  const toggleCategoria = (id) => {
+    setCategorias(categorias.map(cat => 
+      cat.id === id ? { ...cat, activa: !cat.activa } : cat
+    ));
+  };
+
+  /**
+   * Reordenar categorías
+   */
+  const reordenarCategorias = (nuevasCategoriasOrdenadas) => {
+    const categoriasConOrden = nuevasCategoriasOrdenadas.map((cat, index) => ({
+      ...cat,
+      orden: index
+    }));
+    setCategorias(categoriasConOrden);
+  };
+
+  /**
+   * Obtener solo categorías activas
+   */
+  const obtenerCategoriasActivas = () => {
+    return categorias.filter(cat => cat.activa).sort((a, b) => a.orden - b.orden);
+  };
+
+  /**
+   * Buscar categoría por nombre
+   */
+  const buscarCategoria = (nombre) => {
+    return categorias.find(cat => 
+      cat.nombre.toLowerCase() === nombre.toLowerCase()
+    );
+  };
+
+  useEffect(() => {
+    cargarCategorias();
   }, []);
 
   const contextValue = {
     categorias,
     loading,
     error,
-    traduccionCategorias // Exportar también el diccionario para uso en otros componentes
+    traduccionCategorias,
+    imagenesCategorias,
+    // Funciones de administración
+    cargarCategorias,
+    agregarCategoria,
+    actualizarCategoria,
+    eliminarCategoria,
+    toggleCategoria,
+    reordenarCategorias,
+    obtenerCategoriasActivas,
+    buscarCategoria
   };
 
   return (

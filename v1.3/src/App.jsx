@@ -16,6 +16,7 @@ import RutaProtegida from './pages/RutaProtegida'
 import { CarritoProvider } from './context/CarritoContext'
 import { AuthProvider } from './context/AuthContext'
 import { CategoriasProvider } from './context/CategoriasContext'
+import { SliderProvider } from './context/SliderContext'
 
 /**
  * Componente principal de la aplicación
@@ -33,12 +34,13 @@ function App() {
   return (
     <AuthProvider>
       <CategoriasProvider>
-        <CarritoProvider>
-          {/* Barra de navegación presente en todas las páginas */}
-          <Navbar />
+        <SliderProvider>
+          <CarritoProvider>
+            {/* Barra de navegación presente en todas las páginas */}
+            <Navbar />
         
-        {/* Configuración de rutas de la aplicación */}
-        <Routes>
+            {/* Configuración de rutas de la aplicación */}
+            <Routes>
           {/* Ruta de la página principal */}
           <Route path="/" element={<Inicio />} />
           {/* Ruta de la página de servicios */}
@@ -61,7 +63,8 @@ function App() {
             } 
           />
         </Routes>
-        </CarritoProvider>
+          </CarritoProvider>
+        </SliderProvider>
       </CategoriasProvider>
     </AuthProvider>
   )
