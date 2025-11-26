@@ -19,6 +19,9 @@ import { CategoriasProvider } from './context/CategoriasContext'
 import { SliderProvider } from './context/SliderContext'
 import { PromocionesProvider } from './context/PromocionesContext'
 import { BannersProvider } from './context/BannersContext'
+// Importacion de estilos globales
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 /**
  * Componente principal de la aplicación
