@@ -6,5 +6,5 @@ export default defineConfig({
   plugins: [react()],
   // Configuración dinámica: usa base solo en producción (GitHub Pages)
   // En desarrollo local usa '/'
-  base: process.env.NODE_ENV === 'production' ? '/Pre-entrega-react/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/Proyecto-React/' : '/',
 })
