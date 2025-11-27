@@ -4,9 +4,9 @@
 
 /* Sección de promociones */
 .promociones-section {
-  width: 100%;
+  width: calc(100% - 30px);
   padding: 10px 0;
-  margin-bottom: 20px;
+  margin: 0 15px 20px 15px;
   border-radius: 8px;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
@@ -15,7 +15,7 @@
 .promociones-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0;
   display: flex;
   gap: 15px;
   justify-content: center;

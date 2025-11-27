@@ -19,8 +19,8 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-primary bg-gradient text-white sticky-top shadow">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top shadow">
+      <div className="container-fluid py-1">
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

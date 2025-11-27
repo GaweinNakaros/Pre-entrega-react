@@ -1,5 +1,9 @@
-
-
+/* Navbar con gradiente personalizado */
+.navbar-custom {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 10px 15px 0 15px;
+  border-radius: 8px;
+}
 
 /* Badge del carrito, único estilo personalizado necesario con Bootstrap */
 .carrito-badge {
@@ -7,7 +11,7 @@
   background-color: #dc3545;
   color: white;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 1000;
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   margin-left: 0.5rem;
