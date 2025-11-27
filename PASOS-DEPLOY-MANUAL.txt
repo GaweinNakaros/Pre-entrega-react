@@ -1,0 +1,79 @@
+PASOS PARA DEPLOY MANUAL A GH-PAGES
+====================================
+
+PASO 1: Generar el build desde rama-de-trabajo
+-----------------------------------------------
+1. Cambiar a rama-de-trabajo:
+   git checkout rama-de-trabajo
+
+2. Ir a v1.3:
+   cd v1.3
+
+3. Generar build:
+   npm run build
+
+4. El build estará en: v1.3\dist\
+
+
+PASO 2: Copiar archivos del build
+----------------------------------
+5. Abrir Explorador de Windows en: C:\Pre-entrega-react\v1.3\dist\
+
+6. Seleccionar TODO el contenido de dist\ (Ctrl+A)
+
+7. Copiar (Ctrl+C)
+
+
+PASO 3: Preparar gh-pages
+--------------------------
+8. Cambiar a gh-pages:
+   cd ..
+   git checkout gh-pages
+
+9. Abrir Explorador de Windows en: C:\Pre-entrega-react\
+
+10. Eliminar MANUALMENTE estos archivos/carpetas:
+    - index.html (el viejo)
+    - assets\ (carpeta vieja)
+    - vite.svg (si existe)
+    
+    NO ELIMINAR:
+    - .git\
+    - .gitignore
+    - 404.html
+
+
+PASO 4: Pegar nuevo build
+--------------------------
+11. Pegar los archivos copiados (Ctrl+V) en C:\Pre-entrega-react\
+
+12. VERIFICAR que NO existan estas carpetas:
+    - v1.3\
+    - node_modules\
+
+
+PASO 5: Commitear y subir
+--------------------------
+13. Verificar cambios:
+    git status
+
+14. Agregar todos los cambios:
+    git add -A
+
+15. Commitear:
+    git commit -m "deploy: Actualizar con estilos mejorados"
+
+16. Subir a GitHub:
+    git push origin gh-pages
+
+
+PASO 6: Volver a rama-de-trabajo
+---------------------------------
+17. git checkout rama-de-trabajo
+
+
+VERIFICACIÓN FINAL
+------------------
+- Esperar 1-2 minutos
+- Visitar: https://gaweinnakaros.github.io/Proyecto-React/
+- Verificar que se vean los cambios (navbar morado, márgenes, etc.)
