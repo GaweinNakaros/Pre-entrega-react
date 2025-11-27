@@ -58,8 +58,15 @@ Write-Host "`n🧹 Limpiando archivos viejos..." -ForegroundColor Cyan
 Get-ChildItem -Exclude .git,v1.3 | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 
 # 6. Copiar nuevo build
-Write-Host "`n📋 Copiando archivos del build..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Copiando archivos del build..." -ForegroundColor Cyan
 Copy-Item v1.3\dist\* -Destination . -Recurse -Force
+
+# 6.5. Crear .gitignore para gh-pages
+@"
+node_modules/
+v1.3/
+"@ | Out-File -FilePath .gitignore -Encoding utf8
 
 # 7. Restaurar 404.html desde git
 Write-Host "Restaurando 404.html..." -ForegroundColor Cyan
