@@ -7,10 +7,10 @@ param(
 
 Write-Host "🚀 Iniciando deploy a GitHub Pages..." -ForegroundColor Cyan
 
-# 1. Verificar que estamos en feature/nuevos-modulos
+# 1. Verificar que estamos en rama-de-trabajo
 $currentBranch = git branch --show-current
-if ($currentBranch -ne "feature/nuevos-modulos") {
-    Write-Host "❌ Error: Debes estar en la rama feature/nuevos-modulos" -ForegroundColor Red
+if ($currentBranch -ne "rama-de-trabajo") {
+    Write-Host "❌ Error: Debes estar en la rama rama-de-trabajo" -ForegroundColor Red
     Write-Host "   Rama actual: $currentBranch" -ForegroundColor Yellow
     exit 1
 }
@@ -25,8 +25,8 @@ if ($status) {
         $commitMsg = Read-Host "Mensaje del commit"
         git add .
         git commit -m $commitMsg
-        git push origin feature/nuevos-modulos
-        Write-Host "✅ Cambios committeados en feature/nuevos-modulos" -ForegroundColor Green
+        git push origin rama-de-trabajo
+        Write-Host "✅ Cambios committeados en rama-de-trabajo" -ForegroundColor Green
     } else {
         Write-Host "❌ Deploy cancelado. Haz commit de tus cambios primero." -ForegroundColor Red
         exit 1
@@ -108,9 +108,9 @@ git commit -m $CommitMessage
 git push origin gh-pages
 Write-Host "✅ Deploy completado exitosamente" -ForegroundColor Green
 
-# 10. Volver a feature/nuevos-modulos
-Write-Host "`n🔙 Volviendo a feature/nuevos-modulos..." -ForegroundColor Cyan
-git checkout feature/nuevos-modulos
+# 10. Volver a rama-de-trabajo
+Write-Host "`n🔙 Volviendo a rama-de-trabajo..." -ForegroundColor Cyan
+git checkout rama-de-trabajo
 
 Write-Host "`n🎉 ¡Deploy finalizado!" -ForegroundColor Green
 Write-Host "🌐 Tu sitio se actualizará en 1-2 minutos en:" -ForegroundColor Cyan
