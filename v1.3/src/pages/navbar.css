@@ -5,6 +5,11 @@
   border-radius: 8px;
 }
 
+/* Links del navbar con tamaño de fuente aumentado */
+.navbar-custom .nav-link {
+  font-size: 1.1rem;
+}
+
 /* Badge del carrito, único estilo personalizado necesario con Bootstrap */
 .carrito-badge {
   display: inline-block;
