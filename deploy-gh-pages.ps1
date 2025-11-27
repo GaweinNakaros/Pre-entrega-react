@@ -61,35 +61,11 @@ Get-ChildItem -Exclude .git,v1.3 | Remove-Item -Recurse -Force -ErrorAction Sile
 Write-Host "`n📋 Copiando archivos del build..." -ForegroundColor Cyan
 Copy-Item v1.3\dist\* -Destination . -Recurse -Force
 
-# 7. Restaurar 404.html si no existe en el build
+# 7. Restaurar 404.html desde git
+Write-Host "Restaurando 404.html..." -ForegroundColor Cyan
+git checkout HEAD -- 404.html 2>$null
 if (-not (Test-Path 404.html)) {
-    Write-Host "⚠️  404.html no existe, restaurando desde git..." -ForegroundColor Yellow
-    git checkout HEAD~1 -- 404.html 2>$null
-    if (-not (Test-Path 404.html)) {
-        # Crear 404.html si no existe en el historial
-        @"
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Cargando...</title>
-    <script type="text/javascript">
-      var pathSegmentsToKeep = 1;
-      var l = window.location;
-      sessionStorage.redirect = l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/') + 
-        (l.search ? l.search : '') + 
-        (l.hash ? l.hash : '');
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/'
-      );
-    </script>
-  </head>
-  <body>
-  </body>
-</html>
-"@ | Out-File -FilePath 404.html -Encoding utf8
-    }
+    Write-Host "Advertencia: 404.html no encontrado en historial" -ForegroundColor Yellow
 }
 
 # 8. Verificar si hay cambios
@@ -102,16 +78,19 @@ if (-not $ghPagesStatus) {
 }
 
 # 9. Commit y push
-Write-Host "`n💾 Haciendo commit en gh-pages..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Haciendo commit en gh-pages..." -ForegroundColor Cyan
 git add .
 git commit -m $CommitMessage
 git push origin gh-pages
-Write-Host "✅ Deploy completado exitosamente" -ForegroundColor Green
+Write-Host "Deploy completado exitosamente" -ForegroundColor Green
 
 # 10. Volver a rama-de-trabajo
-Write-Host "`n🔙 Volviendo a rama-de-trabajo..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Volviendo a rama-de-trabajo..." -ForegroundColor Cyan
 git checkout rama-de-trabajo
 
-Write-Host "`n🎉 ¡Deploy finalizado!" -ForegroundColor Green
-Write-Host "🌐 Tu sitio se actualizará en 1-2 minutos en:" -ForegroundColor Cyan
-Write-Host "   https://gaweinnakaros.github.io/Pre-entrega-react/" -ForegroundColor Blue
+Write-Host ""
+Write-Host "Deploy finalizado!" -ForegroundColor Green
+Write-Host "Tu sitio se actualizara en 1-2 minutos" -ForegroundColor Cyan
+Write-Host "https://gaweinnakaros.github.io/Proyecto-React/"
