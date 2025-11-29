@@ -8,6 +8,37 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 // useEffect: Hook para ejecutar efectos secundarios (como leer localStorage)
 
 // ====================================================
+// BASE DE DATOS DE USUARIOS
+// ====================================================
+/**
+ * Base de datos simulada de usuarios del sistema
+ * 
+ * En una aplicación real, esto estaría en un backend con base de datos
+ * y las contraseñas estarían hasheadas (encriptadas)
+ * 
+ * Estructura de cada usuario:
+ * - email: Identificador único del usuario
+ * - password: Contraseña en texto plano (solo para desarrollo)
+ * - rol: 'admin' para administradores, 'usuario' para usuarios normales
+ * - nombre: Nombre completo del usuario
+ */
+const USUARIOS_DB = [
+  {
+    email: 'admin@gmail.com.ar',
+    password: 'admin',
+    rol: 'admin',
+    nombre: 'Administrador del Sistema'
+  },
+  // Puedes agregar más usuarios aquí en el futuro
+  // {
+  //   email: 'usuario@gmail.com',
+  //   password: '12345',
+  //   rol: 'usuario',
+  //   nombre: 'Usuario Normal'
+  // }
+];
+
+// ====================================================
 // CREACIÓN DEL CONTEXTO
 // ====================================================
 // createContext() crea un objeto de contexto que nos permite compartir
@@ -97,31 +128,51 @@ export const AuthProvider = ({ children }) => {
   }, []); // Array vacío = solo se ejecuta al montar el componente
 
   // ====================================================
-  // FUNCIÓN: INICIAR SESIÓN
+  // FUNCIÓN: INICIAR SESIÓN (ADMIN O INVITADO)
   // ====================================================
   /**
-   * Inicia sesión de un usuario con su email
+   * Inicia sesión permitiendo dos modos:
+   * - ADMIN: requiere email+password y se valida contra USUARIOS_DB
+   * - INVITADO: cualquier email distinto al admin se autentica sin contraseña
    * 
-   * @param {string} email - Email del usuario que inicia sesión
+   * @param {string} email - Email del usuario
+   * @param {string} [password] - Contraseña (solo requerida para admin)
    * 
-   * Proceso:
-   * 1. Crea un objeto usuario con email y fecha de ingreso
-   * 2. Actualiza el estado local (React)
-   * 3. Guarda el usuario en localStorage (navegador) para persistencia
+   * @returns {Object} - { exito, mensaje, usuario }
    */
-  const iniciarSesion = (email) => {
-    // Creamos un objeto con los datos del usuario
-    const nuevoUsuario = {
-      email, // Sintaxis corta de ES6: equivale a { email: email }
-      fechaIngreso: new Date().toISOString() // Fecha actual en formato ISO
+  const iniciarSesion = (email, password) => {
+    // Si el email corresponde al admin, validar contra la DB
+    const usuarioAdmin = USUARIOS_DB.find(u => u.email === email);
+
+    if (usuarioAdmin) {
+      // Modo ADMIN: exigir contraseña exacta
+      if (usuarioAdmin.password !== password) {
+        return { exito: false, mensaje: 'La contraseña es incorrecta' };
+      }
+
+      const sesionAdmin = {
+        email: usuarioAdmin.email,
+        nombre: usuarioAdmin.nombre,
+        rol: usuarioAdmin.rol,
+        fechaIngreso: new Date().toISOString()
+      };
+
+      setUsuario(sesionAdmin);
+      localStorage.setItem('usuario', JSON.stringify(sesionAdmin));
+      return { exito: true, mensaje: 'Inicio de sesión exitoso', usuario: sesionAdmin };
+    }
+
+    // Modo INVITADO: cualquier email no admin inicia sin password
+    const sesionInvitado = {
+      email,
+      nombre: 'Invitado',
+      rol: 'usuario',
+      fechaIngreso: new Date().toISOString()
     };
-    
-    // Actualizamos el estado de React con el nuevo usuario
-    setUsuario(nuevoUsuario);
-    
-    // Guardamos en localStorage para que persista entre sesiones
-    // JSON.stringify(): Convierte el objeto JavaScript a string JSON
-    localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
+
+    setUsuario(sesionInvitado);
+    localStorage.setItem('usuario', JSON.stringify(sesionInvitado));
+    return { exito: true, mensaje: 'Sesión iniciada como invitado', usuario: sesionInvitado };
   };
 
   // ====================================================
@@ -162,6 +213,75 @@ export const AuthProvider = ({ children }) => {
   };
 
   // ====================================================
+  // FUNCIÓN: VERIFICAR SI ES ADMINISTRADOR
+  // ====================================================
+  /**
+   * Verifica si el usuario actual tiene rol de administrador
+   * 
+   * @returns {boolean} - true si el usuario es admin, false si no lo es o no está autenticado
+   * 
+   * PROCESO:
+   * 1. Verifica que exista un usuario autenticado
+   * 2. Verifica que el rol del usuario sea 'admin'
+   * 
+   * Uso común:
+   *   if (esAdmin()) {
+   *     // Mostrar panel de administración
+   *     // Permitir acciones de administrador
+   *   }
+   * 
+   * EJEMPLO DE USO EN COMPONENTES:
+   * 
+   *   const { esAdmin } = useAuth();
+   *   
+   *   return (
+   *     <div>
+   *       <h1>Panel de Control</h1>
+   *       {esAdmin() && (
+   *         <button>Eliminar Producto</button>
+   *       )}
+   *     </div>
+   *   );
+   */
+  const esAdmin = () => {
+    // El operador && evalúa de izquierda a derecha
+    // Si usuario es null, retorna false sin evaluar el resto
+    // Si usuario existe, evalúa usuario.rol === 'admin'
+    return usuario !== null && usuario.rol === 'admin';
+  };
+
+  // ====================================================
+  // FUNCIÓN: OBTENER ROL DEL USUARIO
+  // ====================================================
+  /**
+   * Obtiene el rol del usuario actual
+   * 
+   * @returns {string|null} - El rol del usuario ('admin' o 'usuario') o null si no está autenticado
+   * 
+   * Útil para:
+   * - Mostrar badges o etiquetas de rol en la UI
+   * - Realizar validaciones condicionales
+   * - Logging y auditoría
+   * 
+   * EJEMPLO DE USO:
+   * 
+   *   const { obtenerRol } = useAuth();
+   *   const rol = obtenerRol();
+   *   
+   *   return (
+   *     <div>
+   *       <span>Tu rol es: {rol || 'Invitado'}</span>
+   *     </div>
+   *   );
+   */
+  const obtenerRol = () => {
+    // El operador ? : (ternario) evalúa una condición
+    // Si usuario existe, retorna usuario.rol
+    // Si usuario es null, retorna null
+    return usuario ? usuario.rol : null;
+  };
+
+  // ====================================================
   // VALOR DEL CONTEXTO
   // ====================================================
   /**
@@ -170,16 +290,20 @@ export const AuthProvider = ({ children }) => {
    * 
    * Cualquier componente que use useAuth() tendrá acceso a:
    * - usuario: Objeto con datos del usuario actual (o null)
-   * - iniciarSesion: Función para autenticar
+   * - iniciarSesion: Función para autenticar con validación
    * - cerrarSesion: Función para desautenticar
    * - estaAutenticado: Función para verificar autenticación
+   * - esAdmin: Función para verificar si el usuario es administrador
+   * - obtenerRol: Función para obtener el rol del usuario
    * - cargando: Boolean que indica si estamos cargando datos iniciales
    */
   const value = {
-    usuario,           // Estado actual del usuario
-    iniciarSesion,     // Función para login
+    usuario,           // Estado actual del usuario (incluye: email, nombre, rol, fechaIngreso)
+    iniciarSesion,     // Función para login con validación de credenciales
     cerrarSesion,      // Función para logout
-    estaAutenticado,   // Función de verificación
+    estaAutenticado,   // Función de verificación de autenticación
+    esAdmin,           // Función para verificar si el usuario es admin
+    obtenerRol,        // Función para obtener el rol del usuario
     cargando           // Estado de carga inicial
   };
 

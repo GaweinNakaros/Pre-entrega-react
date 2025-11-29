@@ -36,6 +36,12 @@ function IniciarSesion() {
   // Estado para almacenar el email que el usuario escribe
   const [email, setEmail] = useState(''); // Inicializado como string vacío
   
+  // Estado para almacenar la contraseña que el usuario escribe
+  const [password, setPassword] = useState(''); // Inicializado como string vacío
+  
+  // Estado para controlar si mostramos la contraseña o no
+  const [mostrarPassword, setMostrarPassword] = useState(false); // false = oculta
+  
   // Estado para almacenar mensajes de error de validación
   const [error, setError] = useState(''); // Inicializado como string vacío
   
@@ -76,6 +82,9 @@ function IniciarSesion() {
    */
   const from = location.state?.from?.pathname || '/';
 
+  // Determina si el email ingresado corresponde al admin
+  const esEmailAdmin = email.trim().toLowerCase() === 'admin@gmail.com.ar';
+
   // ====================================================
   // FUNCIÓN: VALIDAR EMAIL
   // ====================================================
@@ -115,12 +124,9 @@ function IniciarSesion() {
    * 
    * @param {Event} e - Evento del formulario
    * 
-   * Proceso:
-   * 1. Previene el comportamiento por defecto del formulario
-   * 2. Limpia errores anteriores
-   * 3. Valida que el email no esté vacío
-   * 4. Valida el formato del email
-   * 5. Si todo es válido, autentica y redirige
+   * PROCESO INVITADO/ADMIN:
+   * - Invitado: solo email válido → inicia sin contraseña
+   * - Admin: email admin → requiere contraseña correcta
    */
   const manejarSubmit = (e) => {
     // e.preventDefault(): Evita que el formulario recargue la página
@@ -149,18 +155,38 @@ function IniciarSesion() {
       return; // Detenemos la ejecución aquí
     }
 
-    // ====================================================
-    // AUTENTICACIÓN Y REDIRECCIÓN
-    // ====================================================
-    // Si llegamos aquí, todas las validaciones pasaron
+    // Si el email es el del admin, exigir contraseña; si no, modo invitado
+    let resultado;
+    if (esEmailAdmin) {
+      // VALIDACIÓN 3 (solo admin): contraseña no vacía
+      if (!password.trim()) {
+        setError('Por favor, ingresa tu contraseña de administrador');
+        return;
+      }
+      resultado = iniciarSesion(email, password);
+    } else {
+      // Invitado: iniciar sin contraseña
+      resultado = iniciarSesion(email);
+    }
     
-    // Autenticamos al usuario con su email
-    iniciarSesion(email);
-    
-    // Navegamos a la ruta que guardamos antes
-    // replace: true - Reemplaza la entrada actual del historial
-    // Esto evita que el usuario pueda volver al login con el botón "atrás"
-    navigate(from, { replace: true });
+    // Verificamos si la autenticación fue exitosa
+    if (resultado.exito) {
+      // ====================================================
+      // CASO EXITOSO: Redirigir al usuario
+      // ====================================================
+      // Navegamos a la ruta que guardamos antes
+      // replace: true - Reemplaza la entrada actual del historial
+      // Esto evita que el usuario pueda volver al login con el botón "atrás"
+      navigate(from, { replace: true });
+    } else {
+      // ====================================================
+      // CASO FALLIDO: Mostrar mensaje de error
+      // ====================================================
+      // El mensaje viene de AuthContext y puede ser:
+      // - "El email no está registrado en el sistema"
+      // - "La contraseña es incorrecta"
+      setError(resultado.mensaje);
+    }
   };
 
   // ====================================================
@@ -176,7 +202,7 @@ function IniciarSesion() {
       <div className="login-card">
         <h2 className="login-titulo">Iniciar Sesión</h2>
         <p className="login-descripcion">
-          Para continuar con tu compra, por favor ingresa tu email
+          Ingresa tu email para continuar.
         </p>
 
         {/* ================================================
@@ -186,6 +212,9 @@ function IniciarSesion() {
             Llamamos a manejarSubmit que maneja las validaciones
         */}
         <form onSubmit={manejarSubmit} className="login-form">
+          {/* ================================================
+              CAMPO DE EMAIL
+              ================================================ */}
           <div className="form-group">
             {/* htmlFor: Conecta el label con el input (accesibilidad) */}
             <label htmlFor="email" className="form-label">
@@ -210,12 +239,52 @@ function IniciarSesion() {
               type="email"
               id="email"
               className="form-input"
-              placeholder="tu@email.com"
+              placeholder="tuemail@gmail.com.ar"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoFocus
             />
           </div>
+
+          {/* ================================================
+              CAMPO DE CONTRASEÑA (SE MUESTRA SOLO SI EMAIL ES ADMIN)
+              ================================================ */}
+          {esEmailAdmin && (
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                Contraseña (admin)
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={mostrarPassword ? "text" : "password"}
+                  id="password"
+                  className="form-input"
+                  placeholder="Contraseña de administrador"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ paddingRight: '40px' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarPassword(!mostrarPassword)}
+                  className="btn-toggle-password"
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '18px'
+                  }}
+                  aria-label={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                >
+                  {mostrarPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* ================================================
               MENSAJE DE ERROR CONDICIONAL
@@ -234,13 +303,15 @@ function IniciarSesion() {
 
           {/* Botón de submit del formulario */}
           <button type="submit" className="btn-login">
-            Continuar
+            Iniciar Sesión
           </button>
         </form>
 
         {/* Nota informativa para el usuario */}
         <p className="login-nota">
-          💡 Tu email solo se usará para identificarte en esta sesión
+          Si no tienes cuenta, puedes solo identificarte con tu email.
+          <br />
+          No es necesario crear una cuenta para realizar compras.
         </p>
       </div>
     </div>
