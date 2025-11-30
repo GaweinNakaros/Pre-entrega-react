@@ -1,5 +1,7 @@
 # 📚 Ejemplos de Uso - Sistema de Autenticación
 
+> Estado actualizado del proyecto: Se usan toasts (React Toastify) en lugar de `alert()` y se evita `window.confirm()` para mejor UX. Algunos ejemplos se mantienen con `alert/confirm` a modo didáctico básico; puedes reemplazarlos por `toast.success()`, `toast.error()` o un modal.
+
 Esta guía contiene 12 ejemplos prácticos de cómo usar el sistema de autenticación en tu aplicación React.
 
 ---
@@ -287,13 +289,14 @@ function BotonComprar() {
 
 ---
 
-## 8. Mensaje de Bienvenida Después del Login
+## 8. Mensaje de Bienvenida Después del Login (versión con toast)
 
 Cómo mostrar un mensaje de bienvenida al iniciar sesión.
 
 ```javascript
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function IniciarSesionConMensaje() {
   const navigate = useNavigate();
@@ -302,13 +305,13 @@ function IniciarSesionConMensaje() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    iniciarSesion(email);
-    
-    // Mostrar mensaje de bienvenida
-    alert(`¡Bienvenido, ${email}!`);
-    
-    // Redirigir
-    navigate('/');
+    const resultado = iniciarSesion(email);
+    if (resultado.exito) {
+      toast.success(`Bienvenido, ${email}`);
+      navigate('/');
+    } else {
+      toast.error(resultado.mensaje || 'Error de autenticación');
+    }
   };
 
   return (
@@ -331,23 +334,22 @@ function IniciarSesionConMensaje() {
 
 ---
 
-## 9. Cerrar Sesión con Confirmación
+## 9. Cerrar Sesión con Confirmación (modal / toast)
 
 Cómo implementar un botón de cerrar sesión con confirmación.
 
 ```javascript
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function BotonCerrarSesion() {
   const { cerrarSesion } = useAuth();
   const navigate = useNavigate();
 
   const handleCerrarSesion = () => {
-    if (window.confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-      cerrarSesion();
-      navigate('/');
-      alert('Sesión cerrada exitosamente');
-    }
+    cerrarSesion();
+    toast.info('Sesión cerrada');
+    navigate('/');
   };
 
   return (
@@ -468,7 +470,7 @@ function App() {
 
 ---
 
-## 12. Persistencia con Timeout
+## 12. Persistencia con Timeout (ejemplo sin toasts por simplicidad)
 
 Cómo agregar un timeout de sesión al AuthContext.
 

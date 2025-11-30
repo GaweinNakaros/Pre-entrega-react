@@ -10,10 +10,12 @@ import { useCarrito } from "../context/CarritoContext";
 import { useAuth } from "../context/AuthContext";
 import './navbar.css';
 
+// Navbar con iconografía accesible, contador de carrito y acciones de sesión
 function Navbar() {
   const { cantidadTotal } = useCarrito();
   const { usuario, cerrarSesion, estaAutenticado, esAdmin } = useAuth();
 
+  // Cierre de sesión con feedback mediante toast (sin confirm modal)
   const manejarCerrarSesion = () => {
     cerrarSesion();
     toast.success('Sesión cerrada');

@@ -1,101 +1,55 @@
-# 📖 Guías de Documentación
+# 📖 Índice de Guías
 
-Esta carpeta contiene documentación detallada sobre el sistema de autenticación y conceptos de React.
+Esta carpeta agrupa DOCUMENTACIÓN y REFERENCIAS rápidas del proyecto. Cada archivo tiene un propósito claro: guía, ejemplos prácticos, glosario o referencia de subsistemas (categorías, banners, promociones, slider, deploy).
 
----
+## 🗂 Clasificación
 
-## 📚 Archivos Disponibles
+| Archivo | Tipo | Propósito | Uso rápido |
+|---------|------|-----------|-----------|
+| `EJEMPLOS_USO.md` | Ejemplos | Casos prácticos de autenticación y flujo | Copiar patrones y adaptar |
+| `GLOSARIO_CONCEPTOS.md` | Glosario | Sintaxis y conceptos clave de JS/React | Consultar definiciones |
+| `GUIA_RAPIDA.md` | Guía | Resumen operativo (login, flujo compra) | Leer al empezar |
+| `README_CATEGORIAS.md` | Subsistema | Gestión de categorías (Context + Slider) | Integrar categorías |
+| `README_BANNERS.md` | Subsistema | Administración y uso de banners dinámicos | Configurar carrusel principal |
+| `README_PROMOCIONES.md` | Subsistema | Promociones destacadas y API del contexto | Mostrar ofertas destacadas |
+| `README_SLIDER.md` | Componente | Slider reutilizable + API avanzada | Implementar sliders múltiples |
+| `PASOS-DEPLOY-MANUAL.txt` | Procedimiento | Deploy manual a GitHub Pages | Seguir paso a paso |
+| `Estructura.txt` | Referencia | Mapa rápido de archivos clave | Ubicar lógica principal |
 
-### 1. 📘 [EJEMPLOS_USO.md](./EJEMPLOS_USO.md)
-**12 ejemplos prácticos** de cómo usar el sistema de autenticación en tu aplicación.
+## 🔄 Estado del Proyecto (Contexto Actual)
+- Autenticación: Invitado/Admin con toasts y Helmet.
+- Catálogo: Búsqueda reactiva + paginación (URL params).
+- Carrito: Controles accesibles y página de pago protegida.
+- CRUD Productos: Validaciones y toasts.
+- SEO: Helmet en páginas clave.
+- Estilos: Bootstrap + styled-components (Theme/GlobalStyle).
 
-**Contenido:**
-- Uso del AuthContext en componentes
-- Proteger rutas nuevas
-- Acceder a datos del usuario
-- Contenido condicional
-- Redirección de usuarios
-- Validación de email
-- Combinar con el carrito
-- Mensajes de bienvenida
-- Confirmación de cierre de sesión
-- Hooks personalizados
-- Guards de navegación
-- Timeout de sesión
+## 🧭 Recomendaciones de Lectura
+1. Si estás empezando: `GLOSARIO_CONCEPTOS.md` → `GUIA_RAPIDA.md` → `EJEMPLOS_USO.md`.
+2. Si integras una sección visual: lee primero el README del subsistema (ej: Banners).
+3. Para dudas puntuales de sintaxis: usa Ctrl+F en el glosario.
 
-**¿Cuándo usar?** Cuando necesites implementar una funcionalidad específica de autenticación.
+## ✨ Convenciones
+- Código actual del proyecto evita `alert()` y `confirm()` en favor de toasts (React Toastify) o modales; algunos ejemplos legacy se conservan como referencia básica.
+- Los contextos siguen patrón: `Provider` + hook `useXxx()` + funciones CRUD.
+- Accesibilidad: usar `aria-label`, `role="main"`, `aria-labelledby` y `alt` descriptivos.
 
----
+## 🛠 Actualizaciones Pendientes (si mejoras en el futuro)
+- Migrar ejemplos restantes con `alert/confirm` a toasts/modales.
+- Añadir sección de ejemplos para búsqueda y paginación.
+- Documentar patrón de Helmet por página.
 
-### 2. 📗 [GLOSARIO_CONCEPTOS.md](./GLOSARIO_CONCEPTOS.md)
-**Glosario completo** de conceptos y sintaxis de JavaScript/React.
+## 📚 Recursos Externos
+- React: https://react.dev/
+- MDN JavaScript: https://developer.mozilla.org/
+- React Router: https://reactrouter.com/
+- JavaScript Info: https://javascript.info/
 
-**Contenido:**
-- Hooks de React (useState, useEffect, useContext, etc.)
-- Context API
-- Destructuring
-- Spread Operator
-- Arrow Functions
-- Template Literals
-- Operadores Lógicos (&&, ||, ?:, ?.)
-- Array Methods (map, filter, find, reduce)
-- Eventos en React
-- Props y Children
-- Object Methods
-- Computed Properties
-- Expresiones Regulares (Regex)
-- Async/Await
-
-**¿Cuándo usar?** Cuando no entiendas alguna sintaxis o concepto en el código.
-
----
-
-## 🎯 Cómo Usar Esta Documentación
-
-### Para Aprender
-1. Empieza con **GLOSARIO_CONCEPTOS.md** para entender la sintaxis básica
-2. Luego revisa **EJEMPLOS_USO.md** para ver aplicaciones prácticas
-
-### Para Implementar
-1. Ve a **EJEMPLOS_USO.md** y busca el ejemplo que necesitas
-2. Copia y adapta el código a tu caso
-3. Si no entiendes alguna sintaxis, busca en **GLOSARIO_CONCEPTOS.md**
-
-### Para Consultar
-- Usa el **Índice** al inicio de cada archivo para ir directamente al tema
-- Usa `Ctrl + F` para buscar términos específicos
+## ✅ Cómo Contribuir a las Guías
+1. Mantén el encabezado que indique Tipo y Propósito.
+2. Añade ejemplos mínimos reproducibles.
+3. Evita duplicar contenido: enlaza al archivo fuente.
 
 ---
-
-## 📁 Formato de los Archivos
-
-Todos los archivos están en formato **Markdown (.md)** para mejor lectura:
-
-### Cómo Ver en VS Code
-1. **Vista Previa:** `Ctrl + Shift + V`
-2. **Vista Lado a Lado:** `Ctrl + K` luego `V`
-3. **Solo Texto:** Abre el archivo normalmente
-
----
-
-## 🔗 Archivos Relacionados
-
-En la carpeta raíz de `v1.3` también encontrarás:
-
-- **[AUTENTICACION.md](../AUTENTICACION.md)** - Documentación técnica completa
-- **[GUIA_RAPIDA.md](../GUIA_RAPIDA.md)** - Guía de inicio rápido
-- **[README.md](../README.md)** - README interno de guias
-
----
-
-## 🎓 Recursos Externos
-
-Complementa tu aprendizaje con estos recursos:
-
-- [React Docs](https://react.dev/) - Documentación oficial
-- [MDN Web Docs](https://developer.mozilla.org/) - JavaScript
-- [React Router](https://reactrouter.com/) - Enrutamiento
-- [JavaScript.info](https://javascript.info/) - Tutorial completo de JS
-
----
+Para las operaciones generales del proyecto (instalación y uso) ver el `README.md` raíz.
 

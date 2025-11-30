@@ -34,15 +34,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * Componente principal de la aplicación
- * Responsabilidades:
- * - Gestionar el enrutamiento de la aplicación
- * - Proporcionar la estructura general de la app
- * - Envolver la aplicación con los proveedores de contexto (Auth y Carrito)
  * 
- * NO responsable de:
- * - Implementar la lógica del carrito (delegada a CarritoContext)
- * - Implementar la lógica de autenticación (delegada a AuthContext)
- * - Manejar el estado directamente
+ * Responsabilidades actualizadas:
+ * - Gestionar el enrutamiento de toda la app.
+ * - Envolver con proveedores de contexto (Auth, Carrito, Categorías, Slider, Promociones, Banners, Api).
+ * - Aplicar tema y estilos globales (ThemeProvider + GlobalStyle).
+ * - Proveer SEO por página (HelmetProvider).
+ * - Habilitar notificaciones no bloqueantes (ToastContainer).
+ * 
+ * No implementa la lógica de negocio de cada contexto.
  */
 function App() {
   return (

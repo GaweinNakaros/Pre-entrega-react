@@ -24,8 +24,9 @@ import './Pago.css';
  * - Mostrar resumen de la orden
  * - Recopilar información de envío del cliente
  * - Validar todos los campos del formulario
- * - Procesar el pago (simulado)
- * - Vaciar el carrito después de una compra exitosa
+ * - Procesar el pago (simulado) con feedback mediante toast.
+ * - Vaciar el carrito después de una compra exitosa y redirigir.
+ * - SEO con Helmet y accesibilidad en contenedores.
  * 
  * NOTA: Esta página solo es accesible si el usuario está autenticado
  * RutaProtegida en App.jsx se encarga de verificar esto
@@ -197,7 +198,7 @@ function Pago() {
   };
 
   // ====================================================
-  // FUNCIÓN: MANEJAR ENVÍO DEL FORMULARIO (SUBMIT)
+  // FUNCIÓN: MANEJAR ENVÍO DEL FORMULARIO (SUBMIT) con toasts y actualización de stock
   // ====================================================
   /**
    * Se ejecuta cuando el usuario hace submit del formulario de pago

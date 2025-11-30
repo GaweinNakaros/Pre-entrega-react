@@ -11,9 +11,15 @@ import { useCategorias } from '../context/CategoriasContext';
 import { useApi } from '../context/ApiContext';
 
 /**
- * Componente Productos
- * Muestra una lista de productos en un diseño de cuadrícula
- * Incluye manejo de estados de carga y errores
+ * Catálogo de Productos
+ * 
+ * Responsabilidades actualizadas:
+ * - Obtener y normalizar productos desde ApiContext.
+ * - Filtrar por categoría (?categoria=) y búsqueda reactiva (?q=) por nombre/categoría.
+ * - Paginación accesible (?page=) con tamaño fijo (8 por página).
+ * - Agregar al carrito con validación de stock y toasts.
+ * - SEO per-page con Helmet.
+ * - Accesibilidad: aria roles/labels, contador con aria-live.
  */
 function Productos() {
     // Obtener funciones del contexto del carrito
@@ -46,7 +52,7 @@ function Productos() {
         agregarAlCarrito(producto);
         toast.success(`${producto.nombre} agregado al carrito`);
     };
-    // useEffect para cargar los productos cuando el componente se monta
+    // Carga inicial de productos
     useEffect(() => {
         // Función asíncrona para obtener los productos de la API
         const fetchProductos = async () => {
@@ -72,7 +78,8 @@ function Productos() {
         setQuery(searchParams.get('q') || '');
     }, [searchParams]);
     
-    // Filtrar productos por categoría si existe el parámetro en la URL
+    // Filtrado combinado por categoría y búsqueda (memoizado)
+    // useMemo: recalcula solo si cambian dependencias, optimizando rendimiento
     const productosFiltrados = useMemo(() => {
         const base = categoriaFiltro 
             ? productos.filter(prod => prod.categoria === categoriaFiltro)
@@ -85,7 +92,7 @@ function Productos() {
         );
     }, [productos, categoriaFiltro, searchParams]);
 
-    // Cálculo de paginación
+    // Paginación: cálculo de página actual y rebanado de resultados
     const totalProductos = productosFiltrados.length;
     const totalPaginas = Math.max(1, Math.ceil(totalProductos / pageSize));
     const paginaActual = Math.min(Math.max(1, pageInicial), totalPaginas);

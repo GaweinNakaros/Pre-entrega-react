@@ -23,7 +23,7 @@ import "./carrito_simple.css";
  * - Permitir aumentar/disminuir cantidades
  * - Permitir eliminar productos
  * - Mostrar el total de la compra
- * - Permitir vaciar el carrito completo
+ * - Permitir vaciar el carrito completo (con toast informativo).
  * - Redirigir a la página de pago
  * 
  * Consume el CarritoContext para todas las operaciones
@@ -62,7 +62,7 @@ export default function CarritoCompras() {
 
 
   // ====================================================
-  // FUNCIÓN: MANEJAR VACIAR CARRITO
+  // FUNCIÓN: MANEJAR VACIAR CARRITO (sin confirm modal, con toast)
   // ====================================================
   /**
    * Maneja el evento de vaciar todo el carrito
@@ -79,7 +79,7 @@ export default function CarritoCompras() {
   };
 
   // ====================================================
-  // FUNCIÓN: MANEJAR ELIMINAR PRODUCTO
+  // FUNCIÓN: MANEJAR ELIMINAR PRODUCTO (con toast informativo)
   // ====================================================
   /**
    * Maneja el evento de eliminar un producto específico del carrito

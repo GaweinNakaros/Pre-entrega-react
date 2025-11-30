@@ -1,5 +1,7 @@
 # Sistema de Banners Administrable
 
+> Tipo: Subsistema | Propósito: Gestión y renderizado de banners dinámicos para sliders principales. Ver índice general en `./README.md`.
+
 ## 📋 Descripción
 
 Sistema completo y flexible para gestionar banners dinámicos con soporte para múltiples tipos de contenido. Permite administrar banners del carrusel principal con la opción de mostrar solo imágenes, solo texto, o combinación de ambos.
@@ -20,7 +22,7 @@ Sistema completo y flexible para gestionar banners dinámicos con soporte para m
 - ✅ **Filtros**: Por tipo de contenido, estado activo y fechas
 - ✅ **Enlaces**: Soporte para URLs personalizadas en cada banner
 
-## 🎯 Uso Básico
+## 🚀 Uso Básico
 
 ### En Componentes
 
@@ -46,7 +48,7 @@ function MiComponente() {
 }
 ```
 
-## 📚 API del Context
+## 📚 API del Context (Administración)
 
 ### Funciones Disponibles
 

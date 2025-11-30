@@ -1,5 +1,7 @@
 # Sistema de Gestión de Categorías
 
+> Tipo: Subsistema | Propósito: Administración y visualización de categorías consumibles en sliders y filtros. Índice general: `./README.md`.
+
 ## 📋 Descripción
 
 Sistema completo y administrable de gestión de categorías con contexto global y componente reutilizable. Diseñado para ser fácilmente gestionado desde un futuro panel de administración.

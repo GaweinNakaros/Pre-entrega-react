@@ -1,5 +1,7 @@
 # 📚 Glosario de Conceptos y Sintaxis de React
 
+> Este glosario resume la sintaxis y patrones usados actualmente en el proyecto (React + Vite, Context, Helmet, Toastify, styled-components). Úsalo como referencia rápida. Para ejemplos prácticos ve `EJEMPLOS_USO.md`.
+
 Guía completa de los conceptos y sintaxis más importantes que encontrarás en este proyecto React.
 
 ---
@@ -23,11 +25,11 @@ Guía completa de los conceptos y sintaxis más importantes que encontrarás en 
 
 ---
 
-## 1. Hooks de React
+## 1. Hooks de React (estado y efectos)
 
 > **HOOKS:** Funciones especiales que permiten "engancharse" a características de React. Siempre empiezan con "use" (useState, useEffect, useContext, etc.). Solo se pueden usar dentro de componentes funcionales.
 
-### useState
+### useState (estado local)
 
 Maneja estado local en un componente. Retorna un array con 2 elementos: `[valorActual, funcionParaActualizarlo]`
 
@@ -56,7 +58,7 @@ function Ejemplo1() {
 
 ---
 
-### useEffect
+### useEffect (efectos secundarios)
 
 Ejecuta código después de que el componente se renderiza. Útil para efectos secundarios: APIs, suscripciones, timers, etc.
 
@@ -83,7 +85,7 @@ function Ejemplo2() {
 
 ---
 
-### useContext
+### useContext (acceso a contextos)
 
 Accede al valor de un contexto sin usar Consumer. Simplifica el acceso a datos compartidos globalmente.
 
@@ -100,7 +102,7 @@ function Ejemplo3() {
 
 ---
 
-### useNavigate (de react-router-dom)
+### useNavigate (react-router-dom) navegación programática
 
 Permite navegar programáticamente entre rutas. Es el reemplazo moderno de `history.push()`
 
@@ -120,7 +122,7 @@ function Ejemplo4() {
 
 ---
 
-### useLocation (de react-router-dom)
+### useLocation (react-router-dom) información de ruta
 
 Devuelve el objeto location actual. Útil para saber en qué ruta estamos o qué parámetros hay.
 

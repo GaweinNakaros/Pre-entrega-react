@@ -6,6 +6,12 @@ import { useCategorias } from '../context/CategoriasContext';
 import './productos.css';
 
 // Página de administración de productos (solo admin)
+// Responsabilidades actualizadas:
+// - CRUD de productos con validaciones y feedback mediante toasts.
+// - Carga inicial desde ApiContext con traducción de categorías.
+// - Formulario controlado (crear/editar) y listado en tarjetas Bootstrap.
+// - Confirmación de eliminación mediante modal simple.
+// - SEO por página con Helmet y accesibilidad en contenedores.
 function AdminProductos() {
   const { getProductos, createProduct, updateProduct, deleteProduct } = useApi();
   const { traduccionCategorias } = useCategorias();
@@ -26,7 +32,7 @@ function AdminProductos() {
   const [accionCargando, setAccionCargando] = useState(false);
   const [eliminarId, setEliminarId] = useState(null); // para modal de confirmación
 
-  // Cargar productos iniciales
+  // Cargar productos iniciales desde la API
   useEffect(() => {
     const cargar = async () => {
       try {
@@ -42,7 +48,7 @@ function AdminProductos() {
     cargar();
   }, [getProductos, traduccionCategorias]);
 
-  // Validar formulario
+  // Validar formulario: campos obligatorios y formatos
   const validar = () => {
     if (!form.nombre.trim()) return 'El nombre es obligatorio';
     const precioNum = Number(form.precio);

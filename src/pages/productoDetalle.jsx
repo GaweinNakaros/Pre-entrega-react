@@ -1,7 +1,12 @@
 /**
- * Componente DetalleProducto
- * Muestra la información detallada de un producto específico
- * Recibe los datos del producto a través del estado de la navegación
+ * DetalleProducto
+ * 
+ * Responsabilidades actualizadas:
+ * - Mostrar información detallada de un producto en tarjetas Bootstrap.
+ * - Recibir datos del producto vía estado de navegación (Link state) y fallback por id.
+ * - Dar feedback con React Toastify al agregar al carrito.
+ * - SEO por página con React Helmet Async (incluye noindex si no hay producto).
+ * - Accesibilidad: role="main", aria-labelledby y labels en acciones.
  */
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -20,13 +25,13 @@ const DetalleProducto = () => {
     // Obtener funciones del contexto del carrito
     const { agregarAlCarrito } = useCarrito();
 
-    // Función para manejar la adición al carrito
+    // Agregar al carrito con feedback mediante toast
     const manejarAgregarCarrito = () => {
         agregarAlCarrito(producto);
         toast.success(`${producto.nombre} agregado al carrito`);
     };
 
-    // Renderizado condicional si no se encuentra el producto
+    // Renderizado condicional: producto no disponible (SEO: noindex)
     if (!producto) {
         return (
             <div className="container py-4" role="main">

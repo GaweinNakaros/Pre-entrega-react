@@ -1,24 +1,30 @@
-#  Guía Rápida - Sistema de Autenticación
+# Guía Rápida del Proyecto (Autenticación + Flujo de Compra)
 
-##  Para Probar el Sistema
+> Actualizado: Uso de toasts en lugar de alert(), búsqueda y paginación en catálogo, ruta admin protegida.
 
-1. **Inicia el servidor de desarrollo:**
-   ```bash
-   cd v1.3
-   npm run dev
-   ```
+## 🚀 Inicio Rápido
 
-2. **Flujo de prueba:**
-   - Ve a http://localhost:5173/productos
-   - Agrega productos al carrito
-   - Haz clic en "Carrito" en el navbar
-   - Haz clic en "Proceder a compra"
-   - Serás redirigido a /login (si no estás autenticado)
-   - Ingresa un email válido (ej: usuario@email.com)
-   - Serás redirigido automáticamente a /pago
-   - Completa el formulario y confirma la compra
+1. Instala dependencias (si no lo hiciste):
+  ```powershell
+  npm install --legacy-peer-deps
+  ```
+2. Inicia el servidor de desarrollo:
+  ```powershell
+  npm run dev
+  ```
 
-## 📊 Diagrama de Flujo
+3. Flujo básico de prueba:
+  - Ir a `http://localhost:5173/productos`
+  - Usar la barra de búsqueda para filtrar
+  - Agregar productos (ver toast de confirmación)
+  - Abrir "Carrito" → Ajustar cantidades / eliminar
+  - Clic en "Proceder a compra" (si no logueado redirige a `/login`)
+  - Iniciar sesión:
+    - Invitado: cualquier email válido
+    - Admin: `admin@gmail.com.ar` + contraseña configurada en `AuthContext`
+  - Redirección automática a `/pago` → completar formulario → confirmar pago (toast éxito)
+
+## 📊 Diagrama de Flujo (Compra)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -44,7 +50,7 @@
 
 ## 🔑 Componentes Clave
 
-### 1. AuthContext
+### 1. AuthContext (estado de sesión)
 ```jsx
 // Uso en cualquier componente
 import { useAuth } from '../context/AuthContext';
@@ -59,7 +65,7 @@ function MiComponente() {
 }
 ```
 
-### 2. Proteger una Ruta
+### 2. Proteger una Ruta (RutaProtegida / RutaSoloAdmin)
 ```jsx
 // En App.jsx
 <Route 
@@ -72,14 +78,14 @@ function MiComponente() {
 />
 ```
 
-### 3. Navbar con Autenticación
+### 3. Navbar con Autenticación e Íconos
 ```jsx
 // Muestra el email del usuario si está autenticado
 // Botón de "Cerrar Sesión" si está autenticado
 // Link "Iniciar Sesión" si NO está autenticado
 ```
 
-## 📝 Validaciones
+## 📝 Validaciones Clave
 
 ### Email (Login)
 - ✅ Formato válido: usuario@dominio.com
@@ -94,26 +100,28 @@ function MiComponente() {
 - ✅ Teléfono: 10 dígitos
 - ✅ Método de pago: selección
 
-##  Estados Visuales
+## 🔐 Estados Visuales Navbar
 
 ### Usuario NO autenticado
 ```
-Navbar: [Inicio] [Productos] [Servicios] [Carrito] [Iniciar Sesión]
+Navbar (no autenticado): `[Inicio] [Productos] [Servicios] [Carrito] [Iniciar Sesión]`
 ```
 
 ### Usuario autenticado
 ```
-Navbar: [Inicio] [Productos] [Servicios] [Carrito] [👤 usuario@email.com] [Cerrar Sesión]
+Navbar (autenticado invitado): `[Inicio] [Productos] [Servicios] [Carrito] [👤 email] [Cerrar Sesión]`
+
+Navbar (autenticado admin): `[Inicio] [Productos] [Servicios] [Carrito] [Administrar Productos] [👤 email] [Cerrar Sesión]`
 ```
 
-## Persistencia
+## 💾 Persistencia de Sesión
 
 - La sesión se guarda en `localStorage`
 - Persiste entre recargas de página
 - Se limpia al cerrar sesión
 - Key: `"usuario"`
 
-##  Redirecciones
+## 🔁 Redirecciones
 
 ### Escenario 1: Usuario intenta acceder a /pago sin autenticación
 ```
@@ -125,36 +133,31 @@ Navbar: [Inicio] [Productos] [Servicios] [Carrito] [👤 usuario@email.com] [Cer
 /login → usuario ingresa email → / (home)
 ```
 
-##  Guia de Archivos 
+## 🗂 Mapa de Archivos (Resumen)
 
 ```
-v1.3/
-├── src/
-│   ├── context/
-│   │   ├── AuthContext.jsx       ← Estado de autenticación
-│   │   └── CarritoContext.jsx    ← Estado del carrito
-│   ├── pages/
-│   │   ├── App.jsx               ← Rutas y providers
-│   │   ├── IniciarSesion.jsx     ← Formulario de login
-│   │   ├── Pago.jsx              ← Página protegida
-│   │   ├── RutaProtegida.jsx     ← HOC para protección
-│   │   ├── navbar.jsx            ← Con indicador de sesión
-│   │   └── carrito_simple.jsx    ← Redirige a pago
-│   └── ...
-└── AUTENTICACION.md              ← Documentación completa
-
 src/
 ├── context/
-│   ├── CarritoContext.jsx ← 🎯 TODA la lógica del carrito
-│   └── AuthContext.jsx ← 🎯 TODA la lógica de autenticación
+│   ├── AuthContext.jsx ← Autenticación invitado/admin + persistencia
+│   ├── CarritoContext.jsx ← Lógica de carrito y totales
+│   ├── ApiContext.jsx ← CRUD productos + actualización stock
+│   ├── CategoriasContext.jsx / PromocionesContext.jsx / BannersContext.jsx / SliderContext.jsx
+│   └── ...
 ├── pages/
-│   ├── App.jsx ← 🎯 Solo gestión y enrutamiento (incluye rutas protegidas)
-│   ├── productos.jsx ← Usa el contexto del carrito
-│   ├── productoDetalle.jsx ← Usa el contexto del carrito
-│   ├── carrito_simple.jsx ← Usa el contexto del carrito y redirige a pago
-│   ├── navbar.jsx ← Usa el contexto del carrito y autenticación
-│   ├── IniciarSesion.jsx ← 🔒 Página de login con validación de email
-│   ├── Pago.jsx ← 🔒 Página protegida de pago (requiere autenticación)
-│   └── RutaProtegida.jsx ← 🔒 Componente HOC para proteger rutas
+│   ├── App.jsx ← Providers + rutas + Theme + Helmet + ToastContainer
+│   ├── productos.jsx ← Catálogo con búsqueda/paginación y toasts
+│   ├── productoDetalle.jsx ← Detalle con SEO dinámico y toasts
+│   ├── carrito_simple.jsx ← Gestión carrito + toasts + accesibilidad
+│   ├── navbar.jsx ← Navegación + iconos + sesión
+│   ├── IniciarSesion.jsx ← Login invitado/admin con toasts
+│   ├── Pago.jsx ← Pago protegido + actualización stock
+│   ├── AdminProductos.jsx ← CRUD productos solo admin
+│   ├── RutaProtegida.jsx / RutaSoloAdmin.jsx ← Guards de rutas
+│   └── ...
+├── styles/GlobalStyle.js / theme.js ← Diseño centralizado
+└── assets/ (imágenes, data) 
+
+---
+Para documentación detallada revisa el índice en `Guias/README.md`.
 
 ```

@@ -1,5 +1,7 @@
 # Componente Slider Reutilizable
 
+> Tipo: Componente | Propósito: Renderizar colecciones de slides con autoplay, navegación y control programático. Índice: `./README.md`.
+
 ## 📋 Descripción
 
 Sistema de slider completamente reutilizable que permite crear múltiples sliders independientes en cualquier parte de la aplicación. Incluye un contexto global (`SliderContext`) para gestionar el estado y un componente visual (`Slider`) altamente configurable.
@@ -14,7 +16,7 @@ Sistema de slider completamente reutilizable que permite crear múltiples slider
 - ✅ **Loop configurable** - Opción de loop infinito o detención al final
 - ✅ **Transiciones suaves** - Animaciones CSS optimizadas
 
-## 📦 Instalación
+## 📦 Instalación / Integración
 
 ### 1. Importar el Provider en App.jsx
 

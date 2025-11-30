@@ -16,20 +16,23 @@ import './IniciarSesion.css';
 // COMPONENTE: INICIAR SESIÓN
 // ====================================================
 /**
- * Componente de página de inicio de sesión
+ * Página de login con dos modos: invitado y admin.
  * 
- * Responsabilidades:
- * - Mostrar un formulario para que el usuario ingrese su email
- * - Validar que el email tenga formato correcto
- * - Autenticar al usuario usando el contexto
- * - Redirigir al usuario a la página que intentaba visitar
+ * Responsabilidades actualizadas:
+ * - Formulario controlado para email y, si corresponde, contraseña admin.
+ * - Validación de formato de email y presencia de contraseña para admin.
+ * - Autenticación vía AuthContext (retorna { exito, mensaje }).
+ * - Feedback mediante React Toastify (éxito/error) en lugar de alert().
+ * - SEO con React Helmet Async.
+ * - Redirección a la ruta previa (from) tras éxito.
+ * - Accesibilidad: role="main", aria-labelledby, labels asociados.
  * 
  * Flujo:
- * 1. Usuario llega a /login
- * 2. Ingresa su email
- * 3. Sistema valida el formato
- * 4. Si es válido, autentica y redirige
- * 5. Si no, muestra mensaje de error
+ * 1) Usuario llega a /login (posible redirección desde una ruta protegida).
+ * 2) Ingresa email (valida formato). Si email corresponde a admin, se solicita contraseña.
+ * 3) Se llama a iniciarSesion(email [, password]).
+ * 4) En éxito: toast.success y navigate a la ruta original.
+ * 5) En error: setError + toast.error con el mensaje del contexto.
  */
 function IniciarSesion() {
   // ====================================================
@@ -119,7 +122,7 @@ function IniciarSesion() {
   };
 
   // ====================================================
-  // FUNCIÓN: MANEJAR ENVÍO DEL FORMULARIO
+  // FUNCIÓN: MANEJAR ENVÍO DEL FORMULARIO (con toasts)
   // ====================================================
   /**
    * Se ejecuta cuando el usuario hace submit del formulario
@@ -171,23 +174,15 @@ function IniciarSesion() {
       resultado = iniciarSesion(email);
     }
     
-    // Verificamos si la autenticación fue exitosa
+    // Verificamos si la autenticación fue exitosa (AuthContext)
     if (resultado.exito) {
       toast.success('Sesión iniciada');
-      // ====================================================
-      // CASO EXITOSO: Redirigir al usuario
-      // ====================================================
-      // Navegamos a la ruta que guardamos antes
-      // replace: true - Reemplaza la entrada actual del historial
-      // Esto evita que el usuario pueda volver al login con el botón "atrás"
+      // Redirigir al usuario a la ruta original
+      // replace: true evita volver al login con el botón "Atrás"
       navigate(from, { replace: true });
     } else {
-      // ====================================================
-      // CASO FALLIDO: Mostrar mensaje de error
-      // ====================================================
-      // El mensaje viene de AuthContext y puede ser:
-      // - "El email no está registrado en el sistema"
-      // - "La contraseña es incorrecta"
+      // Caso fallido: mostrar error proveniente de AuthContext
+      // Ejemplos: "email no registrado" o "contraseña incorrecta"
       setError(resultado.mensaje);
       toast.error(resultado.mensaje);
     }

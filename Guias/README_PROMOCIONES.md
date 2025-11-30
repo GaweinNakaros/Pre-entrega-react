@@ -1,5 +1,7 @@
 # Sistema de Gestión de Promociones Destacadas
 
+> Tipo: Subsistema | Propósito: Crear y mostrar promociones (ofertas/avisos) con control de vigencia y estado. Índice: `./README.md`.
+
 ## 📋 Descripción
 
 Sistema completo y administrable de promociones destacadas con contexto global y componente reutilizable. Diseñado para gestionar ofertas, descuentos y anuncios especiales desde un panel de administración.
