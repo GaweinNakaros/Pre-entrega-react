@@ -27,12 +27,12 @@ const DetalleProducto = () => {
     // Renderizado condicional si no se encuentra el producto
     if (!producto) {
         return (
-            <div className="mensaje-error">
-                <h2>Producto no encontrado</h2>
-                <Link to="/productos">
-                    <button className="btn-volver">
-                        Volver a productos
-                    </button>
+            <div className="container py-4">
+                <div className="alert alert-warning" role="alert">
+                    Producto no encontrado
+                </div>
+                <Link to="/productos" className="btn btn-secondary">
+                    Volver a productos
                 </Link>
             </div>
         );
@@ -40,45 +40,41 @@ const DetalleProducto = () => {
 
     // Renderizado principal del detalle del producto
     return (
-        <div className="detalle-container">
-            <div className="detalle-content">
-                {/* Imagen del producto con manejo de errores */}
-                <img
-                    src={producto.imagen ? encodeURI(producto.imagen) : 'https://placehold.co/400x300'}
-                    alt={producto.nombre}
-                    className="detalle-imagen"
-                    onError={(e) => {
-                        e.target.src = 'https://placehold.co/400x300';
-                    }}
-                />
-                {/* Información detallada del producto */}
-                <div className="detalle-info">
-                    <h2>{producto.nombre}</h2>
-                    <p className="detalle-descripcion">{producto.descripcion}</p>
-                    {/* Precio formateado con dos decimales */}
-                    <p className="detalle-precio">
-                        ${parseFloat(producto.precio || 0).toFixed(2)}
-                    </p>
-                    {/* Información de stock */}
-                    <p className={`detalle-stock ${producto.stock > 0 ? 'disponible' : 'agotado'}`}>
-                        {producto.stock > 0 ? `Stock disponible: ${producto.stock}` : 'Sin stock'}
-                    </p>
-                    {/* Botones de acción */}
-                    <div className="detalle-botones">
-                        {/* Botón para volver a la lista de productos */}
-                        <Link to="/productos" className="btn-link-secondary">
-                            <button className="btn-volver">
-                                Volver a productos
-                            </button>
-                        </Link>
-                        {/* Botón para agregar al carrito */}
-                        <button 
-                            className={`btn-comprar ${producto.stock <= 0 ? 'btn-disabled' : ''}`}
-                            onClick={manejarAgregarCarrito}
-                            disabled={producto.stock <= 0}
-                        >
-                            {producto.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
-                        </button>
+        <div className="container py-4">
+            <div className="row g-4">
+                <div className="col-md-6">
+                    <div className="card shadow-sm">
+                        <img
+                            src={producto.imagen ? encodeURI(producto.imagen) : 'https://placehold.co/600x400'}
+                            alt={producto.nombre}
+                            className="card-img-top"
+                            onError={(e) => { e.target.src = 'https://placehold.co/600x400'; }}
+                        />
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="card shadow-sm">
+                        <div className="card-body d-flex flex-column">
+                            <h2 className="card-title mb-2">{producto.nombre}</h2>
+                            <p className="text-muted text-uppercase small mb-2">{producto.categoria}</p>
+                            <p className="card-text mb-3">{producto.descripcion}</p>
+                            <div className="d-flex align-items-center gap-3 mb-3">
+                                <span className="badge bg-primary fs-6">${parseFloat(producto.precio || 0).toFixed(2)}</span>
+                                <span className={`badge ${producto.stock > 0 ? 'bg-success' : 'bg-secondary'}`}>
+                                    {producto.stock > 0 ? `Stock: ${producto.stock}` : 'Sin stock'}
+                                </span>
+                            </div>
+                            <div className="d-flex gap-2 mt-auto">
+                                <Link to="/productos" className="btn btn-secondary">Volver a productos</Link>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={manejarAgregarCarrito}
+                                    disabled={producto.stock <= 0}
+                                >
+                                    {producto.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

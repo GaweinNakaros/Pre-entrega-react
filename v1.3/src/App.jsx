@@ -7,11 +7,13 @@ import Navbar from './pages/navbar'
 import Inicio from './pages/inicio'
 import Servicios from './pages/servicios'
 import Productos from './pages/productos'
+import AdminProductos from './pages/AdminProductos'
 import ProductoDetalle from './pages/productoDetalle'
 import CarritoCompras from './pages/carrito_simple'
 import IniciarSesion from './pages/IniciarSesion'
 import Pago from './pages/Pago'
 import RutaProtegida from './pages/RutaProtegida'
+import RutaSoloAdmin from './pages/RutaSoloAdmin'
 // Importación de los proveedores de contexto
 import { CarritoProvider } from './context/CarritoContext'
 import { AuthProvider } from './context/AuthContext'
@@ -19,6 +21,7 @@ import { CategoriasProvider } from './context/CategoriasContext'
 import { SliderProvider } from './context/SliderContext'
 import { PromocionesProvider } from './context/PromocionesContext'
 import { BannersProvider } from './context/BannersContext'
+import { ApiProvider } from './context/ApiContext'
 // Importacion de estilos globales
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
@@ -42,6 +45,7 @@ function App() {
         <SliderProvider>
           <PromocionesProvider>
             <BannersProvider>
+              <ApiProvider>
               <CarritoProvider>
                 {/* Barra de navegación presente en todas las páginas */}
                 <Navbar />
@@ -56,6 +60,12 @@ function App() {
           <Route path="/productos" element={<Productos />} />
           {/* Ruta dinámica para detalles de producto individual */}
           <Route path="/productos/:id" element={<ProductoDetalle />} />
+          {/* Ruta solo admin para CRUD de productos */}
+          <Route path="/admin/productos" element={
+            <RutaSoloAdmin>
+              <AdminProductos />
+            </RutaSoloAdmin>
+          } />
           {/* Ruta del carrito de compras */}
           <Route path="/carrito" element={<CarritoCompras />} />
           {/* Ruta de inicio de sesión */}
@@ -71,6 +81,7 @@ function App() {
           />
         </Routes>
               </CarritoProvider>
+              </ApiProvider>
             </BannersProvider>
           </PromocionesProvider>
         </SliderProvider>

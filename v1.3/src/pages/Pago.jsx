@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 // Nuestros hooks personalizados de los contextos
 import { useCarrito } from '../context/CarritoContext';
 import { useAuth } from '../context/AuthContext';
+import { useApi } from '../context/ApiContext';
 // Estilos de la página
 import './Pago.css';
 
@@ -44,6 +45,7 @@ function Pago() {
   // Del contexto de autenticación extraemos:
   // - usuario: Objeto con datos del usuario autenticado (incluye email)
   const { usuario } = useAuth();
+  const { actualizarStock } = useApi();
 
   // ====================================================
   // ESTADO: DATOS DEL FORMULARIO
@@ -212,6 +214,11 @@ function Pago() {
    * NOTA: Esta es una simulación. En producción, aquí se haría una
    * llamada a una API de pago real (Stripe, PayPal, MercadoPago, etc.)
    */
+  // Utilidad: simula el procesamiento de pago con una espera
+  const procesarPagoSimulado = () => new Promise((resolve) => {
+    setTimeout(() => resolve({ exito: true, ordenId: Date.now().toString() }), 2000);
+  });
+
   const manejarSubmit = async (e) => {
     // Prevenimos que el formulario recargue la página
     e.preventDefault();
@@ -231,32 +238,30 @@ function Pago() {
     // Activamos el estado de "procesando"
     setProcesando(true);
 
-    // ====================================================
-    // SIMULACIÓN DE LLAMADA A API DE PAGO
-    // ====================================================
-    /**
-     * setTimeout simula una operación asíncrona (como una llamada a API)
-     * En una aplicación real, aquí harías:
-     * 
-     * const respuesta = await fetch('/api/procesar-pago', {
-     *   method: 'POST',
-     *   body: JSON.stringify({ formData, carrito, total: totalPrecio })
-     * });
-     */
-    setTimeout(() => {
-      // Mostramos mensaje de éxito
-      // Template literals con ${} para interpolar variables
+    try {
+      // 1) Procesar pago (simulado)
+      const resultadoPago = await procesarPagoSimulado();
+
+      if (!resultadoPago.exito) {
+        throw new Error('El pago no pudo completarse');
+      }
+
+      // 2) Notificar actualización de stock al backend (MockAPI)
+      const items = carrito.map((i) => ({ productoId: i.id, cantidad: i.cantidad }));
+      await actualizarStock(items);
+
+      // 3) Confirmación al usuario
       alert(`✅ ¡Compra realizada con éxito!\n\nResumen:\n- Productos: ${cantidadTotal}\n- Total: $${totalPrecio.toFixed(2)}\n- Email: ${usuario.email}\n\n¡Gracias por tu compra!`);
-      
-      // Limpiamos el carrito
+
+      // 4) Limpiar y redirigir
       vaciarCarrito();
-      
-      // Desactivamos el estado de "procesando"
       setProcesando(false);
-      
-      // Redirigimos al catálogo de productos
       navigate('/productos');
-    }, 2000); // Esperamos 2 segundos (2000 milisegundos) para simular el procesamiento
+    } catch (err) {
+      console.error('Error en pago/stock:', err);
+      setProcesando(false);
+      alert('⚠️ El pago fue procesado, pero hubo un problema al actualizar el stock. Revisaremos manualmente.');
+    }
   };
 
   return (

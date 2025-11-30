@@ -6,6 +6,7 @@ import './productos.css';
 // Importar el contexto del carrito y categorías
 import { useCarrito } from '../context/CarritoContext';
 import { useCategorias } from '../context/CategoriasContext';
+import { useApi } from '../context/ApiContext';
 
 /**
  * Componente Productos
@@ -18,6 +19,7 @@ function Productos() {
     
     // Obtener diccionario de traducción del contexto de categorías
     const { traduccionCategorias } = useCategorias();
+    const { getProductos } = useApi();
     
     // Hook para leer parámetros de la URL (query params)
     const [searchParams] = useSearchParams();
@@ -45,36 +47,15 @@ function Productos() {
         // Función asíncrona para obtener los productos de la API
         const fetchProductos = async () => {
             try {
-                // Realizar la petición a la API
-                const response = await fetch("https://68d482fa214be68f8c696bbd.mockapi.io/api/productos");
-                // Verificar si la respuesta es exitosa
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-                // Convertir la respuesta a JSON y actualizar el estado
-                const data = await response.json();
-                
-                // Normalizar datos de MockAPI:
-                // - MockAPI puede generar 'Stock' (mayúscula) o 'stock' (minúscula)
-                // - Categorías vienen en inglés desde commerce.department(), se traducen al español
-                const productosNormalizados = data.map(producto => ({
-                    ...producto,
-                    // Normalizar stock: usar minúscula y asegurar que sea número
-                    stock: Number(producto.stock || 0),
-                    // Traducir categoría al español, si no existe traducción usar el original
-                    categoria: traduccionCategorias[producto.categoria] || producto.categoria || 'Sin categoría'
-                }));
-                
+                const productosNormalizados = await getProductos(traduccionCategorias);
                 setProductos(productosNormalizados);
-                setError(null); // Limpiar cualquier error previo
-                
+                setError(null);
             } catch (error) {
                 console.error('Error al cargar productos:', error);
                 setError(`Error al cargar los productos. Código de error: ${error.message}`);
-                setProductos([]); // Limpiar productos en caso de error
-
+                setProductos([]);
             } finally {
-                setLoading(false); // Indicar que la carga ha terminado
+                setLoading(false);
             }
         };
 
@@ -90,7 +71,7 @@ function Productos() {
     // Renderizado condicional para el estado de carga
     if (loading) {
         return (
-            <div className="productos-container">
+            <div className="container py-4">
                 <h2>Nuestros Productos</h2>
                 <p>Cargando productos...</p>
             </div>
@@ -100,16 +81,16 @@ function Productos() {
     // Renderizado condicional para el estado de error
     if (error) {
         return (
-            <div className="productos-container">
+            <div className="container py-4">
                 <h2>Nuestros Productos</h2>
-                <p style={{ color: 'red' }}>{error}</p>
+                <div className="alert alert-danger" role="alert">{error}</div>
             </div>
         );
     }
 
     // Renderizado principal de la lista de productos
     return (
-        <div className="productos-container">
+        <div className="container py-4">
             <h2>
                 {categoriaFiltro 
                     ? `Productos - ${categoriaFiltro}` 
@@ -117,57 +98,46 @@ function Productos() {
             </h2>
             {/* Mostrar mensaje si no hay productos en la categoría */}
             {productosFiltrados.length === 0 && !loading && !error ? (
-                <div className="sin-productos">
-                    <p>No hay productos disponibles en esta categoría.</p>
-                    <Link to="/productos">
-                        <button className="btn-detalle">Ver todos los productos</button>
-                    </Link>
+                <div className="my-3">
+                    <div className="alert alert-info" role="alert">No hay productos disponibles en esta categoría.</div>
+                    <Link to="/productos" className="btn btn-secondary">Ver todos los productos</Link>
                 </div>
             ) : (
-                <div className="productos-grid">
+                <div className="row g-4">
                     {/* Mapear cada producto a una tarjeta */}
                     {productosFiltrados.map((prod) => (
                     // map requiere una key única para cada elemento renderizado
-                    <div key={prod.id} className="producto-card">
-                        {/* Imagen del producto con manejo de errores */}
-                        <img
-                            src={prod.imagen ? encodeURI(prod.imagen) : 'https://placehold.co/400x300'}
-                            alt={prod.nombre}
-                            className="producto-imagen"
-                            onError={(e) => {
-                                e.target.src = 'https://placehold.co/400x300';
-                            }}
-                        />
-                        {/* Información del producto */}
-                        <h3>{prod.nombre}</h3>
-                        <p className="producto-categoria">{prod.categoria}</p>
-                        <p>{prod.descripcion}</p>
-                        {/* Sección de precio y stock */}
-                        <div className="producto-detalles">
-                            {/*con producto-detalles armo un contenedor para el precio y el stock, la etiqueta <span> es un elemento que se utiliza para agrupar contenido en línea y aplicar estilos*/}
-                            <span className="precio">
-                                ${parseFloat(prod.precio || 0).toFixed(2)}
-                            </span>
-                            <span className={`stock ${prod.stock > 0 ? 'stock-disponible' : 'stock-agotado'}`}>
-                                {prod.stock > 0 ? `Stock: ${prod.stock}` : 'Sin stock'}
-                            </span>
-                        </div>
-                        {/* Botones de acción del producto */}
-                        <div className="producto-botones">
-                            {/* Enlace a los detalles del producto */}
-                            <Link to={`/productos/${prod.id}`} state={{prod}} className="btn-link">
-                                <button className="btn-detalle">
-                                    Ver detalles
-                                </button>
-                            </Link>
-                            {/* Botón para agregar al carrito */}
-                            <button 
-                                className={`btn-agregar ${(!prod.stock || prod.stock <= 0) ? 'btn-disabled' : ''}`}
-                                onClick={() => manejarAgregarCarrito(prod)}
-                                disabled={!prod.stock || prod.stock <= 0}
-                            >
-                                {prod.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
-                            </button>
+                    <div key={prod.id} className="col-sm-6 col-md-4 col-lg-3">
+                        <div className="card h-100 shadow-sm">
+                            <img
+                                src={prod.imagen ? encodeURI(prod.imagen) : 'https://placehold.co/400x300'}
+                                alt={prod.nombre}
+                                className="card-img-top"
+                                onError={(e) => { e.target.src = 'https://placehold.co/400x300'; }}
+                            />
+                            <div className="card-body d-flex flex-column">
+                                <h5 className="card-title mb-2">{prod.nombre}</h5>
+                                <p className="text-muted text-uppercase small mb-2">{prod.categoria}</p>
+                                <p className="card-text flex-grow-1 mb-3">{prod.descripcion}</p>
+                                <div className="d-flex align-items-center gap-2 mb-3">
+                                    <span className="badge bg-primary">${parseFloat(prod.precio || 0).toFixed(2)}</span>
+                                    <span className={`badge ${prod.stock > 0 ? 'bg-success' : 'bg-secondary'}`}>
+                                        {prod.stock > 0 ? `Stock: ${prod.stock}` : 'Sin stock'}
+                                    </span>
+                                </div>
+                                <div className="d-flex gap-2 mt-auto">
+                                    <Link to={`/productos/${prod.id}`} state={{prod}} className="btn btn-outline-primary">
+                                        Ver detalles
+                                    </Link>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => manejarAgregarCarrito(prod)}
+                                        disabled={!prod.stock || prod.stock <= 0}
+                                    >
+                                        {prod.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
