@@ -1,5 +1,5 @@
 // Importación de dependencias necesarias de React y React Router
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import { Link, useSearchParams } from "react-router-dom";
@@ -24,13 +24,17 @@ function Productos() {
     const { getProductos } = useApi();
     
     // Hook para leer parámetros de la URL (query params)
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const categoriaFiltro = searchParams.get('categoria'); // Obtener ?categoria=xxx de la URL
+    const queryInicial = searchParams.get('q') || '';
+    const pageInicial = parseInt(searchParams.get('page') || '1', 10);
     
     // Estados para manejar los productos y el estado de la aplicación
     const [productos, setProductos] = useState([]); // Almacena la lista de productos
     const [loading, setLoading] = useState(true);   // Controla el estado de carga de datos de la API
     const [error, setError] = useState(null);       // Maneja los errores de la API
+    const [query, setQuery] = useState(queryInicial);
+    const pageSize = 8;
 
     // Función para manejar la adición al carrito
     const manejarAgregarCarrito = (producto) => {
@@ -62,11 +66,55 @@ function Productos() {
         // Ejecutar la función de fetch
         fetchProductos();
     }, []); 
+
+    // Mantener el estado local del input sincronizado con la URL
+    useEffect(() => {
+        setQuery(searchParams.get('q') || '');
+    }, [searchParams]);
     
     // Filtrar productos por categoría si existe el parámetro en la URL
-    const productosFiltrados = categoriaFiltro 
-        ? productos.filter(prod => prod.categoria === categoriaFiltro)
-        : productos;
+    const productosFiltrados = useMemo(() => {
+        const base = categoriaFiltro 
+            ? productos.filter(prod => prod.categoria === categoriaFiltro)
+            : productos;
+        const q = (searchParams.get('q') || '').trim().toLowerCase();
+        if (!q) return base;
+        return base.filter(prod =>
+            (prod.nombre || '').toLowerCase().includes(q) ||
+            (prod.categoria || '').toLowerCase().includes(q)
+        );
+    }, [productos, categoriaFiltro, searchParams]);
+
+    // Cálculo de paginación
+    const totalProductos = productosFiltrados.length;
+    const totalPaginas = Math.max(1, Math.ceil(totalProductos / pageSize));
+    const paginaActual = Math.min(Math.max(1, pageInicial), totalPaginas);
+    const inicio = (paginaActual - 1) * pageSize;
+    const fin = inicio + pageSize;
+    const paginaProductos = productosFiltrados.slice(inicio, fin);
+
+    const actualizarParametros = (params) => {
+        const nuevos = new URLSearchParams(searchParams);
+        Object.entries(params).forEach(([k, v]) => {
+            if (v === undefined || v === null || v === '') {
+                nuevos.delete(k);
+            } else {
+                nuevos.set(k, String(v));
+            }
+        });
+        setSearchParams(nuevos);
+    };
+
+    const manejarCambioBusqueda = (e) => {
+        const valor = e.target.value;
+        setQuery(valor);
+        actualizarParametros({ q: valor, page: 1 });
+    };
+
+    const irAPagina = (p) => {
+        const destino = Math.min(Math.max(1, p), totalPaginas);
+        actualizarParametros({ page: destino });
+    };
 
     // Renderizado condicional para el estado de carga
     if (loading) {
@@ -100,6 +148,26 @@ function Productos() {
                     ? `Productos - ${categoriaFiltro}` 
                     : 'Nuestros Productos'}
             </h2>
+            {/* Barra de búsqueda */}
+            <div className="row align-items-center g-2 my-3">
+                <div className="col-sm-8 col-md-6">
+                    <label htmlFor="busqueda" className="form-label visually-hidden">Buscar productos por nombre o categoría</label>
+                    <input
+                        id="busqueda"
+                        type="search"
+                        className="form-control"
+                        placeholder="Buscar por nombre o categoría..."
+                        value={query}
+                        onChange={manejarCambioBusqueda}
+                        aria-label="Buscar productos por nombre o categoría"
+                    />
+                </div>
+                <div className="col-sm-4 col-md-6 text-sm-end">
+                    <div aria-live="polite" className="small text-muted">
+                        Mostrando {paginaProductos.length} de {totalProductos} producto(s)
+                    </div>
+                </div>
+            </div>
             {/* Mostrar mensaje si no hay productos en la categoría */}
             {productosFiltrados.length === 0 && !loading && !error ? (
                 <div className="my-3">
@@ -109,13 +177,13 @@ function Productos() {
             ) : (
                 <div className="row g-4">
                     {/* Mapear cada producto a una tarjeta */}
-                    {productosFiltrados.map((prod) => (
+                    {paginaProductos.map((prod) => (
                     // map requiere una key única para cada elemento renderizado
                     <div key={prod.id} className="col-sm-6 col-md-4 col-lg-3">
                         <div className="card h-100 shadow-sm">
                             <img
                                 src={prod.imagen ? encodeURI(prod.imagen) : 'https://placehold.co/400x300'}
-                                alt={prod.nombre}
+                                alt={`Imagen de ${prod.nombre}`}
                                 className="card-img-top"
                                 onError={(e) => { e.target.src = 'https://placehold.co/400x300'; }}
                             />
@@ -137,6 +205,7 @@ function Productos() {
                                         className="btn btn-primary"
                                         onClick={() => manejarAgregarCarrito(prod)}
                                         disabled={!prod.stock || prod.stock <= 0}
+                                        aria-label={prod.stock > 0 ? `Agregar ${prod.nombre} al carrito` : `${prod.nombre} sin stock`}
                                     >
                                         {prod.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
                                     </button>
@@ -146,6 +215,28 @@ function Productos() {
                     </div>
                 ))}
                 </div>
+            )}
+
+            {/* Paginación */}
+            {totalPaginas > 1 && (
+                <nav className="mt-4" aria-label="Paginación de productos">
+                    <ul className="pagination justify-content-center">
+                        <li className={`page-item ${paginaActual === 1 ? 'disabled' : ''}`}>
+                            <button className="page-link" onClick={() => irAPagina(paginaActual - 1)} aria-label="Página anterior">&laquo;</button>
+                        </li>
+                        {Array.from({ length: totalPaginas }).map((_, idx) => {
+                            const num = idx + 1;
+                            return (
+                                <li key={num} className={`page-item ${num === paginaActual ? 'active' : ''}`}>
+                                    <button className="page-link" onClick={() => irAPagina(num)} aria-label={`Ir a la página ${num}`}>{num}</button>
+                                </li>
+                            );
+                        })}
+                        <li className={`page-item ${paginaActual === totalPaginas ? 'disabled' : ''}`}>
+                            <button className="page-link" onClick={() => irAPagina(paginaActual + 1)} aria-label="Página siguiente">&raquo;</button>
+                        </li>
+                    </ul>
+                </nav>
             )}
         </div>
     );
