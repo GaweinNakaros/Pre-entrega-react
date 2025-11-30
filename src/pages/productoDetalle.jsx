@@ -4,6 +4,8 @@
  * Recibe los datos del producto a través del estado de la navegación
  */
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import './productoDetalle.css';
 import { useCarrito } from '../context/CarritoContext';
@@ -21,26 +23,30 @@ const DetalleProducto = () => {
     // Función para manejar la adición al carrito
     const manejarAgregarCarrito = () => {
         agregarAlCarrito(producto);
-        alert(`${producto.nombre} agregado al carrito!`);
+        toast.success(`${producto.nombre} agregado al carrito`);
     };
 
     // Renderizado condicional si no se encuentra el producto
     if (!producto) {
         return (
-            <div className="container py-4">
-                <div className="alert alert-warning" role="alert">
-                    Producto no encontrado
-                </div>
-                <Link to="/productos" className="btn btn-secondary">
-                    Volver a productos
-                </Link>
+            <div className="container py-4" role="main">
+              <Helmet>
+                <title>Producto no encontrado</title>
+                <meta name="robots" content="noindex" />
+              </Helmet>
+              <div className="alert alert-warning" role="alert">Producto no encontrado</div>
+              <Link to="/productos" className="btn btn-secondary" aria-label="Volver al listado de productos">Volver a productos</Link>
             </div>
         );
     }
 
     // Renderizado principal del detalle del producto
     return (
-        <div className="container py-4">
+                <div className="container py-4" role="main" aria-labelledby="titulo-detalle">
+                        <Helmet>
+                            <title>{producto.nombre} - Detalle</title>
+                            <meta name="description" content={`Detalles y características del producto ${producto.nombre}. Precio ${parseFloat(producto.precio || 0).toFixed(2)} y stock disponible.`} />
+                        </Helmet>
             <div className="row g-4">
                 <div className="col-md-6">
                     <div className="card shadow-sm">
@@ -55,7 +61,7 @@ const DetalleProducto = () => {
                 <div className="col-md-6">
                     <div className="card shadow-sm">
                         <div className="card-body d-flex flex-column">
-                            <h2 className="card-title mb-2">{producto.nombre}</h2>
+                            <h2 id="titulo-detalle" className="card-title mb-2">{producto.nombre}</h2>
                             <p className="text-muted text-uppercase small mb-2">{producto.categoria}</p>
                             <p className="card-text mb-3">{producto.descripcion}</p>
                             <div className="d-flex align-items-center gap-3 mb-3">

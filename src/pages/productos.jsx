@@ -1,5 +1,7 @@
 // Importación de dependencias necesarias de React y React Router
 import React, { useState, useEffect } from "react";
+import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 import { Link, useSearchParams } from "react-router-dom";
 // Importación de estilos
 import './productos.css';
@@ -34,13 +36,11 @@ function Productos() {
     const manejarAgregarCarrito = (producto) => {
         // Verificar que el producto tenga stock disponible
         if (!producto.stock || producto.stock <= 0) {
-            alert('Este producto no tiene stock disponible');
-            return; // Salir de la función sin agregar al carrito
+            toast.warn('Este producto no tiene stock disponible');
+            return;
         }
-        
         agregarAlCarrito(producto);
-        // Opcional: mostrar una notificación o feedback al usuario
-        alert(`${producto.nombre} agregado al carrito!`);
+        toast.success(`${producto.nombre} agregado al carrito`);
     };
     // useEffect para cargar los productos cuando el componente se monta
     useEffect(() => {
@@ -90,8 +90,12 @@ function Productos() {
 
     // Renderizado principal de la lista de productos
     return (
-        <div className="container py-4">
-            <h2>
+        <div className="container py-4" role="main" aria-labelledby="titulo-productos">
+            <Helmet>
+              <title>Catálogo de Productos</title>
+              <meta name="description" content="Explora nuestro catálogo de productos disponibles por categoría." />
+            </Helmet>
+            <h2 id="titulo-productos">
                 {categoriaFiltro 
                     ? `Productos - ${categoriaFiltro}` 
                     : 'Nuestros Productos'}

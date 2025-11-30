@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from 'react-helmet-async';
 import "./inicio.css";
 import Slider from "../components/Slider";
 import CategoriasSlider from "../components/CategoriasSlider";
@@ -12,7 +13,12 @@ function Inicio() {
   const slides = obtenerBannersActivos();
 
   return (
-    <div className="inicio-container">
+    <div className="inicio-container" role="main" aria-labelledby="inicio-titulo">
+      <Helmet>
+        <title>Inicio - Tienda</title>
+        <meta name="description" content="Explora promociones, categorías y banners destacados de nuestra tienda online." />
+      </Helmet>
+      <h1 id="inicio-titulo" className="visually-hidden">Inicio</h1>
       {/* Sección de Promociones Destacadas */}
       <PromocionesDestacadas
         soloActivas={true}

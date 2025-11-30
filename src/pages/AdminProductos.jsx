@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 import { useApi } from '../context/ApiContext';
 import { useCategorias } from '../context/CategoriasContext';
 import './productos.css';
@@ -32,6 +34,7 @@ function AdminProductos() {
         setProductos(data);
       } catch (e) {
         setError(`Error al obtener productos: ${e.message}`);
+        toast.error('Error al obtener productos');
       } finally {
         setLoading(false);
       }
@@ -93,6 +96,7 @@ function AdminProductos() {
         setProductos(prev => [...prev, { ...creado, stock: Number(creado.stock || 0) }]);
       }
       resetForm();
+      toast.success(editId ? 'Producto actualizado' : 'Producto creado');
     } catch (e) {
       setFormError(`Error en la operación: ${e.message}`);
     } finally {
@@ -124,19 +128,23 @@ function AdminProductos() {
       setProductos(prev => prev.filter(p => p.id !== eliminarId));
       cancelarEliminar();
     } catch (e) {
-      alert(`Error al eliminar: ${e.message}`);
+      toast.error('Error al eliminar producto');
     } finally {
       setAccionCargando(false);
     }
   };
 
   if (loading) {
-    return <div className="productos-container"><h2>Administrar Productos</h2><p>Cargando...</p></div>;
+    return <div className="productos-container" role="main"><h2>Administrar Productos</h2><p>Cargando...</p></div>;
   }
 
   return (
-    <div className="productos-container">
-      <h2>Administrar Productos {editId ? '(Editar)' : '(Nuevo)'}</h2>
+    <div className="productos-container" role="main" aria-labelledby="titulo-admin-productos">
+      <Helmet>
+        <title>Administrar Productos</title>
+        <meta name="description" content="Panel de administración para crear, editar y eliminar productos." />
+      </Helmet>
+      <h2 id="titulo-admin-productos">Administrar Productos {editId ? '(Editar)' : '(Nuevo)'}</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <form className="mb-4 bg-light p-3 rounded shadow-sm" onSubmit={manejarSubmit}>

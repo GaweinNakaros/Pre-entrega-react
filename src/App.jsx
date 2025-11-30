@@ -25,6 +25,12 @@ import { ApiProvider } from './context/ApiContext'
 // Importacion de estilos globales
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyle } from './styles/GlobalStyle';
+import { theme } from './styles/theme';
+import { HelmetProvider } from 'react-helmet-async';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * Componente principal de la aplicación
@@ -40,53 +46,43 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
  */
 function App() {
   return (
+    <HelmetProvider>
     <AuthProvider>
       <CategoriasProvider>
         <SliderProvider>
           <PromocionesProvider>
             <BannersProvider>
               <ApiProvider>
+              <ThemeProvider theme={theme}>
+              <GlobalStyle />
               <CarritoProvider>
                 {/* Barra de navegación presente en todas las páginas */}
                 <Navbar />
-        
-            {/* Configuración de rutas de la aplicación */}
-            <Routes>
-          {/* Ruta de la página principal */}
-          <Route path="/" element={<Inicio />} />
-          {/* Ruta de la página de servicios */}
-          <Route path="/servicios" element={<Servicios />} />
-          {/* Ruta del catálogo de productos */}
-          <Route path="/productos" element={<Productos />} />
-          {/* Ruta dinámica para detalles de producto individual */}
-          <Route path="/productos/:id" element={<ProductoDetalle />} />
-          {/* Ruta solo admin para CRUD de productos */}
-          <Route path="/admin/productos" element={
-            <RutaSoloAdmin>
-              <AdminProductos />
-            </RutaSoloAdmin>
-          } />
-          {/* Ruta del carrito de compras */}
-          <Route path="/carrito" element={<CarritoCompras />} />
-          {/* Ruta de inicio de sesión */}
-          <Route path="/login" element={<IniciarSesion />} />
-          {/* Ruta protegida de pago - requiere autenticación */}
-          <Route 
-            path="/pago" 
-            element={
-              <RutaProtegida>
-                <Pago />
-              </RutaProtegida>
-            } 
-          />
-        </Routes>
+                {/* Configuración de rutas de la aplicación */}
+                <Routes>
+                  <Route path="/" element={<Inicio />} />
+                  <Route path="/servicios" element={<Servicios />} />
+                  <Route path="/productos" element={<Productos />} />
+                  <Route path="/productos/:id" element={<ProductoDetalle />} />
+                  <Route path="/admin/productos" element={
+                    <RutaSoloAdmin>
+                      <AdminProductos />
+                    </RutaSoloAdmin>
+                  } />
+                  <Route path="/carrito" element={<CarritoCompras />} />
+                  <Route path="/login" element={<IniciarSesion />} />
+                  <Route path="/pago" element={<RutaProtegida><Pago /></RutaProtegida>} />
+                </Routes>
+                <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="colored" />
               </CarritoProvider>
+              </ThemeProvider>
               </ApiProvider>
             </BannersProvider>
           </PromocionesProvider>
         </SliderProvider>
       </CategoriasProvider>
     </AuthProvider>
+    </HelmetProvider>
   )
 }
 

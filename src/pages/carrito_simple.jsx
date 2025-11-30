@@ -2,6 +2,8 @@
 // IMPORTACIONES
 // ====================================================
 import React from "react";
+import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 // Link: Para crear enlaces de navegación
 // useNavigate: Para navegar programáticamente (con JavaScript)
 import { Link, useNavigate } from "react-router-dom";
@@ -72,12 +74,8 @@ export default function CarritoCompras() {
    * - Retorna false si hace clic en Cancelar
    */
   const manejarVaciarCarrito = () => {
-    // Pedimos confirmación al usuario
-    if (window.confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
-      // Si confirma, vaciamos el carrito usando la función del contexto
-      vaciarCarritoContext();
-    }
-    // Si cancela, no hacemos nada
+    vaciarCarritoContext();
+    toast.info('Carrito vaciado');
   };
 
   // ====================================================
@@ -90,13 +88,9 @@ export default function CarritoCompras() {
    * @param {string|number} idProducto - ID del producto a eliminar
    */
   const manejarEliminarProducto = (idProducto) => {
-    // Pedimos confirmación
-    if (
-      window.confirm("¿Estás seguro de que quieres eliminar este producto?")
-    ) {
-      // Si confirma, eliminamos el producto por su ID
-      eliminarProducto(idProducto);
-    }
+    const item = carrito.find(p => p.id === idProducto);
+    eliminarProducto(idProducto);
+    toast.info(`Producto eliminado: ${item?.nombre || 'Producto'}`);
   };
 
   // ====================================================
@@ -123,8 +117,12 @@ export default function CarritoCompras() {
   // RENDERIZADO DEL COMPONENTE
   // ====================================================
   return (
-    <div className="carrito-container">
-      <h2 className="carrito-titulo">Carrito de Compras</h2>
+    <div className="carrito-container" role="main" aria-labelledby="carrito-titulo">
+      <Helmet>
+        <title>Carrito de Compras</title>
+        <meta name="description" content="Revisa los productos seleccionados, modifica cantidades y procede al pago de forma segura." />
+      </Helmet>
+      <h2 id="carrito-titulo" className="carrito-titulo">Carrito de Compras</h2>
 
       {/* ================================================
           RENDERIZADO CONDICIONAL: CARRITO VACÍO VS CARRITO CON PRODUCTOS
@@ -221,8 +219,8 @@ export default function CarritoCompras() {
                     <button
                       onClick={() => quitarCantidad(item.id)}
                       className="btn-cantidad btn-menos"
-                    >
-                      -
+                      aria-label={`Quitar una unidad de ${item.nombre}`}
+                    >-
                     </button>
                     
                     {/* Muestra la cantidad actual */}
@@ -243,8 +241,8 @@ export default function CarritoCompras() {
                         opacity: (item.cantidad || 1) >= (item.stock || 0) ? 0.5 : 1,
                         cursor: (item.cantidad || 1) >= (item.stock || 0) ? 'not-allowed' : 'pointer'
                       }}
-                    >
-                      +
+                      aria-label={`Agregar una unidad de ${item.nombre}`}
+                    >+
                     </button>
                   </div>
                   
@@ -252,8 +250,8 @@ export default function CarritoCompras() {
                   <button
                     onClick={() => manejarEliminarProducto(item.id)}
                     className="btn-eliminar"
-                  >
-                    Eliminar
+                    aria-label={`Eliminar ${item.nombre} del carrito`}
+                  >Eliminar
                   </button>
                 </div>
               </div>
@@ -285,7 +283,7 @@ export default function CarritoCompras() {
 
             <div className="acciones-derecha">
               {/* Botón para vaciar el carrito */}
-              <button onClick={manejarVaciarCarrito} className="btn-vaciar">
+              <button onClick={manejarVaciarCarrito} className="btn-vaciar" aria-label="Vaciar todo el carrito">
                 Vaciar Carrito
               </button>
 

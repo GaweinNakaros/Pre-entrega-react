@@ -2,6 +2,8 @@
 // IMPORTACIONES
 // ====================================================
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 // useNavigate: Para redirigir después de completar la compra
 import { useNavigate } from 'react-router-dom';
 // Nuestros hooks personalizados de los contextos
@@ -250,8 +252,8 @@ function Pago() {
       const items = carrito.map((i) => ({ productoId: i.id, cantidad: i.cantidad }));
       await actualizarStock(items);
 
-      // 3) Confirmación al usuario
-      alert(`✅ ¡Compra realizada con éxito!\n\nResumen:\n- Productos: ${cantidadTotal}\n- Total: $${totalPrecio.toFixed(2)}\n- Email: ${usuario.email}\n\n¡Gracias por tu compra!`);
+      // 3) Confirmación al usuario (toast accesible)
+      toast.success(`Compra exitosa: ${cantidadTotal} producto(s), Total $${totalPrecio.toFixed(2)}`);
 
       // 4) Limpiar y redirigir
       vaciarCarrito();
@@ -260,14 +262,18 @@ function Pago() {
     } catch (err) {
       console.error('Error en pago/stock:', err);
       setProcesando(false);
-      alert('⚠️ El pago fue procesado, pero hubo un problema al actualizar el stock. Revisaremos manualmente.');
+      toast.error('Pago OK, pero falló actualización de stock. Revisaremos manualmente.');
     }
   };
 
   return (
-    <div className="pago-container">
+    <div className="pago-container" role="main" aria-labelledby="pago-titulo">
+      <Helmet>
+        <title>Finalizar Compra</title>
+        <meta name="description" content="Completa tus datos de envío y confirma tu compra de forma segura." />
+      </Helmet>
       <div className="pago-content">
-        <h2 className="pago-titulo">Finalizar Compra</h2>
+        <h2 id="pago-titulo" className="pago-titulo">Finalizar Compra</h2>
         
         <div className="pago-info-usuario">
           <p>📧 <strong>Comprando como:</strong> {usuario?.email}</p>

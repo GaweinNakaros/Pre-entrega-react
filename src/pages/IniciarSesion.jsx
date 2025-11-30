@@ -2,6 +2,8 @@
 // IMPORTACIONES
 // ====================================================
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 // useNavigate: Hook de react-router-dom para navegar programáticamente
 // useLocation: Hook que nos da información sobre la URL actual
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -171,6 +173,7 @@ function IniciarSesion() {
     
     // Verificamos si la autenticación fue exitosa
     if (resultado.exito) {
+      toast.success('Sesión iniciada');
       // ====================================================
       // CASO EXITOSO: Redirigir al usuario
       // ====================================================
@@ -186,6 +189,7 @@ function IniciarSesion() {
       // - "El email no está registrado en el sistema"
       // - "La contraseña es incorrecta"
       setError(resultado.mensaje);
+      toast.error(resultado.mensaje);
     }
   };
 
@@ -198,9 +202,13 @@ function IniciarSesion() {
    * React lo convierte en elementos de React
    */
   return (
-    <div className="login-container">
+    <div className="login-container" role="main" aria-labelledby="titulo-login">
+      <Helmet>
+        <title>Iniciar Sesión</title>
+        <meta name="description" content="Accede como invitado o administrador para continuar con tus compras." />
+      </Helmet>
       <div className="login-card">
-        <h2 className="login-titulo">Iniciar Sesión</h2>
+        <h2 id="titulo-login" className="login-titulo">Iniciar Sesión</h2>
         <p className="login-descripcion">
           Ingresa tu email para continuar.
         </p>
