@@ -1,6 +1,8 @@
 # Proyecto React (Vite)
 
-Aplicación de catálogo con autenticación (invitado/admin), carrito de compras, CRUD de productos (solo admin), búsqueda reactiva y paginación. Incluye SEO por página (Helmet), notificaciones no bloqueantes (Toastify), y un tema centralizado (styled-components).
+Aplicación de catálogo con autenticación (invitado/admin), carrito de compras, CRUD de productos (solo admin), búsqueda reactiva y paginación. Incluye SEO por página (Helmet / migrable), notificaciones no bloqueantes (Toastify), y un tema centralizado (styled-components).
+
+> Aviso: Este sitio es exclusivamente con fines educativos/demostrativos. No representa una tienda real, no comercializa productos y ningún dato ingresado será usado con fines comerciales.
 
 ## Requisitos
 
@@ -38,6 +40,65 @@ npm run preview
 ```
 
 `preview` sirve los archivos de producción para ver el build localmente.
+
+## Deploy (GitHub Pages vía Actions)
+
+El despliegue ahora se realiza automáticamente usando el workflow `.github/workflows/deploy-gh-pages.yml` al hacer `git push` sobre `rama-de-trabajo`.
+
+Flujo:
+1. Push a `rama-de-trabajo`.
+2. Action instala dependencias (`npm install --legacy-peer-deps`).
+3. Ejecuta `npm run build`.
+4. Publica artefacto `dist/` usando `deploy-pages` (sin necesidad de rama `gh-pages`).
+5. La URL se muestra en el job final de Actions.
+
+Verificación rápida:
+```powershell
+git push
+# Abrir Actions en GitHub → último run → confirmar "Deploy to GitHub Pages" OK
+```
+
+### Base de Vite
+En producción la `base` debe coincidir con el nombre del repositorio si se publica como Project Page.
+```javascript
+// vite.config.js (ejemplo)
+base: process.env.NODE_ENV === 'production' ? '/Proyecto-React/' : '/'
+```
+
+### Deploy Manual Externo (Alternativa)
+Si prefieres un repositorio separado (ej: `Deploy-gh-pages`):
+1. Generar build: `npm run build`.
+2. Copiar contenido de `dist/` al repo externo.
+3. Incluir `.nojekyll` y `404.html`.
+4. Commit + push a su rama `gh-pages` o usar Actions de ese repo.
+
+### Legacy (rama `gh-pages` interna)
+La rama `gh-pages` fue eliminada para simplificar. El workflow reemplaza su función. Para recrearla:
+```powershell
+git branch gh-pages
+git push -u origin gh-pages
+```
+Úsala sólo si necesitas comparar builds manualmente.
+
+## Troubleshooting
+
+| Síntoma | Causa | Solución |
+|---------|-------|----------|
+| Página en blanco tras deploy | `base` incorrecta | Revisar `vite.config.js` y rehacer build |
+| 404 en `assets/*.js` | Build no publicado completo | Verificar artifact en Actions y hash de archivos |
+| Peer dependency error (React 19) | Librería esperando React <=18 | Instalar con `--legacy-peer-deps` o migrar librería |
+| Toasts no aparecen | Falta `ToastContainer` | Confirmar que está montado en `App.jsx` |
+| Helmet warnings con React 19 | Versión no actualizada | Considerar migrar a `react-helmet` o esperar soporte |
+
+## Tags (Versionado Ligero)
+Para marcar un estado estable sin mantener ramas extras:
+```powershell
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+## Limpieza de Ramas
+Ramas activas esperadas: `main`, `rama-de-trabajo`. Historias obsoletas se eliminan para reducir ruido. Usa tags para snapshots.
 
 ## Uso rápido
 

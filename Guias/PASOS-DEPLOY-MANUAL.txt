@@ -1,55 +1,42 @@
-PROCEDIMIENTO MANUAL (LEGACY) PARA DEPLOY A GH-PAGES
-===================================================
+DEPLOY ACTUAL (GITHUB PAGES VIA ACTIONS)
+=======================================
+Procedimiento oficial vigente para publicar la aplicación.
 
-> Este flujo es manual y se mantiene como referencia histórica. El proyecto ya no usa subcarpetas de versión (v1.3). El build se genera en `dist/` en la raíz.
+REQUISITOS
+----------
+- Rama de desarrollo: `rama-de-trabajo`.
+- Workflow: `.github/workflows/deploy-gh-pages.yml`.
+- `vite.config.js` con `base` de producción: `/Proyecto-React/`.
 
-PASO 1: Generar build (rama de trabajo)
---------------------------------------
-1. Asegurarte de estar en la rama de trabajo:
-    git checkout rama-de-trabajo
-2. Instalar dependencias (si es necesario):
-    npm install --legacy-peer-deps
-3. Generar build:
-    npm run build
-4. Salida: `dist/` en la raíz del repositorio.
+PASOS
+-----
+1. Realiza cambios y commit en `rama-de-trabajo`.
+2. Ejecuta `git push`.
+3. El workflow corre automáticamente:
+   - Instala dependencias: `npm install --legacy-peer-deps`.
+   - Construye: `npm run build`.
+   - Publica artefacto `dist/` a GitHub Pages.
+4. Abre Actions → último run → confirma "Deploy to GitHub Pages" exitoso.
+5. Visita la URL de Pages para verificar carga de assets y rutas.
 
-PASO 2: Cambiar a gh-pages
---------------------------
-5. Cambiar de rama:
-    git checkout gh-pages
-6. Eliminar archivos antiguos (conserva .git y 404.html):
-    - index.html antiguo
-    - carpeta `assets/` previa
-    - cualquier archivo obsoleto generado por build anterior
+VERIFICACIÓN RÁPIDA
+-------------------
+```powershell
+git push
+# Luego: GitHub → Actions → último workflow → estado verde
+```
 
-PASO 3: Copiar nuevo build
---------------------------
-7. Volver temporalmente a rama de trabajo para copiar contenido:
-    git checkout rama-de-trabajo
-8. Copiar contenido de `dist/` (Ctrl+A, Ctrl+C)
-9. Regresar a gh-pages:
-    git checkout gh-pages
-10. Pegar (Ctrl+V) el contenido copiado en la raíz.
+TROUBLESHOOTING
+---------------
+- Página en blanco: revisar `base` en `vite.config.js`.
+- 404 en assets: confirmar build correcto y workflow sin errores.
+- Peer deps React 19: usar `--legacy-peer-deps` (ya en workflow).
+- Warnings Helmet: evaluar alternativas si persisten.
 
-PASO 4: Commit y push
----------------------
-11. Verificar cambios:
-    git status
-12. Agregar todo:
-    git add -A
-13. Commit:
-    git commit -m "deploy: build actualizado"
-14. Push:
-    git push origin gh-pages
+MANTENIMIENTO
+-------------
+- Ramas activas: `main` (estable), `rama-de-trabajo` (desarrollo).
+- Usar tags para versiones: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+- No recrear `gh-pages` salvo caso excepcional.
 
-PASO 5: Verificación
---------------------
-15. Esperar 1-2 minutos.
-16. Abrir: https://gaweinnakaros.github.io/Proyecto-React/
-17. Verificar que se reflejen cambios (búsqueda catálogo, navbar con iconos, etc.).
-
-NOTAS:
-------
-- No incluir `node_modules/` en gh-pages.
-- Si falla la visualización de rutas internas, agregar `404.html` o configurar basename.
-- Para flujos automatizados futuros considerar acción de GitHub: `peaceiris/actions-gh-pages`.
+Este documento contiene únicamente el procedimiento actual; toda referencia a métodos manuales antiguos fue eliminada según solicitud.

@@ -226,7 +226,7 @@ function Productos() {
 
             {/* Paginación */}
             {totalPaginas > 1 && (
-                <nav className="mt-4" aria-label="Paginación de productos">
+                <nav className="mt-4 pagination-bar" aria-label="Paginación de productos">
                     <ul className="pagination justify-content-center">
                         <li className={`page-item ${paginaActual === 1 ? 'disabled' : ''}`}>
                             <button className="page-link" onClick={() => irAPagina(paginaActual - 1)} aria-label="Página anterior">&laquo;</button>

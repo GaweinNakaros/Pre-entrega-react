@@ -4,6 +4,7 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 // Importación de componentes de la aplicación
 import Navbar from './pages/navbar'
+import Footer from './components/Footer'
 import Inicio from './pages/inicio'
 import Servicios from './pages/servicios'
 import Productos from './pages/productos'
@@ -56,24 +57,27 @@ function App() {
               <ThemeProvider theme={theme}>
               <GlobalStyle />
               <CarritoProvider>
-                {/* Barra de navegación presente en todas las páginas */}
-                <Navbar />
-                {/* Configuración de rutas de la aplicación */}
-                <Routes>
-                  <Route path="/" element={<Inicio />} />
-                  <Route path="/servicios" element={<Servicios />} />
-                  <Route path="/productos" element={<Productos />} />
-                  <Route path="/productos/:id" element={<ProductoDetalle />} />
-                  <Route path="/admin/productos" element={
-                    <RutaSoloAdmin>
-                      <AdminProductos />
-                    </RutaSoloAdmin>
-                  } />
-                  <Route path="/carrito" element={<CarritoCompras />} />
-                  <Route path="/login" element={<IniciarSesion />} />
-                  <Route path="/pago" element={<RutaProtegida><Pago /></RutaProtegida>} />
-                </Routes>
-                <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="colored" />
+                <div className="app-shell d-flex flex-column min-vh-100">
+                  {/* Barra de navegación presente en todas las páginas */}
+                  <Navbar />
+                  {/* Configuración de rutas de la aplicación */}
+                  <Routes>
+                    <Route path="/" element={<Inicio />} />
+                    <Route path="/servicios" element={<Servicios />} />
+                    <Route path="/productos" element={<Productos />} />
+                    <Route path="/productos/:id" element={<ProductoDetalle />} />
+                    <Route path="/admin/productos" element={
+                      <RutaSoloAdmin>
+                        <AdminProductos />
+                      </RutaSoloAdmin>
+                    } />
+                    <Route path="/carrito" element={<CarritoCompras />} />
+                    <Route path="/login" element={<IniciarSesion />} />
+                    <Route path="/pago" element={<RutaProtegida><Pago /></RutaProtegida>} />
+                  </Routes>
+                  <Footer />
+                  <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover theme="colored" />
+                </div>
               </CarritoProvider>
               </ThemeProvider>
               </ApiProvider>

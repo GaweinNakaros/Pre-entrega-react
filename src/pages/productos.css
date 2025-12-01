@@ -16,3 +16,42 @@
   .card .card-img-top { height: 160px; }
 }
 
+/* Barra del paginador (fina, con gradiente) */
+.pagination-bar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  padding: 4px 8px; /* barra fina */
+}
+.pagination { gap: 6px; align-items: center; margin: 0; }
+.pagination .page-link {
+  border-radius: 999px;
+  min-width: 28px;
+  height: 28px;
+  line-height: 26px;
+  padding: 0 8px;
+  text-align: center;
+  border: 0;
+  background: transparent; /* botones planos sobre barra gradient */
+  color: #fff;
+  transition: background-color .12s ease, transform .1s ease;
+  font-weight: 600;
+}
+.pagination .page-link:hover {
+  background-color: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+.pagination .page-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.35);
+}
+.pagination .page-item.active .page-link {
+  background-color: rgba(255,255,255,0.30);
+}
+.pagination .page-item.disabled .page-link {
+  opacity: .45;
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pagination .page-link { transition: none; }
+}
+
