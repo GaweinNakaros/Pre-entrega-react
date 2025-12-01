@@ -43,10 +43,10 @@ npm run preview
 
 ## Deploy (GitHub Pages vía Actions)
 
-El despliegue ahora se realiza automáticamente usando el workflow `.github/workflows/deploy-gh-pages.yml` al hacer `git push` sobre `rama-de-trabajo`.
+El despliegue se realiza automáticamente usando el workflow `.github/workflows/deploy-gh-pages.yml` al hacer `git push` sobre `main`.
 
 Flujo:
-1. Push a `rama-de-trabajo`.
+1. Push a `main`.
 2. Action instala dependencias (`npm install --legacy-peer-deps`).
 3. Ejecuta `npm run build`.
 4. Publica artefacto `dist/` usando `deploy-pages` (sin necesidad de rama `gh-pages`).
